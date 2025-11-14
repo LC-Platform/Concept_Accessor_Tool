@@ -1,0 +1,273 @@
+﻿Concept Accessor API Docs
+Base URL: http://10.2.8.12:3000
+API Endpoints
+
+
+1. PDF Processing
+Upload and Process PDF
+text
+POST /read-pdf/
+Content-Type: multipart/form-data
+Body: pdf (file)
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "section_ids": ["3.1", "3.2", "3.1.1"],
+  "message": "Processed & stored"
+}
+
+2. Summary Generation
+Generate Full Chapter Summary
+text
+POST /full-summary/
+Content-Type: application/json
+Body: {"chapter_id": "chapter_a1b2c3d4"}
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "full_summary": "Generated summary text..."
+}
+
+Generate Section Summary
+text
+POST /section-summary/
+Content-Type: application/json
+Body: {
+  "chapter_id": "chapter_a1b2c3d4",
+  "section_id": "3.1"
+}
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "section_id": "3.1",
+  "section_summary": "Section summary text..."
+}
+
+3. Domain Terms Extraction
+Extract Biology Terms
+text
+POST /extract-domain-terms/
+Content-Type: application/json
+Body: {"chapter_id": "chapter_a1b2c3d4"}
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "terms": [
+    {
+      "domain_id": "bryophyte",
+      "name": "Bryophyte",
+      "definition": "Small, non-vascular plants...",
+      "audio_binary": "base64_encoded_audio_data",
+      "translations": {
+        "tel": "Telugu translation",
+        "hin": "Hindi translation",
+        "ben": "Bengali translation"
+      },
+      "word_structure": {
+        "morphemes": ["bryo", "phyte"],
+        "origins": ["Greek: moss", "Greek: plant"]
+      },
+      "is_mwe": false,
+      "mwe_type": "",
+      "tokens_with_pos": []
+    }
+  ],
+  "message": "Extracted & stored"
+}
+
+4. Translation Services
+Translate Full Summary
+text
+POST /translate/full-summary/
+Content-Type: application/json
+Body: {
+  "chapter_id": "chapter_a1b2c3d4",
+  "target_language": "tel"
+}
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "language": "tel",
+  "translated_summary": "Translated summary in Telugu"
+}
+
+Translate Section Summary
+text
+POST /translate/section-summary/
+Content-Type: application/json
+Body: {
+  "chapter_id": "chapter_a1b2c3d4",
+  "section_id": "3.1",
+  "target_language": "hin"
+}
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "section_id": "3.1",
+  "language": "hin",
+  "translated_section_summary": "Translated section summary"
+}
+
+Translate Definition
+text
+POST /translate/definition/
+Content-Type: application/json
+Body: {
+  "domain_id": "bryophyte",
+  "chapter_id": "chapter_a1b2c3d4",
+  "target_language": "ben"
+}
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "domain_id": "bryophyte",
+  "language": "ben",
+  "translated_definition": "Translated definition in Bengali"
+}
+
+Translate Chapter
+text
+POST /translate/chapter/
+Content-Type: application/json
+Body: {
+  "chapter_id": "chapter_a1b2c3d4",
+  "target_language": "tel"
+}
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "language": "tel",
+  "translated_text": "Full chapter translated text"
+}
+
+Translate Section Content
+text
+POST /translate/section/
+Content-Type: application/json
+Body: {
+  "chapter_id": "chapter_a1b2c3d4",
+  "section_id": "3.1",
+  "target_language": "hin"
+}
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "section_id": "3.1",
+  "language": "hin",
+  "translated_section": "Translated section content"
+}
+
+Translate Sentence
+text
+POST /translate/sentence/
+Content-Type: application/json
+Body: {
+  "chapter_id": "chapter_a1b2c3d4",
+  "sentence": "Photosynthesis is a process...",
+  "target_language": "tel"
+}
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "sentence": "Photosynthesis is a process...",
+  "language": "tel",
+  "translated_sentence": "Translated sentence in Telugu"
+}
+
+5. Audio Services
+Get Domain Term Audio
+text
+POST /domain-term-audio/
+Content-Type: application/json
+Body: {
+  "domain_id": "bryophyte",
+  "chapter_id": "chapter_a1b2c3d4"
+}
+
+
+Response: Audio file stream (MP3 format)
+Content-Type: audio/mpeg
+
+6. Taxonomy Services
+Generate Taxonomy Images
+text
+POST /generate-taxonomy-images/
+Content-Type: application/json
+Body: {"chapter_id": "chapter_a1b2c3d4"}
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "taxonomy_images": [
+    {
+      "domain_id": "bryophyte",
+      "domain_name": "Bryophyte",
+      "image_b64": "base64_encoded_image_data"
+    }
+  ],
+  "message": "Taxonomy images generated and stored."
+}
+
+7. File Upload Services
+Upload Labelled Image
+text
+POST /upload-labelled-image/
+Content-Type: multipart/form-data
+Body: 
+- chapter_id: "chapter_a1b2c3d4"
+- domain_id: "bryophyte"
+- domain_name: "Bryophyte"
+- image: (file)
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "domain_id": "bryophyte",
+  "domain_name": "Bryophyte",
+  "image_b64": "base64_encoded_image",
+  "message": "Labelled image uploaded and stored."
+}
+
+Upload Process Video
+text
+POST /upload-process-video/
+Content-Type: multipart/form-data
+Body:
+- chapter_id: "chapter_a1b2c3d4"
+- domain_id: "bryophyte"
+- domain_name: "Bryophyte"
+- video: (file)
+
+
+Response:
+{
+  "chapter_id": "chapter_a1b2c3d4",
+  "domain_id": "bryophyte",
+  "domain_name": "Bryophyte",
+  "video_b64": "base64_encoded_video",
+  "message": "Process video uploaded and stored."
+}
+
+
