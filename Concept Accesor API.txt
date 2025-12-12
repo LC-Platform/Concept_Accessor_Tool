@@ -1,273 +1,489 @@
-﻿Concept Accessor API Docs
-Base URL: http://10.2.8.12:3000
-API Endpoints
+﻿API Reference
+Account Creation
+POST("/signup/")
+Purpose: for creating an user profile
+Request:
+{
+   "username": user.username,
+   "name": user.name,
+   "email": user.email,
+   "password_hash": hashed_pw.decode("utf-8"),
+}
+Response:
+
+{"message": "Signup successful", "username": user.username, "email": user.email}
+POST("/login/")
+Purpose: for creating an user profile
+Request:
+{
+   "email": user.email,
+   "password_hash": hashed_pw.decode("utf-8"),
+}
+Response:
 
 
-1. PDF Processing
-Upload and Process PDF
-text
+
+POST /forgot-password/
+Description
+
+Request Body
+Field
+Type
+Required
+Description
+email
+string (Email)
+Yes
+Registered user email
+
+Example Response
+{
+  "message": "Password reset code sent to your email"
+}
+POST /verify-reset-code/
+Description
+Verifies the 6-digit OTP provided to the user. Required before resetting the password.
+Request Body
+Field
+Type
+Required
+Description
+email
+string (Email)
+Yes
+Registered User Email
+code
+string
+Yes
+OTP received via email
+
+Example Response
+{
+  "message": "Code verified. You may now reset your password."
+}
+POST /reset-password/
+Description
+Allows resetting the password only if the OTP is verified.
+Request Body
+Field
+Type
+Required
+Description
+email
+string (Email)
+Yes
+Registered email
+code
+string
+Yes
+Verified OTP code
+new_password
+string
+Yes
+New password
+confirm_password
+string
+Yes
+Must match new password
+
+Example Response
+{
+  "message": "Password reset successful"
+}
+
+PDF Processing
 POST /read-pdf/
-Content-Type: multipart/form-data
-Body: pdf (file)
+Purpose: Upload a PDF and extract sections.
+Request:
+{
+  "pdf": "multipart/form-data (UploadFile)"
+}
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
-  "section_ids": ["3.1", "3.2", "3.1.1"],
-  "message": "Processed & stored"
+  "chapter_id": "string",
+  "section_ids": ["array of section IDs"],
+  "message": "string"
 }
 
-2. Summary Generation
-Generate Full Chapter Summary
-text
+
+Frontend Notes:
+Send file as FormData
+Store chapter_id for subsequent calls
+
+Summary Generation
 POST /full-summary/
-Content-Type: application/json
-Body: {"chapter_id": "chapter_a1b2c3d4"}
+Purpose: Generate AI-powered full chapter summary.
+Request:
+{
+  "chapter_id": "string"
+}
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
-  "full_summary": "Generated summary text..."
+  "chapter_id": "string",
+  "full_summary": "string OR array of strings"
 }
 
-Generate Section Summary
-text
+
+Frontend Notes:
+Use chapter_id from /read-pdf/
+Display full_summary as text or list
 POST /section-summary/
-Content-Type: application/json
-Body: {
-  "chapter_id": "chapter_a1b2c3d4",
-  "section_id": "3.1"
+Purpose: Generate summary for a specific section.
+Request:
+{
+  "chapter_id": "string",
+  "section_id": "string"
 }
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
-  "section_id": "3.1",
-  "section_summary": "Section summary text..."
+  "chapter_id": "string",
+  "section_id": "string",
+  "section_summary": "string"
 }
 
-3. Domain Terms Extraction
-Extract Biology Terms
-text
+
+Frontend Notes:
+Fetch summaries per section_id (e.g., "3.1")
+
+Domain Analysis
 POST /extract-domain-terms/
-Content-Type: application/json
-Body: {"chapter_id": "chapter_a1b2c3d4"}
+Purpose: Extract biology terms with definitions, translations, and audio.
+Request:
+{
+  "chapter_id": "string"
+}
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
+  "chapter_id": "string",
   "terms": [
     {
-      "domain_id": "bryophyte",
-      "name": "Bryophyte",
-      "definition": "Small, non-vascular plants...",
-      "audio_binary": "base64_encoded_audio_data",
+      "domain_id": "string",
+      "name": "string",
+      "definition": "string",
+
       "translations": {
-        "tel": "Telugu translation",
-        "hin": "Hindi translation",
-        "ben": "Bengali translation"
+        "tel": "string",
+        "hin": "string",
+        "ben": "string"
       },
+      "audio_binary": "base64 (optional)",
       "word_structure": {
-        "morphemes": ["bryo", "phyte"],
-        "origins": ["Greek: moss", "Greek: plant"]
-      },
-      "is_mwe": false,
-      "mwe_type": "",
-      "tokens_with_pos": []
+        "type": "string",
+        "structure": "string"
+      }
+     "is_mwe": "boolean",
+     "mwe_type": "string",
+     "tokens_with_pos": "array"
     }
   ],
-  "message": "Extracted & stored"
+  "message": "string"
 }
 
-4. Translation Services
-Translate Full Summary
-text
+
+
+Translation
 POST /translate/full-summary/
-Content-Type: application/json
-Body: {
-  "chapter_id": "chapter_a1b2c3d4",
-  "target_language": "tel"
+Purpose: Translate entire summary into a target language.
+Request:
+{
+  "chapter_id": "string",
+  "target_language": "string (e.g., 'tel', 'hin')"
 }
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
-  "language": "tel",
-  "translated_summary": "Translated summary in Telugu"
+  "chapter_id": "string",
+  "language": "string",
+  "translated_summary": {
+    "data": "string",
+    "languages": "string",
+    "version": "string"
+  }
 }
 
-Translate Section Summary
-text
+
+Frontend Notes:
+Use chapter_id and target_language
+Render translated_summary.data
 POST /translate/section-summary/
-Content-Type: application/json
-Body: {
-  "chapter_id": "chapter_a1b2c3d4",
-  "section_id": "3.1",
-  "target_language": "hin"
+Purpose: Translate section summary to a target language.
+Request:
+{
+  "chapter_id": "string",
+  "section_id": "string",
+  "target_language": "string"
 }
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
-  "section_id": "3.1",
-  "language": "hin",
-  "translated_section_summary": "Translated section summary"
-}
-
-Translate Definition
-text
-POST /translate/definition/
-Content-Type: application/json
-Body: {
-  "domain_id": "bryophyte",
-  "chapter_id": "chapter_a1b2c3d4",
-  "target_language": "ben"
+  "chapter_id": "string",
+  "section_id": "string",
+  "language": "string",
+  "translated_section_summary": {
+    "data": "string"
+  }
 }
 
 
-Response:
-{
-  "chapter_id": "chapter_a1b2c3d4",
-  "domain_id": "bryophyte",
-  "language": "ben",
-  "translated_definition": "Translated definition in Bengali"
-}
-
-Translate Chapter
-text
+Frontend Notes:
+Display translated_section_summary.data
 POST /translate/chapter/
-Content-Type: application/json
-Body: {
-  "chapter_id": "chapter_a1b2c3d4",
-  "target_language": "tel"
+Purpose: Translate the entire chapter text into target language.
+Request:
+{
+  "chapter_id": "string",
+  "target_language": "string"
 }
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
-  "language": "tel",
-  "translated_text": "Full chapter translated text"
+  "chapter_id": "string",
+  "language": "string",
+  "translated_text": {
+    "data": "string",
+    "languages": "string",
+    "version": "string"
+  }
 }
 
-Translate Section Content
-text
+
+Frontend Notes:
+Full chapter translation
+Render translated_text.data
 POST /translate/section/
-Content-Type: application/json
-Body: {
-  "chapter_id": "chapter_a1b2c3d4",
-  "section_id": "3.1",
-  "target_language": "hin"
+Purpose: Translate section content into target language.
+Request:
+{
+  "chapter_id": "string",
+  "section_id": "string",
+  "target_language": "string"
 }
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
-  "section_id": "3.1",
-  "language": "hin",
-  "translated_section": "Translated section content"
+  "chapter_id": "string",
+  "section_id": "string",
+  "language": "string",
+  "translated_section": {
+    "data": "string",
+    "languages": "string",
+    "version": "string"
+  }
 }
 
-Translate Sentence
-text
+
+Frontend Notes:
+Section-level content translation
+Display translated_section.data
 POST /translate/sentence/
-Content-Type: application/json
-Body: {
-  "chapter_id": "chapter_a1b2c3d4",
-  "sentence": "Photosynthesis is a process...",
-  "target_language": "tel"
+Purpose: Translate a user-selected sentence.
+Request:
+{
+  "chapter_id": "string",
+  "sentence": "string",
+  "target_language": "string"
 }
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
-  "sentence": "Photosynthesis is a process...",
-  "language": "tel",
-  "translated_sentence": "Translated sentence in Telugu"
-}
-
-5. Audio Services
-Get Domain Term Audio
-text
-POST /domain-term-audio/
-Content-Type: application/json
-Body: {
-  "domain_id": "bryophyte",
-  "chapter_id": "chapter_a1b2c3d4"
+  "chapter_id": "string",
+  "sentence": "string",
+  "language": "string",
+  "translated_sentence": {
+    "data": "string",
+    "languages": "string",
+    "version": "string"
+  }
 }
 
 
-Response: Audio file stream (MP3 format)
-Content-Type: audio/mpeg
+Frontend Notes:
+For on-demand sentence translation
+Display translated_sentence.data
+POST /translate/definition/
+Purpose: Translate biology term definitions.
+Request:
+{
+  "domain_id": "string",
+  "chapter_id": "string",
+  "target_language": "string"
+}
 
-6. Taxonomy Services
-Generate Taxonomy Images
-text
+
+Response:
+{
+  "chapter_id": "string",
+  "domain_id": "string",
+  "language": "string",
+  "translated_definition": {
+    "data": "string",
+    "languages": "string",
+    "version": "string"
+  }
+}
+
+
+Frontend Notes:
+Translate term definitions separately
+Render translated_definition.data
+
+Media Management
 POST /generate-taxonomy-images/
-Content-Type: application/json
-Body: {"chapter_id": "chapter_a1b2c3d4"}
+Purpose: Generate taxonomy SVG diagrams for biology terms.
+Request:
+{
+  "chapter_id": "string"
+}
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
+  "chapter_id": "string",
+  "total_generated": "integer",
   "taxonomy_images": [
     {
-      "domain_id": "bryophyte",
-      "domain_name": "Bryophyte",
-      "image_b64": "base64_encoded_image_data"
+      "domain_id": "string",
+      "domain_name": "string",
+      "image_b64": "string (base64-encoded SVG)"
     }
-  ],
-  "message": "Taxonomy images generated and stored."
+  ]
 }
 
-7. File Upload Services
-Upload Labelled Image
-text
+
+Frontend Notes:
+Render using data:image/svg+xml;base64,${image_b64}
+GET /taxonomy-image/{domain_id}
+Purpose: Retrieve taxonomy SVG directly.
+Response: SVG image
+Frontend Notes:
+Use directly in <img src="/taxonomy-image/{domain_id}">
 POST /upload-labelled-image/
-Content-Type: multipart/form-data
-Body: 
-- chapter_id: "chapter_a1b2c3d4"
-- domain_id: "bryophyte"
-- domain_name: "Bryophyte"
-- image: (file)
+Purpose: Upload labelled educational images.
+Request:
+{
+  "chapter_id": "string",
+  "domain_id": "string",
+  "domain_name": "string",
+  "image": "multipart/form-data"
+}
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
-  "domain_id": "bryophyte",
-  "domain_name": "Bryophyte",
-  "image_b64": "base64_encoded_image",
-  "message": "Labelled image uploaded and stored."
+  "domain_id": "string",
+  "image_b64": "string"
 }
 
-Upload Process Video
-text
+
+Frontend Notes:
+Use FormData for upload
+Render via data:image/png;base64,${image_b64}
+GET /image/{domain_id}
+Purpose: Retrieve labelled image (PNG).
+Response: PNG image
+Frontend Notes:
+Use in <img src="/image/{domain_id}">
 POST /upload-process-video/
-Content-Type: multipart/form-data
-Body:
-- chapter_id: "chapter_a1b2c3d4"
-- domain_id: "bryophyte"
-- domain_name: "Bryophyte"
-- video: (file)
+Purpose: Upload educational process videos.
+Request:
+{
+  "chapter_id": "string",
+  "domain_id": "string",
+  "domain_name": "string",
+  "video": "multipart/form-data"
+}
 
 
 Response:
 {
-  "chapter_id": "chapter_a1b2c3d4",
-  "domain_id": "bryophyte",
-  "domain_name": "Bryophyte",
-  "video_b64": "base64_encoded_video",
-  "message": "Process video uploaded and stored."
+  "chapter_id": "string",
+  "domain_id": "string",
+  "message": "string"
 }
+
+
+Frontend Notes:
+Upload via FormData
+GET /video/{domain_id}
+Purpose: Stream educational video.
+Response: MP4 stream
+Frontend Notes:
+Use <video src="/video/{domain_id}" controls>
+POST /domain-term-audio/
+Purpose: Get or generate audio pronunciation for biology terms.
+Request:
+{
+  "domain_id": "string",
+  "chapter_id": "string"
+}
+
+
+Response: MP3 audio stream
+Frontend Notes:
+Use <audio src="/domain-term-audio/" controls> with POST body
+Or fetch and create blob URL for playback
+
+
+POST /paraphrase/
+Port 9090
+Description
+Paraphrases the given text using the T5 model and stores the input & output in MongoDB.
+Request
+Method: POST
+ Endpoint: /paraphrase/
+Body (JSON)
+{
+  "text": "string"
+}
+
+Response (200 OK)
+{
+  "input": "string",
+  "paraphrase": "string"
+}
+
+
+Error Handling
+Response:
+{
+  "error": "string (error message)"
+}
+
+
+Status Codes:
+200: Success
+404: Not Found
+500: Server Error
+
+Key Identifiers
+Field
+Example
+Usage
+chapter_id
+"chapter_ab12cd34"
+Required for all APIs
+section_id
+"3.1"
+For section summaries
+domain_id
+"cell_division"
+For media/taxonomy
+language
+"tel", "hin", "ben"
+For translations
+
 
 

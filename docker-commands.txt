@@ -9,4 +9,5 @@ docker push sashank662/concept_accessor_frontend:latest
 sudo docker pull sashank662/concept_accessor_frontend:latest
 
 
+
 sudo docker run -d -p 3001:80 sashank662/concept_accessor_frontend:latest

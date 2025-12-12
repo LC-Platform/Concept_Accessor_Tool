@@ -1,540 +1,8 @@
-// // PdfViewer.js - Fixed positioning version (updated for section-id highlights)
-// import React, { useState, useEffect, useRef } from "react";
-// import { Document, Page, pdfjs } from "react-pdf";
-// import "react-pdf/dist/esm/Page/AnnotationLayer.css";
-// import "react-pdf/dist/esm/Page/TextLayer.css";
-// import "./ModernLayout.css";
-
-// pdfjs.GlobalWorkerOptions.workerSrc =
-//   `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
-
-// /* ---------------------------------------------------------
-//    NORMALIZATION
-// --------------------------------------------------------- */
-// function normalizeEnglish(s = "") {
-//   return String(s || "")
-//     .normalize("NFKD")
-//     .replace(/[\u0300-\u036f]/g, "")
-//     .replace(/['",.!?;:()\-]/g, " ")
-//     .replace(/\s+/g, " ")
-//     .toLowerCase()
-//     .trim();
-// }
-
-// function makeTermKey(term) {
-//   if (!term) return "";
-//   if (term.normalized) return normalizeEnglish(term.normalized);
-//   return normalizeEnglish(term.name || term.rawName || "");
-// }
-
-// /* ---------------------------------------------------------
-//    COMPONENT
-// --------------------------------------------------------- */
-// export default function PdfViewer({
-//   file,
-//   terms = [],
-//   selectedView,
-//   sectionIds = [],
-// }) {
-//   const [numPages, setNumPages] = useState(null);
-//   const [pageWidth, setPageWidth] = useState(700);
-//   const [isHighlighting, setIsHighlighting] = useState(false);
-
-//   const containerRef = useRef(null);
-//   const highlightTimer = useRef(null);
-//   const observerRef = useRef(null);
-//   const retryRef = useRef(0);
-//   const preparedTermsRef = useRef([]);
-//   const highlightedTermsRef = useRef(new Set());
-//   const preparedSectionIdsRef = useRef([]);
-
-//   /* Prepare normalized terms */
-//   useEffect(() => {
-//     preparedTermsRef.current = (terms || [])
-//       .map((t) => ({
-//         raw: t,
-//         key: makeTermKey(t),
-//         originalName: t.name || t.rawName || "",
-//         domain_id: t.domain_id || "",
-//       }))
-//       .filter((x) => x.key && x.key.length > 0);
-
-//     highlightedTermsRef.current.clear();
-//     // console.log("Prepared terms:", preparedTermsRef.current);
-//   }, [terms]);
-
-//   /* Prepare section IDs (exact match) */
-//   useEffect(() => {
-//     preparedSectionIdsRef.current = (sectionIds || []).map((s) =>
-//       String(s || "").trim()
-//     );
-//     // console.log("Prepared section ids:", preparedSectionIdsRef.current);
-//   }, [sectionIds]);
-
-//   /* Resize handling */
-//   useEffect(() => {
-//     if (!containerRef.current) return;
-//     const ro = new ResizeObserver(() => {
-//       setPageWidth(Math.max(300, containerRef.current.clientWidth));
-//     });
-//     ro.observe(containerRef.current);
-//     return () => ro.disconnect();
-//   }, []);
-
-//   const onDocumentLoadSuccess = ({ numPages }) => {
-//     setNumPages(numPages);
-//     scheduleHighlight(800); // Longer delay for PDF to fully render
-//   };
-
-//   useEffect(() => {
-//     scheduleHighlight(400);
-//   }, [file, terms, selectedView, numPages, sectionIds]);
-
-//   useEffect(() => {
-//     return () => {
-//       clearOverlays();
-//       if (observerRef.current) observerRef.current.disconnect();
-//       if (highlightTimer.current) clearTimeout(highlightTimer.current);
-//     };
-//   }, []);
-
-//   /* ---------------------------------------------------------
-//      Overlay helpers
-//   --------------------------------------------------------- */
-//   function clearOverlays() {
-//     document.querySelectorAll(".term-highlight-overlay").forEach((el) => el.remove());
-//     document.querySelectorAll(".section-id-highlight").forEach((el) => el.remove());
-//     document.querySelectorAll(".overlay-container").forEach((c) => {
-//       if (c && c.children.length === 0) c.remove();
-//     });
-//   }
-
-//   function scheduleHighlight(delay = 400) {
-//     // Only Word view highlights terms, Summary view highlights section ids
-//     if (selectedView !== "Word" && selectedView !== "Summary") {
-//       clearOverlays();
-//       return;
-//     }
-
-//     if (highlightTimer.current) clearTimeout(highlightTimer.current);
-//     highlightTimer.current = setTimeout(() => {
-//       runHighlightCycle();
-//       highlightTimer.current = null;
-//     }, delay);
-//   }
-
-//   function runHighlightCycle() {
-//     if (selectedView !== "Word" && selectedView !== "Summary") {
-//       clearOverlays();
-//       return;
-//     }
-
-//     const pages = Array.from(document.querySelectorAll(".react-pdf__Page"));
-//     if (!pages.length) {
-//       retryRef.current++;
-//       if (retryRef.current <= 10) scheduleHighlight(500);
-//       return;
-//     }
-
-//     retryRef.current = 0;
-//     clearOverlays();
-//     setIsHighlighting(true);
-
-//     try {
-//       if (selectedView === "Word") {
-//         let highlightedCount = 0;
-//         pages.forEach((page) => {
-//           try {
-//             const count = highlightPage(page);
-//             highlightedCount += count;
-//           } catch (e) {
-//             // ignore per-page errors
-//           }
-//         });
-//         // console.log(`Highlights applied: ${highlightedCount}`);
-//       } else if (selectedView === "Summary") {
-//         // Only highlight section IDs in summary view (exact match)
-//         pages.forEach((page) => {
-//           try {
-//             highlightSectionIdsOnPage(page);
-//           } catch (e) {
-//             // ignore
-//           }
-//         });
-//       }
-//     } finally {
-//       setIsHighlighting(false);
-//       // attach observer to first page so we re-run highlights on reflow
-//       if (pages[0]) attachObserverOnce(pages[0]);
-//     }
-//   }
-
-//   function attachObserverOnce(samplePage) {
-//     if (!samplePage) return;
-//     const textLayer =
-//       samplePage.querySelector(".react-pdf__Page__textContent") ||
-//       samplePage.querySelector(".react-pdf__TextLayer");
-//     if (!textLayer) return;
-
-//     if (observerRef.current) observerRef.current.disconnect();
-
-//     const obs = new MutationObserver(() => {
-//       obs.disconnect();
-//       observerRef.current = null;
-//       scheduleHighlight(300);
-//     });
-
-//     obs.observe(textLayer, { childList: true, subtree: true, characterData: true });
-//     observerRef.current = obs;
-//   }
-
-//   /* ---------------------------------------------------------
-//      Highlighting: TERMS (existing)
-//   --------------------------------------------------------- */
-//   function highlightPage(pageEl) {
-//     const textLayer = pageEl.querySelector(".react-pdf__Page__textContent") ||
-//       pageEl.querySelector(".react-pdf__TextLayer");
-//     if (!textLayer) return 0;
-
-//     const spans = Array.from(textLayer.querySelectorAll("span"))
-//       .filter(span => span.textContent && span.textContent.trim().length > 0);
-
-//     if (!spans.length) return 0;
-
-//     // Get the PDF canvas for reference
-//     const pdfCanvas = pageEl.querySelector("canvas");
-//     if (!pdfCanvas) return 0;
-
-//     const pageRect = pageEl.getBoundingClientRect();
-//     const canvasRect = pdfCanvas.getBoundingClientRect();
-
-//     // Group spans by line
-//     const lines = {};
-//     spans.forEach((span) => {
-//       const rect = span.getBoundingClientRect();
-//       if (rect.width === 0 || rect.height === 0) return;
-
-//       const lineKey = Math.round(rect.top);
-//       if (!lines[lineKey]) lines[lineKey] = [];
-//       lines[lineKey].push({ span, rect });
-//     });
-
-//     let highlightsApplied = 0;
-
-//     Object.values(lines).forEach((lineSpans) => {
-//       lineSpans.sort((a, b) => a.rect.left - b.rect.left);
-
-//       const lineText = lineSpans.map(item => item.span.textContent).join("");
-//       const normalizedLine = normalizeEnglish(lineText);
-//       if (!normalizedLine) return;
-
-//       let overlayContainer = pageEl.querySelector(".overlay-container");
-//       if (!overlayContainer) {
-//         overlayContainer = document.createElement("div");
-//         overlayContainer.className = "overlay-container";
-//         overlayContainer.style.position = "absolute";
-//         overlayContainer.style.left = "0";
-//         overlayContainer.style.top = "0";
-//         overlayContainer.style.width = "100%";
-//         overlayContainer.style.height = "100%";
-//         overlayContainer.style.pointerEvents = "none";
-//         overlayContainer.style.zIndex = "10";
-//         pageEl.appendChild(overlayContainer);
-//       }
-
-//       preparedTermsRef.current.forEach((pterm) => {
-//         if (highlightedTermsRef.current.has(pterm.domain_id)) return;
-
-//         const termWords = pterm.key.split(" ").filter(w => w.length > 0);
-//         if (termWords.length === 0) return;
-
-//         let foundMatch = false;
-
-//         if (termWords.length === 1) {
-//           const term = termWords[0];
-//           const regex = new RegExp(`\\b${term}\\b`, 'gi');
-//           let match;
-
-//           while ((match = regex.exec(normalizedLine)) !== null) {
-//             const success = highlightTermInLine(
-//               pageEl, overlayContainer, lineSpans, lineText, normalizedLine,
-//               match.index, match.index + term.length - 1, pterm.raw,
-//               pageRect, canvasRect
-//             );
-
-//             if (success) {
-//               highlightsApplied++;
-//               foundMatch = true;
-//               break;
-//             }
-//           }
-//         } else {
-//           const termPhrase = termWords.join(" ");
-//           const startIndex = normalizedLine.indexOf(termPhrase);
-//           if (startIndex !== -1) {
-//             const success = highlightTermInLine(
-//               pageEl, overlayContainer, lineSpans, lineText, normalizedLine,
-//               startIndex, startIndex + termPhrase.length - 1, pterm.raw,
-//               pageRect, canvasRect
-//             );
-
-//             if (success) {
-//               highlightsApplied++;
-//               foundMatch = true;
-//             }
-//           }
-//         }
-
-//         if (foundMatch && pterm.domain_id) {
-//           highlightedTermsRef.current.add(pterm.domain_id);
-//         }
-//       });
-//     });
-
-//     return highlightsApplied;
-//   }
-
-//   function highlightTermInLine(
-//     pageEl, overlayContainer, lineSpans, originalText, normalizedText,
-//     normStart, normEnd, termRaw, pageRect, canvasRect
-//   ) {
-//     try {
-//       // Convert normalized positions to original text positions
-//       let origStart = -1;
-//       let origEnd = -1;
-//       let normIdx = 0;
-//       let origIdx = 0;
-
-//       while (normIdx <= normEnd && origIdx < originalText.length) {
-//         const origChar = originalText[origIdx];
-//         const normChar = normalizeEnglish(origChar);
-
-//         if (normChar && normChar !== " ") {
-//           if (normIdx === normStart) origStart = origIdx;
-//           if (normIdx === normEnd) {
-//             origEnd = origIdx;
-//             break;
-//           }
-//           normIdx++;
-//         }
-//         origIdx++;
-//       }
-
-//       if (origStart === -1 || origEnd === -1) return false;
-
-//       // Find spans containing the text range
-//       let currentPos = 0;
-//       let startSpan = null, endSpan = null;
-//       let startOffset = 0, endOffset = 0;
-
-//       for (const item of lineSpans) {
-//         const span = item.span;
-//         const text = span.textContent;
-//         const spanStart = currentPos;
-//         const spanEnd = currentPos + text.length - 1;
-
-//         if (spanStart <= origStart && spanEnd >= origStart && !startSpan) {
-//           startSpan = item;
-//           startOffset = origStart - spanStart;
-//         }
-
-//         if (spanStart <= origEnd && spanEnd >= origEnd && !endSpan) {
-//           endSpan = item;
-//           endOffset = origEnd - spanStart;
-//           break;
-//         }
-
-//         currentPos += text.length;
-//       }
-
-//       if (!startSpan || !endSpan) return false;
-
-//       // Calculate position with improved accuracy
-//       let left, top, width, height;
-
-//       try {
-//         // Method 1: Try using text range (most accurate)
-//         const range = document.createRange();
-//         range.setStart(startSpan.span.firstChild, startOffset);
-//         range.setEnd(endSpan.span.firstChild, endOffset + 1);
-
-//         const rangeRect = range.getBoundingClientRect();
-//         if (rangeRect.width > 0 && rangeRect.height > 0) {
-//           left = rangeRect.left - pageRect.left;
-//           top = rangeRect.top - pageRect.top;
-//           width = rangeRect.width;
-//           height = rangeRect.height;
-//         } else {
-//           throw new Error("Invalid range");
-//         }
-//       } catch (e) {
-//         // Method 2: Use span positions with adjustment
-//         const startRect = startSpan.rect;
-//         const endRect = endSpan.rect;
-
-//         left = (startRect.left - pageRect.left);
-//         top = (startRect.top - pageRect.top);
-//         width = (endRect.right - startRect.left);
-//         height = startRect.height;
-
-//         left -= 1;
-//         width += 1;
-//       }
-
-//       // Create highlight overlay
-//       const overlay = document.createElement("div");
-//       overlay.className = "term-highlight-overlay";
-//       overlay.style.position = "absolute";
-//       overlay.style.left = `${Math.max(0, left)}px`;
-//       overlay.style.top = `${Math.max(0, top)}px`;
-//       overlay.style.width = `${Math.max(1, width)}px`;
-//       overlay.style.height = `${Math.max(1, height)}px`;
-//       overlay.style.backgroundColor = "rgba(255, 255, 0, 0.4)";
-//       overlay.style.borderRadius = "1px";
-//       overlay.style.pointerEvents = "auto";
-//       overlay.style.cursor = "pointer";
-//       overlay.style.zIndex = "5";
-
-//       overlay.onclick = (e) => {
-//         e.stopPropagation();
-//         e.preventDefault();
-//         if (window.onPdfTermClick) window.onPdfTermClick(termRaw);
-//       };
-
-//       overlay.onmouseenter = () => {
-//         overlay.style.backgroundColor = "rgba(255, 235, 59, 0.6)";
-//       };
-
-//       overlay.onmouseleave = () => {
-//         overlay.style.backgroundColor = "rgba(255, 255, 0, 0.4)";
-//       };
-
-//       overlayContainer.appendChild(overlay);
-//       return true;
-//     } catch (error) {
-//       // console.warn("Highlight error:", error);
-//       return false;
-//     }
-//   }
-
-//   /* ---------------------------------------------------------
-//      Highlighting: SECTION IDS (exact span text match)
-//   --------------------------------------------------------- */
-//   function highlightSectionIdsOnPage(pageEl) {
-//     const textLayer = pageEl.querySelector(".react-pdf__Page__textContent") ||
-//       pageEl.querySelector(".react-pdf__TextLayer");
-//     if (!textLayer) return;
-
-//     const spans = Array.from(textLayer.querySelectorAll("span"))
-//       .filter(span => span.textContent && span.textContent.trim().length > 0);
-
-//     if (!spans.length) return;
-
-//     let overlayContainer = pageEl.querySelector(".overlay-container");
-//     if (!overlayContainer) {
-//       overlayContainer = document.createElement("div");
-//       overlayContainer.className = "overlay-container";
-//       overlayContainer.style.position = "absolute";
-//       overlayContainer.style.left = "0";
-//       overlayContainer.style.top = "0";
-//       overlayContainer.style.width = "100%";
-//       overlayContainer.style.height = "100%";
-//       overlayContainer.style.pointerEvents = "none";
-//       overlayContainer.style.zIndex = "15";
-//       pageEl.appendChild(overlayContainer);
-//     }
-
-//     const pageRect = pageEl.getBoundingClientRect();
-
-//     // exact-match: only highlight spans whose trimmed text === section id
-//     spans.forEach((span) => {
-//       const txt = span.textContent.trim();
-//       if (!txt) return;
-
-//       preparedSectionIdsRef.current.forEach((sectionId) => {
-//         if (txt === sectionId) {
-//           const rect = span.getBoundingClientRect();
-//           const left = rect.left - pageRect.left;
-//           const top = rect.top - pageRect.top;
-//           const width = rect.width;
-//           const height = rect.height;
-
-//           const overlay = document.createElement("div");
-//           overlay.className = "section-id-highlight";
-//           overlay.style.position = "absolute";
-//           overlay.style.left = `${Math.max(0, left)}px`;
-//           overlay.style.top = `${Math.max(0, top)}px`;
-//           overlay.style.width = `${Math.max(2, width)}px`;
-//           overlay.style.height = `${Math.max(2, height)}px`;
-//           overlay.style.background = "rgba(255, 200, 0, 0.5)";
-//           overlay.style.borderRadius = "2px";
-//           overlay.style.pointerEvents = "auto";
-//           overlay.style.cursor = "pointer";
-//           overlay.style.zIndex = "20";
-
-//           overlay.onmouseenter = () => {
-//             overlay.style.background = "rgba(255, 220, 0, 0.7)";
-//           };
-//           overlay.onmouseleave = () => {
-//             overlay.style.background = "rgba(255, 200, 0, 0.5)";
-//           };
-
-//           overlay.onclick = (e) => {
-//             e.stopPropagation();
-//             e.preventDefault();
-//             if (window.onSectionIdClick) window.onSectionIdClick(sectionId);
-//           };
-
-//           overlayContainer.appendChild(overlay);
-//         }
-//       });
-//     });
-//   }
-
-//   /* ---------------------------------------------------------
-//      RENDER
-//   --------------------------------------------------------- */
-//   return (
-//     <div ref={containerRef} className="pdf-viewer-scroll" style={{ position: "relative" }}>
-//       {isHighlighting && (
-//         <div className="highlight-loading-overlay">
-//           <div className="highlight-loading-text">Applying highlights...</div>
-//         </div>
-//       )}
-
-//       {file ? (
-//         <Document
-//           file={file}
-//           onLoadSuccess={onDocumentLoadSuccess}
-//           onLoadError={(error) => console.error("PDF load error:", error)}
-//           loading={<div>Loading PDF...</div>}
-//         >
-//           {Array.from({ length: numPages || 0 }, (_, i) => (
-//             <Page
-//               key={`page_${i + 1}`}
-//               pageNumber={i + 1}
-//               width={pageWidth}
-//               renderTextLayer={true}
-//               renderAnnotationLayer={false}
-//               loading={<div>Loading page {i + 1}...</div>}
-//             />
-//           ))}
-//         </Document>
-//       ) : (
-//         <div className="pdf-placeholder">Upload a PDF to view</div>
-//       )}
-//     </div>
-//   );
-// }
-
-
-
-// PdfViewer.js - Fixed positioning version (updated for section-id highlights + WORD TAB FIX)
 import React, { useState, useEffect, useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+import "./ModernLayout.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
-import "./ModernLayout.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc =
   `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
@@ -559,6 +27,142 @@ function makeTermKey(term) {
 }
 
 /* ---------------------------------------------------------
+   WORD BOUNDARY
+--------------------------------------------------------- */
+function isBoundaryChar(ch) {
+  return !ch || /[^a-zA-Z]/.test(ch);
+}
+function isValidWordBoundary(concat, startIdx, endIdx) {
+  const before = concat[startIdx - 1];
+  const after = concat[endIdx];
+  return isBoundaryChar(before) && isBoundaryChar(after);
+}
+
+/* ---------------------------------------------------------
+   LINE / TABLE CLUSTERING
+--------------------------------------------------------- */
+function clusterLines(spans, tolerance = 3) {
+  const sorted = [...spans].sort((a, b) => a.rect.top - b.rect.top);
+  const lines = [];
+  for (const sp of sorted) {
+    const y = sp.rect.top;
+    const last = lines[lines.length - 1];
+    if (last && Math.abs(last._y - y) <= tolerance) {
+      last.spans.push(sp);
+      last._y = Math.min(last._y, y);
+    } else {
+      lines.push({ _y: y, spans: [sp] });
+    }
+  }
+  lines.forEach((ln) => {
+    ln.spans.sort((a, b) => a.rect.left - b.rect.left);
+    ln.text = ln.spans.map((s) => s.textTrimmed).join(" ").trim();
+    ln.fontSizeAvg =
+      ln.spans.reduce((a, s) => a + (s.fontSize || 12), 0) / Math.max(1, ln.spans.length);
+  });
+  return lines;
+}
+
+function clusterColumns(line, xTolerance = 6) {
+  const xs = line.spans.map((s) => s.rect.left).sort((a, b) => a - b);
+  const cols = [];
+  for (const x of xs) {
+    const last = cols[cols.length - 1];
+    if (last && Math.abs(last.avg - x) <= xTolerance) {
+      last.values.push(x);
+      last.avg = last.values.reduce((a, b) => a + b, 0) / last.values.length;
+    } else {
+      cols.push({ values: [x], avg: x });
+    }
+  }
+  return cols.map((c) => c.avg);
+}
+
+function detectTableBlocks(lines, options = {}) {
+  const {
+    minCols = 3,
+    minConsecutive = 3,
+    minConsecutiveTwoCols = 5,
+    smallFontMax = 12,
+    yGapTolerance = 10,
+    xClusterTolerance = 8,
+  } = options;
+
+  const blocks = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    if (!lines[i].spans.length) { i++; continue; }
+
+    let j = i;
+    const refCols = clusterColumns(lines[i], xClusterTolerance);
+    let count3 = 1;
+    let count2 = 1;
+
+    while (j + 1 < lines.length) {
+      const gapY = Math.abs(lines[j + 1]._y - lines[j]._y);
+      if (gapY > yGapTolerance) break;
+
+      const nextCols = clusterColumns(lines[j + 1], xClusterTolerance);
+      const overlap = refCols.filter((x) =>
+        nextCols.some((y) => Math.abs(y - x) <= xClusterTolerance)
+      );
+
+      if (refCols.length >= minCols && overlap.length >= minCols) {
+        count3++;
+        j++;
+      } else if (
+        refCols.length >= 2 &&
+        nextCols.length >= 2 &&
+        overlap.length >= 2 &&
+        lines[j + 1].fontSizeAvg <= smallFontMax
+      ) {
+        count2++;
+        j++;
+      } else break;
+    }
+
+    const len = j - i + 1;
+    const is3 = refCols.length >= minCols && len >= minConsecutive && count3 >= minConsecutive;
+    const is2 =
+      refCols.length >= 2 &&
+      len >= minConsecutiveTwoCols &&
+      count2 >= minConsecutiveTwoCols &&
+      lines.slice(i, j + 1).every((ln) => ln.fontSizeAvg <= smallFontMax);
+
+    if (is3 || is2) {
+      blocks.push({ start: i, end: j });
+      i = j + 1;
+    } else {
+      i++;
+    }
+  }
+  return blocks;
+}
+
+function lineInAnyBlock(idx, blocks) {
+  return blocks.some((b) => idx >= b.start && idx <= b.end);
+}
+
+/* ---------------------------------------------------------
+   HEADINGS, LABELS, SECTION HEADINGS
+--------------------------------------------------------- */
+const FIG_TABLE_LABEL_RE = /^(figure|fig\.?|table)\s*\d+(\.\d+)?/i;
+function looksLikeHeading(line) {
+  if (!line || !line.text) return false;
+  const t = line.text.trim();
+  if (t.length > 3 && t === t.toUpperCase()) return true;
+  if (line.fontSizeAvg > 22) return true;
+  return false;
+}
+function looksLikeFigureOrTableLabel(line) {
+  if (!line || !line.text) return false;
+  return FIG_TABLE_LABEL_RE.test(line.text.trim());
+}
+// 3.1 Algae / 3.1.3 Rhodophyceae, etc.
+const SECTION_HEADING_RE = /^\s*\d+(\.\d+)+\s+[A-Z][a-zA-Z].*$/;
+
+/* ---------------------------------------------------------
    COMPONENT
 --------------------------------------------------------- */
 export default function PdfViewer({
@@ -576,246 +180,459 @@ export default function PdfViewer({
   const observerRef = useRef(null);
   const retryRef = useRef(0);
   const preparedTermsRef = useRef([]);
-  const highlightedTermsRef = useRef(new Set());
   const preparedSectionIdsRef = useRef([]);
+  const resizeDebounce = useRef(null);
+  const dragPauseTimer = useRef(null);
+  const dragWasActiveRef = useRef(false);
 
-  /* Prepare normalized terms */
+  /* Prepare terms */
   useEffect(() => {
     preparedTermsRef.current = (terms || [])
       .map((t) => ({
         raw: t,
         key: makeTermKey(t),
         originalName: t.name || t.rawName || "",
-        domain_id: t.domain_id || "",
       }))
-      .filter((x) => x.key && x.key.length > 0);
-
-    highlightedTermsRef.current.clear();
+      .filter((x) => x.key);
   }, [terms]);
 
-  /* Prepare section IDs (exact match) */
+  /* Prepare section IDs */
   useEffect(() => {
-    preparedSectionIdsRef.current = (sectionIds || []).map((s) =>
-      String(s || "").trim()
-    );
+    preparedSectionIdsRef.current = (sectionIds || []).map((s) => String(s || "").trim());
   }, [sectionIds]);
 
-  /* Resize handling */
+  /* Debounced ResizeObserver (drag-aware) */
   useEffect(() => {
     if (!containerRef.current) return;
+
     const ro = new ResizeObserver(() => {
-      setPageWidth(Math.max(300, containerRef.current.clientWidth));
+      // During drag, just remember we resized; don’t thrash renders.
+      if (document.body.classList.contains("dragging")) {
+        dragWasActiveRef.current = true;
+        if (resizeDebounce.current) clearTimeout(resizeDebounce.current);
+        // keep it light during drag; we will resize at drag end.
+        return;
+      }
+
+      if (resizeDebounce.current) clearTimeout(resizeDebounce.current);
+      resizeDebounce.current = setTimeout(() => {
+        if (!containerRef.current) return;
+        setPageWidth(Math.max(300, containerRef.current.clientWidth));
+        scheduleHighlight(120);
+      }, 180);
     });
+
     ro.observe(containerRef.current);
-    return () => ro.disconnect();
+    return () => {
+      ro.disconnect();
+      if (resizeDebounce.current) clearTimeout(resizeDebounce.current);
+    };
+  }, []);
+
+  /* Listen for drag end to apply a single resize & highlight */
+  useEffect(() => {
+    const onDragEndish = () => {
+      // Wait a tick after drag class removal for layout to settle
+      if (!document.body.classList.contains("dragging") && dragWasActiveRef.current) {
+        dragWasActiveRef.current = false;
+        if (dragPauseTimer.current) clearTimeout(dragPauseTimer.current);
+        dragPauseTimer.current = setTimeout(() => {
+          if (containerRef.current) {
+            setPageWidth(Math.max(300, containerRef.current.clientWidth));
+          }
+          // one clean pass after drag completes
+          scheduleHighlight(100);
+        }, 120);
+      }
+    };
+
+    // Mouse/touch up events correlate with drag ending in your layout
+    window.addEventListener("mouseup", onDragEndish, { passive: true });
+    window.addEventListener("touchend", onDragEndish, { passive: true });
+    window.addEventListener("touchcancel", onDragEndish, { passive: true });
+
+    return () => {
+      window.removeEventListener("mouseup", onDragEndish);
+      window.removeEventListener("touchend", onDragEndish);
+      window.removeEventListener("touchcancel", onDragEndish);
+      if (dragPauseTimer.current) clearTimeout(dragPauseTimer.current);
+    };
   }, []);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
-    scheduleHighlight(800);
+    scheduleHighlight(500);
   };
 
+  /* Drive highlighting on key changes */
   useEffect(() => {
-    scheduleHighlight(400);
+    scheduleHighlight(500);
   }, [file, terms, selectedView, numPages, sectionIds]);
 
-  useEffect(() => {
-    return () => {
-      clearOverlays();
-      if (observerRef.current) observerRef.current.disconnect();
-      if (highlightTimer.current) clearTimeout(highlightTimer.current);
-    };
-  }, []);
-
-  /* ---------------------------------------------------------
-     NEW FIX — rehighlight when returning to Word tab
-  --------------------------------------------------------- */
+  /* Reset cache on Word tab */
   useEffect(() => {
     if (selectedView === "Word") {
-      // Coming back to Word view → rehighlight
+      if (window.__highlightedOnceGlobal) window.__highlightedOnceGlobal.clear();
       scheduleHighlight(200);
     } else {
-      // Leaving Word view → remove all highlights immediately
       clearOverlays();
     }
   }, [selectedView]);
 
-  /* ---------------------------------------------------------
-     Overlay helpers
-  --------------------------------------------------------- */
-  function clearOverlays() {
-    document.querySelectorAll(".term-highlight-overlay").forEach((el) => el.remove());
-    document.querySelectorAll(".section-id-highlight").forEach((el) => el.remove());
-    document.querySelectorAll(".overlay-container").forEach((c) => {
-      if (c && c.children.length === 0) c.remove();
-    });
+  /* Cleanup */
+  useEffect(() => {
+    return () => {
+      clearOverlays();
+      observerRef.current?.disconnect();
+      clearTimeout(highlightTimer.current);
+      clearTimeout(resizeDebounce.current);
+      clearTimeout(dragPauseTimer.current);
+    };
+  }, []);
+
+
+  useEffect(() => {
+  const overlays = document.querySelectorAll(
+    ".term-highlight-overlay, .section-id-highlight"
+  );
+
+  overlays.forEach((ov) => {
+    ov.style.pointerEvents = selectedView === "Sentence" ? "none" : "auto";
+  });
+}, [selectedView]);
+
+
+  useEffect(() => {
+  if (selectedView !== "Sentence") {
+    document.querySelectorAll(".pdf-sentence-tooltip").forEach((el) => el.remove());
+    return;
   }
 
+  function handleHover(e) {
+    console.log("Hover target:", e.target, e.target.tagName);
+    const target = e.target;
+
+    // Only show tooltip for PDF text spans
+    if (!target || target.tagName !== "SPAN") return;
+
+    // Remove any existing tooltip first
+    document.querySelectorAll(".pdf-sentence-tooltip").forEach((el) => el.remove());
+
+    // Create tooltip
+    const tip = document.createElement("div");
+    tip.className = "pdf-sentence-tooltip";
+    tip.textContent = "Drag and select a sentence to analyze it";
+
+    Object.assign(tip.style, {
+      position: "fixed",
+      background: "#333",
+      color: "#fff",
+      padding: "4px 8px",
+      borderRadius: "4px",
+      fontSize: "12px",
+      zIndex: 9999,
+      pointerEvents: "none",
+      whiteSpace: "nowrap",
+      opacity: "0",
+      transition: "opacity 0.15s ease-in-out"
+    });
+
+    document.body.appendChild(tip);
+
+    // Position the tooltip near the cursor
+    const rect = target.getBoundingClientRect();
+    tip.style.left = `${rect.left}px`;
+    tip.style.top = `${rect.top - 28}px`;
+    tip.style.opacity = "1";
+
+    const removeTip = () => {
+      tip.style.opacity = "0";
+      setTimeout(() => tip.remove(), 150);
+    };
+
+    target.addEventListener("mouseleave", removeTip, { once: true });
+  }
+
+  // Use a more reliable approach to attach the listener
+  const attachHoverListener = () => {
+    document.addEventListener("mouseover", handleHover);
+  };
+
+  // Wait a bit for the PDF text layer to be ready
+  const timeoutId = setTimeout(attachHoverListener, 100);
+
+  return () => {
+    clearTimeout(timeoutId);
+    document.removeEventListener("mouseover", handleHover);
+    document.querySelectorAll(".pdf-sentence-tooltip").forEach((el) => el.remove());
+  };
+}, [selectedView]);
+
+
+  /* ---------------------------------------------------------
+     Scheduler (drag-aware)
+  --------------------------------------------------------- */
   function scheduleHighlight(delay = 400) {
     if (selectedView !== "Word" && selectedView !== "Summary") return;
 
-    if (highlightTimer.current) clearTimeout(highlightTimer.current);
+    // Don’t schedule while user is dragging the divider
+    if (document.body.classList.contains("dragging")) return;
 
-    highlightTimer.current = setTimeout(() => {
-      runHighlightCycle();
-      highlightTimer.current = null;
-    }, delay);
+    clearTimeout(highlightTimer.current);
+    highlightTimer.current = setTimeout(runHighlightCycle, delay);
+  }
+
+  function clearOverlays() {
+    document.querySelectorAll(".term-highlight-overlay").forEach((e) => e.remove());
+    document.querySelectorAll(".section-id-highlight").forEach((e) => e.remove());
+    document.querySelectorAll(".overlay-container").forEach((c) => {
+      if (c.children.length === 0) c.remove();
+    });
   }
 
   function runHighlightCycle() {
     if (selectedView !== "Word" && selectedView !== "Summary") return;
+    if (document.body.classList.contains("dragging")) return;
 
     const pages = Array.from(document.querySelectorAll(".react-pdf__Page"));
     if (!pages.length) {
       retryRef.current++;
-      if (retryRef.current <= 10) scheduleHighlight(500);
+      if (retryRef.current <= 8) scheduleHighlight(350);
       return;
     }
 
     retryRef.current = 0;
     clearOverlays();
     setIsHighlighting(true);
-
     try {
-      if (selectedView === "Word") {
-        pages.forEach((page) => {
-          try { highlightPage(page); } catch {}
-        });
-      }
-
-      if (selectedView === "Summary") {
-        pages.forEach((page) => {
-          try { highlightSectionIdsOnPage(page); } catch {}
-        });
-      }
+      if (selectedView === "Word") pages.forEach(highlightTermsOnPage);
+      if (selectedView === "Summary") pages.forEach(highlightSectionIdsOnPage);
     } finally {
       setIsHighlighting(false);
       if (pages[0]) attachObserverOnce(pages[0]);
     }
   }
 
-  function attachObserverOnce(page) {
+  function attachObserverOnce(pageEl) {
     const textLayer =
-      page.querySelector(".react-pdf__Page__textContent") ||
-      page.querySelector(".react-pdf__TextLayer");
+      pageEl.querySelector(".react-pdf__Page__textContent") ||
+      pageEl.querySelector(".react-pdf__TextLayer");
     if (!textLayer) return;
 
-    if (observerRef.current) observerRef.current.disconnect();
-
-    const obs = new MutationObserver(() => {
-      obs.disconnect();
-      observerRef.current = null;
-      scheduleHighlight(300);
+    observerRef.current?.disconnect();
+    observerRef.current = new MutationObserver(() => {
+      // Skip noisy mutations during drag; re-run after drag end via scheduleHighlight
+      if (document.body.classList.contains("dragging")) return;
+      observerRef.current?.disconnect();
+      scheduleHighlight(280);
     });
 
-    obs.observe(textLayer, { childList: true, subtree: true, characterData: true });
-    observerRef.current = obs;
+    observerRef.current.observe(textLayer, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
   }
 
   /* ---------------------------------------------------------
-     TERM HIGHLIGHTING
+     MAIN TERM HIGHLIGHT (multi-span substring + boundaries)
   --------------------------------------------------------- */
-  function highlightPage(pageEl) {
+  function highlightTermsOnPage(pageEl) {
     const textLayer = pageEl.querySelector(".react-pdf__Page__textContent");
     if (!textLayer) return;
 
-    const spans = [...textLayer.querySelectorAll("span")];
-    if (!spans.length) return;
-
-    let overlayContainer = pageEl.querySelector(".overlay-container");
-    if (!overlayContainer) {
-      overlayContainer = document.createElement("div");
-      overlayContainer.className = "overlay-container";
-      Object.assign(overlayContainer.style, {
-        position: "absolute",
-        left: "0",
-        top: "0",
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-        zIndex: 10,
-      });
-      pageEl.appendChild(overlayContainer);
-    }
-
+    const overlayContainer = ensureOverlayContainer(pageEl, 10);
     const pageRect = pageEl.getBoundingClientRect();
 
-    spans.forEach((span) => {
-      const raw = span.textContent.trim();
-      const n = normalizeEnglish(raw);
-      if (!n) return;
+    const rawSpans = [...textLayer.querySelectorAll("span")].filter(
+      (s) => (s.textContent || "").trim()
+    );
 
-      preparedTermsRef.current.forEach((pterm) => {
-        if (n === pterm.key) {
-          // overlay
-          const r = span.getBoundingClientRect();
+    const spans = rawSpans.map((s) => {
+      const style = window.getComputedStyle(s);
+      return {
+        el: s,
+        textRaw: s.textContent || "",
+        textTrimmed: (s.textContent || "").trim(),
+        rect: s.getBoundingClientRect(),
+        fontSize: parseFloat(style.fontSize) || 12,
+        fontWeight: parseInt(style.fontWeight) || 400,
+        lineHeight: parseFloat(style.lineHeight) || 0,
+      };
+    });
+    if (!spans.length) return;
 
-          const overlay = document.createElement("div");
-          overlay.className = "term-highlight-overlay";
-          Object.assign(overlay.style, {
-            position: "absolute",
-            left: `${r.left - pageRect.left}px`,
-            top: `${r.top - pageRect.top}px`,
-            width: `${r.width}px`,
-            height: `${r.height}px`,
-            background: "rgba(255,255,0,0.4)",
-            borderRadius: "2px",
-            cursor: "pointer",
-            zIndex: 20,
-            pointerEvents: "auto",
-          });
+    const lines = clusterLines(spans);
 
-          overlay.onclick = () => {
-            if (window.onPdfTermClick) window.onPdfTermClick(pterm.raw);
-          };
+    // label/caption skip
+    const captionSkip = new Set();
+    const labelLines = new Set();
+    lines.forEach((ln, i) => {
+      if (looksLikeFigureOrTableLabel(ln)) {
+        labelLines.add(i);
+        captionSkip.add(i);
+        if (i + 1 < lines.length) captionSkip.add(i + 1);
+        if (i + 2 < lines.length) captionSkip.add(i + 2);
+      }
+    });
 
-          overlay.onmouseenter = () =>
-            (overlay.style.background = "rgba(255,235,59,0.6)");
-          overlay.onmouseleave = () =>
-            (overlay.style.background = "rgba(255,255,0,0.4)");
+    // heading skip
+    const headingSkip = new Set();
+    lines.forEach((ln, i) => {
+      if (looksLikeHeading(ln)) headingSkip.add(i);
+    });
 
-          overlayContainer.appendChild(overlay);
+    // table detection
+    const tableBlocks = detectTableBlocks(lines);
+
+    // terms
+    const termList = preparedTermsRef.current
+      .map((t) => {
+        const rawName = t.raw?.name || t.raw?.rawName || t.originalName || "";
+        const termLower = rawName.toLowerCase().trim() || t.key;
+        return { pterm: t, termLower };
+      })
+      .filter((x) => x.termLower);
+
+    const highlightedOnce = new Set();
+
+    // iterate lines
+    lines.forEach((line, lineIdx) => {
+      const text = line.text;
+      if (headingSkip.has(lineIdx)) return;
+      if (captionSkip.has(lineIdx)) return;
+      if (labelLines.has(lineIdx)) return;
+      if (lineInAnyBlock(lineIdx, tableBlocks)) return;
+      if (SECTION_HEADING_RE.test(text)) return; // numbered section headings
+
+      const lineSpans = line.spans;
+      if (!lineSpans.length) return;
+
+      const concat = lineSpans.map((s) => s.textRaw).join("");
+      const concatLower = concat.toLowerCase();
+
+      const prefix = [];
+      let acc = 0;
+      for (let i = 0; i < lineSpans.length; i++) {
+        prefix.push(acc);
+        acc += lineSpans[i].textRaw.length;
+      }
+
+      const covered = [];
+
+      termList.forEach(({ pterm, termLower }) => {
+        if (highlightedOnce.has(pterm.key)) return;
+
+        let idx = concatLower.indexOf(termLower);
+        let found = -1;
+        while (idx !== -1) {
+          const end = idx + termLower.length;
+          if (isValidWordBoundary(concat, idx, end)) {
+            found = idx;
+            break;
+          }
+          idx = concatLower.indexOf(termLower, idx + 1);
         }
+        if (found === -1) return;
+
+        const endPos = found + termLower.length;
+
+        const overlaps = covered.some(([a, b]) => !(endPos <= a || found >= b));
+        if (overlaps) return;
+
+        createSubstringOverlaysForRange(
+          pageRect,
+          overlayContainer,
+          lineSpans,
+          prefix,
+          found,
+          endPos,
+          pterm
+        );
+
+        covered.push([found, endPos]);
+        highlightedOnce.add(pterm.key);
       });
     });
   }
 
+  function createSubstringOverlaysForRange(
+    pageRect,
+    overlayContainer,
+    lineSpans,
+    prefix,
+    startIdx,
+    endIdx,
+    pterm
+  ) {
+    for (let i = 0; i < lineSpans.length; i++) {
+      const span = lineSpans[i];
+      const spanStart = prefix[i];
+      const spanEnd = spanStart + span.textRaw.length;
+
+      const ovStart = Math.max(startIdx, spanStart);
+      const ovEnd = Math.min(endIdx, spanEnd);
+      if (ovStart >= ovEnd) continue;
+
+      const node = span.el.firstChild;
+      if (!node || node.nodeType !== Node.TEXT_NODE) continue;
+
+      const localStart = ovStart - spanStart;
+      const localEnd = ovEnd - spanStart;
+      if (localStart < 0 || localEnd > node.textContent.length) continue;
+
+      const range = document.createRange();
+      range.setStart(node, localStart);
+      range.setEnd(node, localEnd);
+
+      const rects = range.getClientRects ? [...range.getClientRects()] : [];
+      rects.forEach((r) => {
+        const overlay = document.createElement("div");
+        overlay.className = "term-highlight-overlay";
+        Object.assign(overlay.style, {
+          position: "absolute",
+          left: `${r.left - pageRect.left}px`,
+          top: `${r.top - pageRect.top}px`,
+          width: `${r.width}px`,
+          height: `${r.height}px`,
+          background: "rgba(255,255,0,0.4)",
+          borderRadius: "2px",
+          cursor: "pointer",
+          zIndex: 20,
+          pointerEvents: "auto",
+        });
+
+        overlay.onclick = () => {
+          if (window.onPdfTermClick) window.onPdfTermClick(pterm.raw);
+        };
+
+        overlay.onmouseenter = () => (overlay.style.background = "rgba(255,235,59,0.6)");
+        overlay.onmouseleave = () => (overlay.style.background = "rgba(255,255,0,0.4)");
+
+        overlayContainer.appendChild(overlay);
+      });
+
+      range.detach?.();
+    }
+  }
+
   /* ---------------------------------------------------------
-     SECTION-ID HIGHLIGHTING
+     SECTION ID HIGHLIGHT
   --------------------------------------------------------- */
   function highlightSectionIdsOnPage(pageEl) {
     const textLayer = pageEl.querySelector(".react-pdf__Page__textContent");
     if (!textLayer) return;
 
-    const spans = [...textLayer.querySelectorAll("span")];
-    if (!spans.length) return;
-
-    let overlayContainer = pageEl.querySelector(".overlay-container");
-    if (!overlayContainer) {
-      overlayContainer = document.createElement("div");
-      overlayContainer.className = "overlay-container";
-      Object.assign(overlayContainer.style, {
-        position: "absolute",
-        left: "0",
-        top: "0",
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-        zIndex: 15,
-      });
-      pageEl.appendChild(overlayContainer);
-    }
-
+    const overlayContainer = ensureOverlayContainer(pageEl, 15);
     const pageRect = pageEl.getBoundingClientRect();
+    const spans = [...textLayer.querySelectorAll("span")];
 
     spans.forEach((span) => {
-      const txt = span.textContent.trim();
+      const txt = (span.textContent || "").trim();
       if (!txt) return;
-
-      preparedSectionIdsRef.current.forEach((sectionId) => {
-        if (txt === sectionId) {
+      preparedSectionIdsRef.current.forEach((sid) => {
+        if (txt === sid) {
           const r = span.getBoundingClientRect();
-
           const overlay = document.createElement("div");
           overlay.className = "section-id-highlight";
           Object.assign(overlay.style, {
@@ -832,18 +649,37 @@ export default function PdfViewer({
           });
 
           overlay.onclick = () => {
-            if (window.onSectionIdClick) window.onSectionIdClick(sectionId);
+            if (window.onSectionIdClick) window.onSectionIdClick(sid);
           };
-
-          overlay.onmouseenter = () =>
-            (overlay.style.background = "rgba(255,220,0,0.7)");
-          overlay.onmouseleave = () =>
-            (overlay.style.background = "rgba(255,200,0,0.5)");
+          overlay.onmouseenter = () => (overlay.style.background = "rgba(255,220,0,0.7)");
+          overlay.onmouseleave = () => (overlay.style.background = "rgba(255,200,0,0.5)");
 
           overlayContainer.appendChild(overlay);
         }
       });
     });
+  }
+
+  /* ---------------------------------------------------------
+     UTIL
+  --------------------------------------------------------- */
+  function ensureOverlayContainer(pageEl, zIndex) {
+    let container = pageEl.querySelector(".overlay-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.className = "overlay-container";
+      Object.assign(container.style, {
+        position: "absolute",
+        left: 0,
+        top: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        zIndex,
+      });
+      pageEl.appendChild(container);
+    }
+    return container;
   }
 
   /* ---------------------------------------------------------
@@ -861,12 +697,12 @@ export default function PdfViewer({
         <Document
           file={file}
           onLoadSuccess={onDocumentLoadSuccess}
-          onLoadError={(error) => console.error("PDF load error:", error)}
+          onLoadError={(e) => console.error("PDF load error:", e)}
           loading={<div>Loading PDF...</div>}
         >
           {Array.from({ length: numPages || 0 }, (_, i) => (
             <Page
-              key={`page_${i + 1}`}
+              key={`p_${i + 1}`}
               pageNumber={i + 1}
               width={pageWidth}
               renderTextLayer={true}

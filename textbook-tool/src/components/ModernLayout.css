@@ -1,8 +1,11 @@
+/* ===== MODERNLAYOUT.CSS — FULL UPDATED FILE ===== */
+
 /* ===== GLOBAL CONTAINER ===== */
 .concept-layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh !important; /* allow page to grow on small screens */
+  height: auto !important;
   background: #f8f9fb;
   font-family: "Inter", sans-serif;
 }
@@ -22,8 +25,6 @@
 }
 
 /* ===== MEDIA ENHANCEMENTS ===== */
-
-/* Fade-in animation */
 .enhanced-media-image {
   width: 100%;
   border-radius: 10px;
@@ -102,7 +103,6 @@
 .media-load-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
-  background: linear-gradient(180deg, #3d9bf5, #1d6fc8);
 }
 
 .media-load-btn:active {
@@ -128,33 +128,30 @@
   border-radius: 8px;
 }
 
-/* ===== SPLIT LAYOUT ===== */
+/* Main layout container */
 .concept-main {
   display: flex;
   flex: 1;
   overflow: hidden;
-  padding: 30px 50px;
-  gap: 40px;
+  padding: 20px 0px;
+  gap: 0px;          /* Remove spacing */
 }
 
 /* ===== LEFT PANEL ===== */
 .concept-left {
-  flex: 0.65;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: visible !important; /* prevent double scroll (only inner PDF scroll) */
 }
 
 /* Reading card container */
 .reading-card {
   background: #ffffff;
-  padding: 40px 50px;
+  padding: 24px !important; /* reduced padding for better mobile fit */
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   width: 100%;
-  max-width: 850px;
-
-  /* IMPORTANT: no overflow issues */
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -187,6 +184,87 @@
   align-items: center;
   gap: 6px;
 }
+
+/* small play button for audio next to selected word */
+.play-audio-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(180deg, #ffffff, #f0f5ff);
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  font-size: 13px;
+  color: #0b62a8;
+}
+
+.play-audio-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(25, 118, 210, 0.18);
+}
+
+.play-audio-btn.playing {
+  background: linear-gradient(180deg, #1976d2, #155fa8);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(21, 95, 168, 0.28);
+}
+
+.play-audio-btn.disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+  background: #f3f4f6;
+  color: #9aa3ad;
+}
+
+/* tiny spinner / loading dot for audio */
+.play-audio-btn.play-loading {
+  position: relative;
+  background: linear-gradient(180deg, #fff, #f5f7fb);
+  width: 36px;
+  height: 36px;
+}
+
+.play-audio-btn.play-loading::after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 -6px 0 #1976d2, 4.9px -3.5px 0 #4aa3ff, 4.9px 3.5px 0 #7cc3ff;
+  animation: audio-dot 0.9s linear infinite;
+}
+
+@keyframes audio-dot {
+  0%   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50%  { transform: translate(-50%, -50%) scale(0.6); opacity: 0.6; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* 404 Page Styles (kept minimal) */
+.not-found-container { min-height: 100vh; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); display: flex; align-items: center; justify-content: center; padding: 20px; font-family: "Inter", sans-serif; }
+.not-found-content { text-align: center; background: white; padding: 60px 40px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); max-width: 500px; width: 100%; }
+.not-found-illustration { position: relative; margin-bottom: 30px; }
+.error-code { font-size: 6rem; font-weight: 800; color: #1a202c; opacity: 0.1; line-height: 1; }
+.error-icon { font-size: 4rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.not-found-title { font-size: 2rem; font-weight: 700; color: #1a202c; margin-bottom: 16px; }
+.not-found-description { font-size: 1.1rem; color: #4a5568; line-height: 1.6; margin-bottom: 30px; }
+.not-found-actions { display: flex; gap: 15px; justify-content: center; margin-bottom: 30px; }
+.not-found-actions .primary-btn, .not-found-actions .secondary-btn { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+.not-found-actions .primary-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+.not-found-actions .secondary-btn { background: #f7fafc; color: #4a5568; border: 2px solid #e2e8f0; }
+.not-found-links p { color: #718096; margin-bottom: 15px; }
+.suggested-links { display: flex; gap: 20px; justify-content: center; }
+.suggested-links a { color: #667eea; text-decoration: none; font-weight: 500; transition: color 0.3s ease; }
+.suggested-links a:hover { color: #5a6fd8; text-decoration: underline; }
 
 /* ===== VIEW TOGGLE ===== */
 .view-toggle {
@@ -240,8 +318,28 @@
   white-space: pre-wrap;
 }
 
+.qa-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.qa-card {
+  background: #f8f9fb;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.qa-card p {
+  margin: 0.4rem 0;
+}
+
+/* PDF viewer wrapper — responsive */
 .pdf-viewer-wrapper {
-  height: 70vh !important;
+  height: auto !important;   /* changed from fixed 70vh */
+  max-height: 70vh;
   display: flex;
   flex-direction: column;
 }
@@ -251,6 +349,7 @@
   overflow-y: auto !important;
   overflow-x: hidden !important;
 }
+
 /* Inner scroll area */
 .pdf-viewer-scroll {
   padding: 0 !important;
@@ -265,12 +364,6 @@
   align-items: center;
   width: 100%;
 }
-
-/* .react-pdf__Page {
-  width: 100% !important;
-  display: flex;
-  justify-content: center;
-} */
 
 .react-pdf__Page {
   position: relative;
@@ -302,7 +395,7 @@
   pointer-events: auto;
 }
 
-/* Make the scroll bar always visible */
+/* Make the scrollbar always visible */
 .pdf-viewer-container::-webkit-scrollbar {
   width: 10px;
 }
@@ -312,6 +405,7 @@
   border-radius: 6px;
 }
 
+/* term overlay */
 .term-highlight-overlay {
   background-color: rgba(255, 255, 0, 0.4);
   border-radius: 1px;
@@ -320,12 +414,56 @@
   z-index: 5;
   cursor: pointer;
   transition: all 0.2s ease;
-  transform: translateZ(0); /* Force GPU rendering for better alignment */
+  transform: translateZ(0);
 }
 
 .term-highlight-overlay:hover {
   background-color: rgba(255, 235, 59, 0.6);
   box-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+
+/* Tooltip for sentence hover */
+.sentence-hover-hint {
+  position: relative;
+}
+
+.sentence-hover-hint:hover::after {
+  content: "Drag and select a sentence to analyze it";
+  position: absolute;
+  left: 0;
+  top: -28px;
+  background: #333;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 50;
+  opacity: 1;
+}
+
+.sentence-hover-hint::after {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.pdf-word-tooltip {
+  opacity: 0;
+  animation: fadeInTooltip 0.15s forwards ease-in-out;
+}
+
+@keyframes fadeInTooltip {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.media-video-preview {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  object-fit: contain;
 }
 
 /* Highlight loading */
@@ -355,7 +493,6 @@
 
 /* ===== RIGHT PANEL ===== */
 .concept-right {
-  flex: 0.35;
   display: flex;
   flex-direction: column;
 }
@@ -386,21 +523,6 @@
   box-shadow: 0 2px 6px rgba(25, 118, 210, 0.15);
   margin-left: 6px;
   margin-top: 4px;
-}
-
-.chapter-header {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 18px;
-}
-
-.chapter-name {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 10px;
-  text-transform: capitalize;
 }
 
 /* Concept Map */
@@ -434,6 +556,60 @@
   cursor: zoom-in;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
+
+/* === Zoom Container === */
+.zoom-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+/* Smooth Zoom */
+.zoomable {
+  transition: transform 0.25s ease;
+  transform-origin: center center;
+  cursor: zoom-in;
+}
+
+/* Zoom Buttons */
+.zoom-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 20;
+}
+
+.zoom-btn {
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: all 0.2s ease;
+}
+
+.zoom-btn:hover {
+  background: white;
+  transform: scale(1.05);
+}
+
+/* Fullscreen Button */
+.fullscreen-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 20;
+  font-size: 14px;
+}
+
 
 .media-section,
 .structure-section {
@@ -518,6 +694,345 @@
   border-radius: 6px;
 }
 
+/* ===== IMAGE / MEDIA: RESPONSIVE FIXES (NEW) ===== */
+
+/* Responsive image preview container (replaces fixed px) */
+.media-image-wrapper {
+  width: 100%;
+  max-width: 350px;    /* keeps desktop size */
+  height: auto;
+  aspect-ratio: 1 / 1; /* keeps square aspect */
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f5f5f5;
+  position: relative;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* Slightly larger preview variant used earlier */
+.media-preview-wrapper {
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Image inside preview: responsive and zoomable via transform var */
+.media-image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(var(--zoom, 1));
+  transition: transform 0.25s ease;
+  cursor: zoom-in;
+}
+
+/* Always-visible media controls (keeps them from disappearing on small screens) */
+.media-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 5000;
+}
+
+.media-control-btn {
+  background: rgba(255,255,255,0.92);
+  border: 1px solid #d1d1d1;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  font-weight: 700;
+}
+
+.media-control-btn:hover {
+  background: white;
+  transform: scale(1.05);
+}
+
+/* Image popup overlay & content */
+.image-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000 !important;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.image-popup-content {
+  position: relative;
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  z-index: 20001 !important;
+}
+
+/* Ensure close button is visible */
+.image-popup-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #333;
+  transition: all 0.2s ease;
+  z-index: 20002;
+}
+
+.image-popup-close:hover {
+  background: #ff5252;
+  color: #fff;
+}
+
+/* Zoomable wrapper for popup — touch-friendly */
+.zoomable-wrapper {
+  width: 100%;
+  height: 70vh;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+  touch-action: none; /* Enables pinch gestures */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.zoomable-popup-img {
+  transition: transform 0.1s ease-out;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* --- Fixed-size image preview (deprecated) --- kept for compatibility but responsive now --- */
+.image-preview-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+}
+
+.image-preview-fixed {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+  cursor: zoom-in;
+}
+
+/* --- Media image wrapper variant --- */
+.media-image-wrapper {
+  z-index: 10;
+}
+
+/* --- Small top-right action buttons --- */
+.image-action-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: white;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #dcdcdc;
+  font-size: 13px;
+  cursor: pointer;
+  margin-left: 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.image-action-btn:not(:first-child) {
+  right: auto;
+  left: 8px;
+  margin-left: 0;
+  margin-right: 5px;
+}
+
+.image-action-btn:hover {
+  background: #f0f0f0;
+}
+
+/* --- Fixed Preview Box --- */
+.media-image-wrapper {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  background: #f5f5f5;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* --- Image inside preview --- */
+.media-image-preview {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+  cursor: zoom-in;
+}
+
+/* --- Always-visible buttons --- */
+.media-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 5000;
+}
+
+.media-control-btn {
+  background: rgba(255,255,255,0.92);
+  border: 1px solid #d1d1d1;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  font-weight: 700;
+}
+
+.media-control-btn:hover {
+  background: white;
+  transform: scale(1.05);
+}
+
+/* Summary Hint Box */
+.summary-hint-box {
+  background: #e8f3ff;
+  padding: 14px 18px;
+  border-radius: 8px;
+  border-left: 4px solid #1976d2;
+  font-weight: 500;
+  color: #083b73;
+  margin-bottom: 18px;
+  position: relative;
+  cursor: pointer;
+  animation: fadeSlideIn 0.35s ease-out;
+}
+
+/* Arrow pointing toward PDF panel (left side) */
+.summary-hint-box::after {
+  content: "⬅ Select section IDs in the PDF";
+  position: absolute;
+  top: 50%;
+  right: -220px;
+  transform: translateY(-50%);
+  color: #1976d2;
+  font-weight: 600;
+  opacity: 0;
+  animation: hintArrowFade 0.7s ease-out 0.4s forwards;
+}
+
+/* entry animation */
+@keyframes fadeSlideIn {
+  0% { opacity: 0; transform: translateY(-6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* arrow fade in */
+@keyframes hintArrowFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ===== DRAG DIVIDER FIXED ===== */
+.drag-divider {
+  width: 10px;
+  background: #d3d7df;
+  cursor: col-resize;
+  position: relative;
+  z-index: 9999;       /* Always on top */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drag-divider:hover,
+.drag-divider.active {
+  background: #bfc4ce;
+}
+
+.drag-grip {
+  width: 4px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.drag-grip span {
+  width: 4px;
+  height: 4px;
+  background: #6b7280;
+  border-radius: 2px;
+}
+
+body.dragging {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+/* PDF sentence tooltip */
+.pdf-sentence-tooltip {
+  position: fixed;
+  background: #333;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 9999;
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .concept-main {
@@ -525,15 +1040,20 @@
     padding: 20px;
   }
 
+  /* Disable drag divider and force stacking */
+  .drag-divider {
+    display: none !important;
+  }
+
   .concept-left,
   .concept-right {
-    flex: none;
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .reading-card,
   .analysis-card {
-    padding: 25px;
+    padding: 20px;
   }
 
   .conceptmap-canvas {
@@ -557,16 +1077,121 @@
   .reading-card {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    overflow: hidden;
+    height: auto;
+    overflow: visible;
+    padding: 16px !important;
   }
 
   .analysis-card {
     background: #ffffff;
     border-radius: 12px;
-    padding: 0;
+    padding: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    height: 90%;
-    overflow: hidden;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* image preview becomes full width on very small screens */
+  .media-image-wrapper,
+  .media-preview-wrapper,
+  .media-image-preview,
+  .image-preview-wrapper {
+    max-width: 100%;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+  }
+
+  /* Popup adjustments */
+  .image-popup-content {
+    max-width: 95%;
+    max-height: 90%;
+    padding: 10px;
+  }
+
+  .zoomable-wrapper {
+    height: 60vh;
+  }
+
+  .image-popup-close {
+    top: 6px;
+    right: 6px;
+    padding: 4px 8px;
+    font-size: 18px;
+  }
+
+  /* Smaller controls for mobile */
+  .media-control-btn,
+  .zoom-btn {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
+
+/* Floating back button */
+.floating-back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 45px;
+  height: 45px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3000;
+  transition: all 0.2s ease;
+  border: 1px solid #e7e7e7;
+}
+
+.floating-back-btn:hover {
+  transform: scale(1.08);
+  background: #f7f7f7;
+}
+
+.floating-back-btn svg {
+  stroke: #333;
+}
+
+/* Summary Hint small arrow fix on narrow screens */
+@media (max-width: 900px) {
+  .summary-hint-box::after { display: none; }
+}
+
+
+/* === Popup Zoom Controls === */
+.popup-zoom-controls {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 99999;
+}
+
+.popup-zoom-btn {
+  background: rgba(255,255,255,0.95);
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  transition: all 0.2s ease;
+}
+
+.popup-zoom-btn:hover {
+  background: white;
+  transform: scale(1.05);
+}
+
+@media (max-width: 600px) {
+  .popup-zoom-btn {
+    padding: 6px 10px;
+    font-size: 14px;
   }
 }
