@@ -106,13 +106,6 @@ export default function HomePage({ onUpload }) {
 
             {/* ===== CTA BUTTONS ===== */}
             <div className="cta-section">
-              <button
-                className="upload-btn primary-btn"
-                onClick={() => navigate("/chapters")}
-              >
-                Browse Chapters
-              </button>
-
               <button className="secondary-btn" onClick={handleLearnMore}>
                 Learn More
               </button>

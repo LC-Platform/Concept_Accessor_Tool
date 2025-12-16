@@ -417,15 +417,19 @@ export default function AnalysisPanel({
     }
   };
 
-  /** Load Concept Map (taxonomy) */
   const loadConceptMap = async () => {
+    if (!selectedTerm || !chapterId) return;
+
     try {
       setIsLoading(true);
 
-      const url = `${BASE_URL}/taxonomy-image/${selectedTerm.domain_id}`;
+      const url = `${BASE_URL}/taxonomy-image/chapter_id/${chapterId}/domain_id/${selectedTerm.domain_id}`;
       const res = await fetch(url);
 
-      if (!res.ok) return setTaxonomyImg(null);
+      if (!res.ok) {
+        setTaxonomyImg(null);
+        return;
+      }
 
       setTaxonomyImg(url);
     } catch (err) {
@@ -435,6 +439,7 @@ export default function AnalysisPanel({
       setIsLoading(false);
     }
   };
+
 
   
   const loadVideo = async () => {

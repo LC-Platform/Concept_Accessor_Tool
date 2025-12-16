@@ -11,6 +11,7 @@ export default function SignupPage() {
     username: "",
     name: "",
     email: "",
+      standard: "",
     password: "",
     confirm_password: ""   // REQUIRED BY BACKEND
   });
@@ -27,35 +28,39 @@ export default function SignupPage() {
     e.preventDefault();
     setError("");
 
-    console.log("🔥 SIGNUP FORM SUBMITTED");
-    console.log("📦 REQUEST BODY:", form);
+    if (form.password !== form.confirm_password) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    const payload = {
+      username: form.username,
+      name: form.name,
+      email: form.email,
+      standard: form.standard,
+      password_hash: form.password   // backend hashes it
+    };
 
     try {
-      console.log("🚀 Sending Signup Request...");
       const res = await fetch(`${BASE_URL}/signup/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
 
-      console.log("📩 RAW RESPONSE:", res);
       const data = await res.json();
-      console.log("📨 API RESPONSE JSON:", data);
 
       if (!res.ok) {
-        console.log("❌ SIGNUP FAILED");
         setError(data?.message || "Signup failed");
         return;
       }
 
-      console.log("✅ SIGNUP SUCCESS — Redirecting to Login...");
       navigate("/login");
-
     } catch (err) {
-      console.log("💥 NETWORK ERROR:", err);
       setError("Server error");
     }
   };
+
 
   return (
     <div className="auth-container">
@@ -95,6 +100,15 @@ export default function SignupPage() {
             autoComplete="email"
             onChange={handleChange}
             required
+          />
+
+          <label htmlFor="standard">Standard</label>
+          <input
+          id="standard"
+          name="standard"
+          placeholder="e.g. 11 or 12"
+          onChange={handleChange}
+          required
           />
 
           {/* PASSWORD */}
