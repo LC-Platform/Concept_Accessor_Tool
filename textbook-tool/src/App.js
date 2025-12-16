@@ -1,5 +1,5 @@
 // App.js (with enhanced 404 page)
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import ConceptLayout from "./components/ConceptLayout";
@@ -7,36 +7,32 @@ import AboutPage from "./components/AboutPage";
 import ContactPage from "./components/ContactPage";
 import HowItWorksPage from "./components/HowItWorksPage";
 import LegalPage from "./components/LegalPage";
-import "./components/ModernLayout.css";
+import "./components/styles/ModernLayout.css";
 import LoginPage from "./components/LoginPage";
 import SignupPage from "./components/SignupPage";
 import ForgotPassword from "./components/ForgotPassword";
 import VerifyResetCode from "./components/VerifyResetCode";
 import ResetPassword from "./components/ResetPassword";
-
+import ChapterListPage from "./components/ChapterList";
 
 function App() {
-  const [uploadedFile, setUploadedFile] = useState(null);
-
-  const handleUpload = (file) => {
-    setUploadedFile(file);
-  };
+ 
 
   return (
     <Router>
       <Routes>
         {/* Main Pages */}
-        <Route path="/" element={<HomePage onUpload={handleUpload} />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/chapters" element={<ChapterListPage />} />
+        <Route path="/analyze/:chapterId" element={<ConceptLayout />} />
+
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify-reset-code" element={<VerifyResetCode />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        <Route
-          path="/analyze"
-          element={<ConceptLayout uploadedFile={uploadedFile} />}
-        />
+     
         
         {/* Informational Pages */}
         <Route path="/about" element={<AboutPage />} />

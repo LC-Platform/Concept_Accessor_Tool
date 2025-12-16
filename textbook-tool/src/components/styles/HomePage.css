@@ -75,6 +75,50 @@
   cursor: pointer;
 }
 
+
+/* ===== LINK-STYLE BUTTON (Header + Footer) ===== */
+.nav-link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+
+  color: #1a1a1a;
+  font-size: 1rem;
+  font-weight: 500;
+
+  cursor: pointer;
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+/* underline animation */
+.nav-link-btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transition: width 0.3s ease;
+}
+
+.nav-link-btn:hover {
+  color: #667eea;
+}
+
+.nav-link-btn:hover::after {
+  width: 100%;
+}
+
+/* Remove ugly focus outline but keep accessibility */
+.nav-link-btn:focus {
+  outline: none;
+}
+
+
 .welcome-text {
   font-size: 1rem;
   font-weight: 500;
@@ -267,6 +311,7 @@
   font-size: 2.8rem;
   font-weight: 700;
   background: var(--dark-gradient);
+  background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
 }

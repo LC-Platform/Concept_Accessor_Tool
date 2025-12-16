@@ -4,7 +4,8 @@ import { ArrowLeft } from "lucide-react";
 import PdfViewer from "./PdfViewer";
 import ReadingPanel from "./ReadingPanel";
 import AnalysisPanel from "./AnalysisPanel";
-import "./ModernLayout.css";
+import { useParams } from "react-router-dom";
+import "../components/styles/ModernLayout.css";
 
 const BASE_URL = "http://10.2.8.12:8500";
 
@@ -34,9 +35,7 @@ const snapToNearest = (valuePct, presets = [30, 50, 70]) => {
   return closest;
 };
 
-export default function ConceptLayout({ uploadedFile }) {
-  const [chapterId, setChapterId] = useState(null);
-  const [chapterText, setChapterText] = useState("");
+export default function ConceptLayout() {
   const [terms, setTerms] = useState([]);
   const [selectedTerm, setSelectedTerm] = useState(null);
   const [selectedSentence, setSelectedSentence] = useState(null);
@@ -49,6 +48,8 @@ export default function ConceptLayout({ uploadedFile }) {
   const [selectedWordText, setSelectedWordText] = useState("");
   const [qaPairs, setQaPairs] = useState([]);
   const navigate = useNavigate();
+  const { chapterId } = useParams();
+
 
   /* ========== RESIZE STATE ========== */
   const [leftWidth, setLeftWidth] = useState("50%");
@@ -106,11 +107,7 @@ export default function ConceptLayout({ uploadedFile }) {
     };
   }, [isDragging, leftWidth]);
 
-  /* ========== ORIGINAL EFFECTS ========== */
-  useEffect(() => {
-    if (uploadedFile) handleUpload(uploadedFile);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uploadedFile]);
+ 
 
   useEffect(() => {
     window.onPdfTermClick = (term) => {
@@ -136,39 +133,32 @@ export default function ConceptLayout({ uploadedFile }) {
     }
   }, [selectedView]);
 
-  /** Upload and process PDF */
-  const handleUpload = async (file) => {
-    try {
-      const fileUrl = URL.createObjectURL(file);
-      setPdfUrl(fileUrl);
+  useEffect(() => {
+    if (!chapterId) return;
 
-      const name = file.name.replace(".pdf", "");
-      const parts = name.split("_");
-      const title = parts[parts.length - 1];
-      setChapterTitle(title.charAt(0).toUpperCase() + title.slice(1));
+    const loadChapter = async () => {
+      try {
+        // 1️⃣ Fetch chapter metadata
+        const res = await fetch(`${BASE_URL}/chapters/${chapterId}`);
+        if (!res.ok) throw new Error("Failed to fetch chapter");
 
-      const formData = new FormData();
-      formData.append("pdf", file);
+        const data = await res.json();
+        setChapterTitle(data.chapter_name || "Untitled Chapter");
+        setSectionIds(data.section_ids || []);
+        setPdfUrl(`${BASE_URL}${data.pdf_url}`);
 
-      const res = await fetch(`${BASE_URL}/read-pdf/`, {
-        method: "POST",
-        body: formData,
-      });
+        // 3️⃣ Load dependent data (same APIs as before)
+        await fetchTerms(chapterId);
+        await fetchSummary(chapterId);
+        await fetchQAPairs(chapterId);
 
-      if (!res.ok) throw new Error("Upload failed");
-      const data = await res.json();
-      setChapterId(data.chapter_id);
-      if (data.text) setChapterText(data.text);
+      } catch (err) {
+        console.error("❌ Error loading chapter:", err);
+      }
+    };
 
-      setSectionIds(data.section_ids || []);
-
-      await fetchTerms(data.chapter_id);
-      await fetchSummary(data.chapter_id);
-      await fetchQAPairs(data.chapter_id);
-    } catch (err) {
-      console.error("❌ Error uploading file:", err);
-    }
-  };
+    loadChapter();
+  }, [chapterId]);
 
   const fetchQAPairs = async (chapterId) => {
     try {
@@ -185,11 +175,14 @@ export default function ConceptLayout({ uploadedFile }) {
   /** Fetch extracted domain terms and normalize them for robust matching */
   const fetchTerms = async (chapterId) => {
     try {
-      const res = await fetch(`${BASE_URL}/extract-domain-terms/`, {
-        method: "POST",
+      const res = await fetch(
+      `${BASE_URL}/extract-domain-terms/?chapter_id=${chapterId}`,
+      {
+        method: "GET",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chapter_id: chapterId }),
-      });
+      }
+      );
+
       const data = await res.json();
 
       const processed = (data.terms || []).map((t) => {
@@ -217,11 +210,10 @@ export default function ConceptLayout({ uploadedFile }) {
   /** Fetch full chapter summary (kept for other uses) */
   const fetchSummary = async (chapterId) => {
     try {
-      const res = await fetch(`${BASE_URL}/full-summary/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chapter_id: chapterId }),
+      const res = await fetch(`${BASE_URL}/full-summary/?chapter_id=${chapterId}`, {
+      method: "GET",
       });
+
       const data = await res.json();
       setSummary(data.full_summary || "");
     } catch (err) {
@@ -231,7 +223,7 @@ export default function ConceptLayout({ uploadedFile }) {
 
   return (
     <div className="concept-layout">
-      <div className="floating-back-btn" onClick={() => navigate("/")}>
+      <div className="floating-back-btn" onClick={() => navigate("/chapters")}>
         <ArrowLeft size={22} />
       </div>
 
@@ -275,7 +267,7 @@ export default function ConceptLayout({ uploadedFile }) {
             </div>
 
             <ReadingPanel
-              text={chapterText}
+              text=""
               terms={terms}
               selectedView={selectedView}
               onTermClick={setSelectedTerm}

@@ -210,7 +210,7 @@ export default function AnalysisPanel({
       setIsLoading(true);
 
       const res = await fetch(`${BASE_URL}/paraphrase/`, {
-        method: "POST",
+        method: "GET",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: selectedSentence }),
       });
@@ -285,11 +285,10 @@ export default function AnalysisPanel({
   const fetchSingleSection = async (sectionId) => {
     try {
       setIsLoading(true);
-      const res = await fetch(`${BASE_URL}/section-summary/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chapter_id: chapterId, section_id: sectionId }),
-      });
+      const res = await fetch(
+      `${BASE_URL}/section-summary/?chapter_id=${chapterId}&section_id=${sectionId}`,
+      { method: "GET" }
+      );
 
       const data = await res.json();
       setSectionSummary(data.section_summary || "No summary available.");
@@ -307,29 +306,28 @@ export default function AnalysisPanel({
     try {
       setIsLoading(true);
 
-      const res = await fetch(`${BASE_URL}/translate/definition/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chapter_id: chapterId,
-          domain_id: selectedTerm.domain_id,
-          target_language: lang,
-        }),
-      });
+      const url =
+        `${BASE_URL}/translate/definition/` +
+        `?chapter_id=${chapterId}` +
+        `&domain_id=${selectedTerm.domain_id}` +
+        `&target_language=${lang}`;
 
+      const res = await fetch(url, { method: "GET" });
       const data = await res.json();
 
-      if (typeof data.translated_definition === "string")
-        setTranslatedDef(data.translated_definition);
-      else if (data.translated_definition?.data)
-        setTranslatedDef(data.translated_definition.data);
-      else setTranslatedDef("Translation unavailable.");
+      const finalValue =
+        data.translated_definition?.data ||
+        data.translated_definition ||
+        "Translation unavailable.";
+
+      setTranslatedDef(finalValue);
     } catch (err) {
       console.error("Translate definition error:", err);
     } finally {
       setIsLoading(false);
     }
   };
+
 
   /** Translate Sentence */
   const translateSentence = async (lang) => {

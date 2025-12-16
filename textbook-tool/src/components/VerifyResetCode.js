@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./Auth.css";
+import "../components/styles/Auth.css";
 
 const BASE_URL = "http://10.2.8.12:8500";
 

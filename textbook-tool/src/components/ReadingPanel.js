@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./ModernLayout.css";
+import "../components/styles/ModernLayout.css";
 
 export default function ReadingPanel({
   text,

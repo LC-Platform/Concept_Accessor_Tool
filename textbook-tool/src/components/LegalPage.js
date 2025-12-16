@@ -1,7 +1,7 @@
 // LegalPage.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./LegalPage.css";
+import "../components/styles/LegalPage.css";
 import iiithLogo from "../assets/iiith_logo.png";
 
 export default function LegalPage() {

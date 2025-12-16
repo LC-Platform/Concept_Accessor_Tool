@@ -1,7 +1,7 @@
 // HomePage.js
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./HomePage.css";
+import "../components/styles/HomePage.css";
 import heroImage from "../assets/download.jpeg";
 import iiithLogo from "../assets/iiith_logo.png";
 
@@ -106,27 +106,18 @@ export default function HomePage({ onUpload }) {
 
             {/* ===== CTA BUTTONS ===== */}
             <div className="cta-section">
-              {/* Upload button only when logged in */}
-              {isLoggedIn ? (
-                <button
-                  className="upload-btn primary-btn"
-                  onClick={() => fileInputRef.current.click()}
-                >
-                  Upload PDF
-                </button>
-              ) : (
-                <button
-                  className="upload-btn primary-btn"
-                  onClick={() => navigate("/login")}
-                >
-                  Login to Upload PDF
-                </button>
-              )}
+              <button
+                className="upload-btn primary-btn"
+                onClick={() => navigate("/chapters")}
+              >
+                Browse Chapters
+              </button>
 
               <button className="secondary-btn" onClick={handleLearnMore}>
                 Learn More
               </button>
             </div>
+
 
             {/* Supported text */}
             <div className="supported-text">
