@@ -422,6 +422,21 @@
   box-shadow: 0 0 3px rgba(0,0,0,0.3);
 }
 
+/* Muted look for terms that have no extra data (definition, image, video, concept map) */
+.term-highlight-overlay.no-data {
+  background-color: rgba(160, 160, 160, 0.28);
+}
+.term-highlight-overlay.no-data:hover {
+  background-color: rgba(150, 150, 150, 0.36);
+  box-shadow: none;
+  filter: grayscale(10%);
+}
+
+/* Optional explicit state for terms with resources (keeps existing behavior) */
+.term-highlight-overlay.has-data {
+  background-color: rgba(255, 255, 0, 0.4);
+}
+
 /* Tooltip for sentence hover */
 .sentence-hover-hint {
   position: relative;

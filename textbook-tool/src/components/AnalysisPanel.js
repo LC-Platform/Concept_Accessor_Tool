@@ -423,7 +423,7 @@ export default function AnalysisPanel({
     try {
       setIsLoading(true);
 
-      const url = `${BASE_URL}/taxonomy-image/chapter_id/${chapterId}/domain_id/${selectedTerm.domain_id}`;
+      const url = `${BASE_URL}/taxonomy-image/${chapterId}/${selectedTerm.domain_id}`;
       const res = await fetch(url);
 
       if (!res.ok) {
@@ -507,8 +507,8 @@ export default function AnalysisPanel({
               </div>
             )}
 
-            {/* PARAPHRASE BUTTON */}
-            <button
+     
+            {/* <button
               style={{
                 marginTop: "12px",
                 padding: "10px 14px",
@@ -523,10 +523,10 @@ export default function AnalysisPanel({
               disabled={isLoading}
             >
               {isLoading ? "⏳ Paraphrasing..." : "✨ Paraphrase Sentence"}
-            </button>
+            </button> */}
 
             {/* SHOW PARAPHRASED SENTENCE */}
-            {paraphrasedSentence && (
+            {/* {paraphrasedSentence && (
               <div
                 className="translated-text-box"
                 style={{ marginTop: "15px" }}
@@ -534,7 +534,7 @@ export default function AnalysisPanel({
                 <h4>Paraphrased Sentence:</h4>
                 <p>{paraphrasedSentence}</p>
               </div>
-            )}
+            )} */}
           </>
         )}
       </div>

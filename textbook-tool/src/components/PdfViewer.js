@@ -588,26 +588,49 @@ export default function PdfViewer({
       const rects = range.getClientRects ? [...range.getClientRects()] : [];
       rects.forEach((r) => {
         const overlay = document.createElement("div");
-        overlay.className = "term-highlight-overlay";
+
+        // Detect whether this term has any extra resources (definition, image, video, concept map, structure, audio)
+        const raw = pterm.raw || {};
+        const hasDefinition = raw.definition && String(raw.definition).trim().length > 0;
+        const hasLabelledImage = raw.labelled_img || raw.labelled_image || raw.labelledImage || raw.image || raw.images;
+        const hasVideo = raw.video || raw.video_url || raw.process_video || raw.process_video_url;
+        const hasTaxonomy = raw.taxonomy_image || raw.taxonomyImg || raw.taxonomy || raw.taxonomy_image_url;
+        const hasStructure = !!raw.word_structure;
+        const hasAudio = raw.audio_binary || raw.audio_url || raw.audio;
+        const hasExtra = !!(hasDefinition || hasLabelledImage || hasVideo || hasTaxonomy || hasStructure || hasAudio);
+
+        overlay.className = "term-highlight-overlay" + (hasExtra ? " has-data" : " no-data");
+
         Object.assign(overlay.style, {
           position: "absolute",
           left: `${r.left - pageRect.left}px`,
           top: `${r.top - pageRect.top}px`,
           width: `${r.width}px`,
           height: `${r.height}px`,
-          background: "rgba(255,255,0,0.4)",
           borderRadius: "2px",
           cursor: "pointer",
           zIndex: 20,
           pointerEvents: "auto",
+          background: hasExtra ? "rgba(255,255,0,0.4)" : "rgba(160,160,160,0.28)",
         });
+
+        const available = [];
+        if (hasDefinition) available.push("definition");
+        if (hasLabelledImage) available.push("image");
+        if (hasVideo) available.push("video");
+        if (hasTaxonomy) available.push("concept map");
+        if (hasStructure) available.push("structure");
+        if (hasAudio) available.push("audio");
+
+        overlay.title = available.length ? `Available: ${available.join(', ')}` : 'No definition/image/video/concept map available';
+        overlay.setAttribute('data-available', available.length ? available.join(',') : 'none');
 
         overlay.onclick = () => {
           if (window.onPdfTermClick) window.onPdfTermClick(pterm.raw);
         };
 
-        overlay.onmouseenter = () => (overlay.style.background = "rgba(255,235,59,0.6)");
-        overlay.onmouseleave = () => (overlay.style.background = "rgba(255,255,0,0.4)");
+        overlay.onmouseenter = () => (overlay.style.background = hasExtra ? "rgba(255,235,59,0.6)" : "rgba(150,150,150,0.36)");
+        overlay.onmouseleave = () => (overlay.style.background = hasExtra ? "rgba(255,255,0,0.4)" : "rgba(160,160,160,0.28)");
 
         overlayContainer.appendChild(overlay);
       });
