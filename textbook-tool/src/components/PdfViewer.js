@@ -151,8 +151,11 @@ const FIG_TABLE_LABEL_RE = /^(figure|fig\.?|table)\s*\d+(\.\d+)?/i;
 function looksLikeHeading(line) {
   if (!line || !line.text) return false;
   const t = line.text.trim();
+  // All-caps headings are very likely headings
   if (t.length > 3 && t === t.toUpperCase()) return true;
-  if (line.fontSizeAvg > 22) return true;
+  // Treat moderately large fonts and semibold weight as headings to avoid false highlights
+  if ((line.fontSizeAvg || 0) >= 16) return true;
+  if ((line.fontWeight || 0) >= 600) return true;
   return false;
 }
 function looksLikeFigureOrTableLabel(line) {
@@ -181,9 +184,13 @@ export default function PdfViewer({
   const retryRef = useRef(0);
   const preparedTermsRef = useRef([]);
   const preparedSectionIdsRef = useRef([]);
+  // Cache for server-verified media availability per domain_id
+  const mediaAvailabilityRef = useRef({});
   const resizeDebounce = useRef(null);
   const dragPauseTimer = useRef(null);
   const dragWasActiveRef = useRef(false);
+  // Backend base URL (match AnalysisPanel)
+  const BASE_URL = "http://10.2.8.12:8500";
 
   /* Prepare terms */
   useEffect(() => {
@@ -296,8 +303,25 @@ export default function PdfViewer({
     ".term-highlight-overlay, .section-id-highlight"
   );
 
+  // Remove term overlays entirely when entering Summary mode to avoid visual noise
+  if (selectedView === 'Summary') {
+    document.querySelectorAll('.term-highlight-overlay').forEach((e) => e.remove());
+  }
+
   overlays.forEach((ov) => {
-    ov.style.pointerEvents = selectedView === "Sentence" ? "none" : "auto";
+    if (ov.classList.contains('term-highlight-overlay')) {
+      // Only allow interaction and visibility when in Word mode
+      ov.style.pointerEvents = selectedView === 'Word' ? 'auto' : 'none';
+      if (selectedView === 'Word') ov.style.display = '';
+      else ov.style.display = 'none';
+    } else if (ov.classList.contains('section-id-highlight')) {
+      ov.style.pointerEvents = selectedView === 'Summary' ? 'auto' : 'none';
+      // Only show section-id highlights in Summary
+      if (selectedView === 'Summary') ov.style.display = '';
+      else ov.style.display = 'none';
+    } else {
+      ov.style.pointerEvents = 'none';
+    }
   });
 }, [selectedView]);
 
@@ -373,6 +397,7 @@ export default function PdfViewer({
      Scheduler (drag-aware)
   --------------------------------------------------------- */
   function scheduleHighlight(delay = 400) {
+    // Run highlights in Word and Summary (section ids)
     if (selectedView !== "Word" && selectedView !== "Summary") return;
 
     // Don’t schedule while user is dragging the divider
@@ -405,7 +430,7 @@ export default function PdfViewer({
     clearOverlays();
     setIsHighlighting(true);
     try {
-      if (selectedView === "Word") pages.forEach(highlightTermsOnPage);
+        if (selectedView === "Word") pages.forEach(highlightTermsOnPage);
       if (selectedView === "Summary") pages.forEach(highlightSectionIdsOnPage);
     } finally {
       setIsHighlighting(false);
@@ -485,6 +510,38 @@ export default function PdfViewer({
     // table detection
     const tableBlocks = detectTableBlocks(lines);
 
+    // Heuristic: detect single-line table-like rows (e.g., table header rows or small tabular lines)
+    // and skip highlighting on those lines to avoid noisy highlights inside tables
+    const singleLineTable = new Set();
+    lines.forEach((ln, i) => {
+      const cols = clusterColumns(ln, 8);
+      const avgSpanWidth = ln.spans.reduce((a, s) => a + (s.rect?.width || 0), 0) / Math.max(1, ln.spans.length);
+      // If there are multiple column clusters or very narrow columns, treat as table row
+      if (cols.length >= 3 && (ln.fontSizeAvg || 0) <= 16) singleLineTable.add(i);
+      else if (ln.spans.length >= 3 && avgSpanWidth < (pageRect.width || 800) / 6 && (ln.fontSizeAvg || 0) <= 16) singleLineTable.add(i);
+    });
+
+    // Margin/side-heading heuristic: compute median left of spans and skip short lines that sit in page margins
+    const marginSkip = new Set();
+    try {
+      const allLefts = spans.map((s) => s.rect.left).sort((a, b) => a - b);
+      const medianLeft = allLefts.length ? allLefts[Math.floor(allLefts.length / 2)] : 0;
+      const pageW = pageRect.width || 800;
+      lines.forEach((ln, i) => {
+        const avgLeft = ln.spans.reduce((a, s) => a + (s.rect.left || 0), 0) / Math.max(1, ln.spans.length);
+        const txtLen = (ln.text || "").trim().length;
+        // short lines in far-left or far-right margin -> likely side heading/label
+        if (txtLen > 0 && txtLen < 40 && (avgLeft < Math.max(10, medianLeft - 60) || avgLeft > Math.min(pageW - 40, medianLeft + 200))) {
+          marginSkip.add(i);
+        }
+        // also if very short and entirely near right edge
+        if (txtLen > 0 && txtLen < 20 && avgLeft > pageW - 80) marginSkip.add(i);
+      });
+    } catch (e) {
+      // fall back silently if geometry unavailable
+      console.warn("Margin heuristic failed:", e);
+    }
+
     // terms
     const termList = preparedTermsRef.current
       .map((t) => {
@@ -503,6 +560,8 @@ export default function PdfViewer({
       if (captionSkip.has(lineIdx)) return;
       if (labelLines.has(lineIdx)) return;
       if (lineInAnyBlock(lineIdx, tableBlocks)) return;
+      if (singleLineTable.has(lineIdx)) return; // skip suspected single-line table rows
+      if (marginSkip.has(lineIdx)) return; // skip margin/side headings
       if (SECTION_HEADING_RE.test(text)) return; // numbered section headings
 
       const lineSpans = line.spans;
@@ -591,12 +650,67 @@ export default function PdfViewer({
 
         // Detect whether this term has any extra resources (definition, image, video, concept map, structure, audio)
         const raw = pterm.raw || {};
-        const hasDefinition = raw.definition && String(raw.definition).trim().length > 0;
-        const hasLabelledImage = raw.labelled_img || raw.labelled_image || raw.labelledImage || raw.image || raw.images;
-        const hasVideo = raw.video || raw.video_url || raw.process_video || raw.process_video_url;
-        const hasTaxonomy = raw.taxonomy_image || raw.taxonomyImg || raw.taxonomy || raw.taxonomy_image_url;
-        const hasStructure = !!raw.word_structure;
-        const hasAudio = raw.audio_binary || raw.audio_url || raw.audio;
+
+        // Helper to determine if a string-like field contains useful information
+        const isMeaningfulString = (v) => {
+          if (v === null || v === undefined) return false;
+          const s = String(v).trim();
+          if (!s) return false;
+          const lower = s.toLowerCase();
+          const blacklist = [
+            "definition not found",
+            "not found",
+            "no definition",
+            "no definition available",
+            "unable to find",
+            "not available",
+            "none",
+            "n/a",
+            "—",
+            "-",
+            "no summary available",
+            "no summary",
+            "image not found",
+            "no image",
+            "video not available",
+            "placeholder",
+          ];
+          for (const b of blacklist) if (lower.includes(b)) return false;
+          return true;
+        };
+
+        // Heuristic to detect whether a value likely points to a media resource
+        const isLikelyMedia = (v) => {
+          if (v === null || v === undefined) return false;
+          if (Array.isArray(v)) return v.some(isLikelyMedia);
+          if (!isMeaningfulString(v)) return false;
+          const s = String(v).trim().toLowerCase();
+
+          // Data URIs
+          if (s.startsWith('data:image') || s.startsWith('data:video') || s.startsWith('data:audio')) return true;
+
+          // Common URL patterns
+          if (s.startsWith('http://') || s.startsWith('https://') || s.startsWith('//') || s.startsWith('/')) return true;
+
+          // File-like strings with known extensions
+          if (/(\.(png|jpg|jpeg|gif|svg|webp|bmp|tiff))(\?.*)?$/.test(s)) return true;
+          if (/(\.(mp4|webm|ogg|mov|avi|mkv))(\?.*)?$/.test(s)) return true;
+          if (/(\.(mp3|wav|ogg|m4a|flac))(\?.*)?$/.test(s)) return true;
+
+          // Contains base64 marker
+          if (s.includes('base64,')) return true;
+
+          return false;
+        };
+
+        const hasDefinition = isMeaningfulString(raw.definition);
+        // Only count as available if explicitly in term object (from API response)
+        // Check multiple possible field name variants for each resource type
+        const hasLabelledImage = (Array.isArray(raw.images) && raw.images.some(isLikelyMedia)) || isLikelyMedia(raw.labelled_img) || isLikelyMedia(raw.labelled_image) || isLikelyMedia(raw.labelledImage) || isLikelyMedia(raw.image) || isLikelyMedia(raw.image_url) || isLikelyMedia(raw.imageUrl);
+        const hasVideo = isLikelyMedia(raw.video) || isLikelyMedia(raw.video_url) || isLikelyMedia(raw.videoUrl) || isLikelyMedia(raw.process_video) || isLikelyMedia(raw.processVideo) || isLikelyMedia(raw.process_video_url) || isLikelyMedia(raw.processVideoUrl);
+        const hasTaxonomy = isLikelyMedia(raw.taxonomy_image) || isLikelyMedia(raw.taxonomyImage) || isLikelyMedia(raw.taxonomyImg) || isLikelyMedia(raw.taxonomy) || isLikelyMedia(raw.taxonomy_image_url) || isLikelyMedia(raw.taxonomyImageUrl) || isLikelyMedia(raw.concept_map) || isLikelyMedia(raw.conceptMap);
+        const hasStructure = raw.word_structure && Object.keys(raw.word_structure || {}).length > 0;
+        const hasAudio = isLikelyMedia(raw.audio_binary) || isLikelyMedia(raw.audio_url) || isLikelyMedia(raw.audioUrl) || isLikelyMedia(raw.audio);
         const hasExtra = !!(hasDefinition || hasLabelledImage || hasVideo || hasTaxonomy || hasStructure || hasAudio);
 
         overlay.className = "term-highlight-overlay" + (hasExtra ? " has-data" : " no-data");
@@ -629,7 +743,77 @@ export default function PdfViewer({
           if (window.onPdfTermClick) window.onPdfTermClick(pterm.raw);
         };
 
-        overlay.onmouseenter = () => (overlay.style.background = hasExtra ? "rgba(255,235,59,0.6)" : "rgba(150,150,150,0.36)");
+        // On hover, verify server-side media availability if needed (cached per-domain_id)
+        overlay.onmouseenter = async () => {
+          overlay.style.background = hasExtra ? "rgba(255,235,59,0.6)" : "rgba(150,150,150,0.36)";
+
+          const domainId = pterm.raw?.domain_id || pterm.raw?.id || pterm.raw?.domain;
+          if (!domainId) return;
+
+          // If we already checked earlier, update title from cache and skip network
+          const cached = mediaAvailabilityRef.current[domainId];
+          if (cached) {
+            const available = [];
+            if (hasDefinition) available.push("definition");
+            if (cached.hasLabelledImage || hasLabelledImage) available.push("image");
+            if (cached.hasVideo || hasVideo) available.push("video");
+            if (hasTaxonomy) available.push("concept map");
+            if (hasStructure) available.push("structure");
+            if (hasAudio) available.push("audio");
+            overlay.title = available.length ? `Available: ${available.join(", ")}` : 'No definition/image/video/concept map available';
+            overlay.setAttribute('data-available', available.length ? available.join(',') : 'none');
+            return;
+          }
+
+          // Only perform checks if the term object did not already confidently indicate resources
+          try {
+            // Quick visual feedback
+            overlay.title = 'Checking media availability...';
+
+            // Helper: try HEAD first, fall back to a small GET (Range 0-0) if HEAD returns 405 or fails
+            const checkUrlExists = async (u) => {
+              try {
+                const h = await fetch(u, { method: 'HEAD' });
+                if (h.ok) return true;
+                if (h.status === 405) {
+                  // server doesn't allow HEAD -> try small GET
+                  const g = await fetch(u, { method: 'GET', headers: { Range: 'bytes=0-0' } });
+                  return !!g.ok;
+                }
+                return false;
+              } catch (e) {
+                try {
+                  const g = await fetch(u, { method: 'GET', headers: { Range: 'bytes=0-0' } });
+                  return !!g.ok;
+                } catch (e2) {
+                  return false;
+                }
+              }
+            };
+
+            const [imgOk, vidOk] = await Promise.all([
+              checkUrlExists(`${BASE_URL}/image/${domainId}`),
+              checkUrlExists(`${BASE_URL}/video/${domainId}`),
+            ]);
+
+            mediaAvailabilityRef.current[domainId] = { hasLabelledImage: !!imgOk, hasVideo: !!vidOk };
+
+            const available = [];
+            if (hasDefinition) available.push("definition");
+            if (imgOk || hasLabelledImage) available.push("image");
+            if (vidOk || hasVideo) available.push("video");
+            if (hasTaxonomy) available.push("concept map");
+            if (hasStructure) available.push("structure");
+            if (hasAudio) available.push("audio");
+
+            overlay.title = available.length ? `Available: ${available.join(", ")}` : 'No definition/image/video/concept map available';
+            overlay.setAttribute('data-available', available.length ? available.join(',') : 'none');
+          } catch (err) {
+            // keep previous title if check fails
+            console.warn('Media availability check failed', err);
+          }
+        };
+
         overlay.onmouseleave = () => (overlay.style.background = hasExtra ? "rgba(255,255,0,0.4)" : "rgba(160,160,160,0.28)");
 
         overlayContainer.appendChild(overlay);
@@ -648,14 +832,64 @@ export default function PdfViewer({
 
     const overlayContainer = ensureOverlayContainer(pageEl, 15);
     const pageRect = pageEl.getBoundingClientRect();
-    const spans = [...textLayer.querySelectorAll("span")];
+    const domSpans = [...textLayer.querySelectorAll("span")];
+    if (!domSpans.length) return;
 
-    spans.forEach((span) => {
-      const txt = (span.textContent || "").trim();
-      if (!txt) return;
+    // Build lightweight span objects suitable for clustering
+    const spanObjs = domSpans.map((s) => ({
+      el: s,
+      rect: s.getBoundingClientRect(),
+      textTrimmed: (s.textContent || "").trim(),
+      textRaw: s.textContent || "",
+      fontSize: parseFloat(window.getComputedStyle(s).fontSize || 12),
+    }));
+
+    const lines = clusterLines(spanObjs);
+
+    // Skip table blocks / figure labels like we do elsewhere
+    const tableBlocks = detectTableBlocks(lines);
+    const labelLines = new Set();
+    lines.forEach((ln, i) => {
+      if (looksLikeFigureOrTableLabel(ln)) {
+        labelLines.add(i);
+        if (i + 1 < lines.length) labelLines.add(i + 1);
+      }
+    });
+
+    // Helper: does this line look like a section heading for this sid?
+    const isLineSectionHeading = (ln, sid) => {
+      if (!ln || !ln.text) return false;
+      const txt = ln.text.trim();
+      // Direct numbered heading (e.g., "2.1 Title")
+      if (SECTION_HEADING_RE.test(txt) && txt.startsWith(sid)) return true;
+      // If line starts with the sid then a title follows (sid + space + TitleCase)
+      const re = new RegExp(`^\\s*${sid}\\s+[A-Z]`);
+      if (re.test(ln.text)) return true;
+      // If the first span is exactly the sid and the next span appears like a title
+      if (ln.spans.length > 1 && ln.spans[0].textTrimmed === sid) {
+        const next = ln.spans[1].textTrimmed || "";
+        if (/^[A-Z]/.test(next.trim())) return true;
+      }
+      return false;
+    };
+
+    // Iterate lines and only highlight section ids when line appears to be a heading
+    lines.forEach((ln, lineIdx) => {
+      if (!ln || !ln.text) return;
+      if (labelLines.has(lineIdx)) return;
+      if (lineInAnyBlock(lineIdx, tableBlocks)) return; // skip table rows / blocks
+
+      const lineText = ln.text.trim();
       preparedSectionIdsRef.current.forEach((sid) => {
-        if (txt === sid) {
-          const r = span.getBoundingClientRect();
+        // Exact match in this line or heading-like match
+        if (lineText === sid || isLineSectionHeading(ln, sid) || lineText.startsWith(sid + " ")) {
+          // Find span within this line that contains the sid (prefer exact match)
+          let targetSpan = ln.spans.find((s) => s.textTrimmed === sid) || ln.spans.find((s) => s.textTrimmed.includes(sid));
+          if (!targetSpan) targetSpan = ln.spans[0];
+
+          const r = targetSpan.rect || targetSpan.el?.getBoundingClientRect();
+          if (!r) return;
+
           const overlay = document.createElement("div");
           overlay.className = "section-id-highlight";
           Object.assign(overlay.style, {

@@ -23,6 +23,7 @@ export default function AnalysisPanel({
   const [sectionSummary, setSectionSummary] = useState("");
   const [translatedSections, setTranslatedSections] = useState({});
   const [imageError, setImageError] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const [paraphrasedSentence, setParaphrasedSentence] = useState("");
   const [showSummaryHint, setShowSummaryHint] = useState(true);
 
@@ -73,6 +74,7 @@ export default function AnalysisPanel({
       setVideo(null);
       setTaxonomyImg(null);
       setImageError(false);
+      setVideoError(false);
 
       // prepare audio if base64 present
       prepareAudioFromTerm(selectedTerm);
@@ -83,6 +85,7 @@ export default function AnalysisPanel({
       setVideo(null);
       setTaxonomyImg(null);
       setImageError(false);
+      setVideoError(false);
       clearAudio();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -447,6 +450,7 @@ export default function AnalysisPanel({
 
     try {
       setIsLoading(true);
+      setVideoError(false);
 
       const url = `${BASE_URL}/video/${selectedTerm.domain_id}`;
       const res = await fetch(url);
@@ -454,15 +458,18 @@ export default function AnalysisPanel({
       if (!res.ok) {
         console.error("Video not found");
         setVideo(null);
+        setVideoError(true);
         return;
       }
 
       // Direct video URL to stream
       setVideo(url);
+      setVideoError(false);
 
     } catch (err) {
       console.error("Video load error:", err);
       setVideo(null);
+      setVideoError(true);
     } finally {
       setIsLoading(false);
     }
@@ -710,9 +717,11 @@ export default function AnalysisPanel({
           {isLoading && <div className="media-skeleton"></div>}
 
           {!isLoading && imageError && (
-            <button className="retry-btn" onClick={loadImages}>
-              🔄 Retry Loading Image
-            </button>
+            <p className="media-error">⚠️ No labelled image available.</p>
+          )}
+
+          {!isLoading && videoError && (
+            <p className="media-error">⚠️ No process video available.</p>
           )}
 
           {labelledImg && !imageError && (

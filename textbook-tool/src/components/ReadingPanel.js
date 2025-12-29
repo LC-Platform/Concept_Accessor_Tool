@@ -52,6 +52,17 @@ export default function ReadingPanel({
       setTitle(cleaned || "Untitled Document");
     }
   }, [text]);
+  
+  useEffect(() => {
+  // 🔥 When in Q/A mode → remove ALL highlights completely
+  if (selectedView === "Q/A") {
+    document
+      .querySelectorAll(".term-highlight-overlay, .section-id-highlight")
+      .forEach(el => el.remove());
+    return;
+  }
+}, [selectedView]);
+
 
   /* ----------------------- MANUAL SENTENCE SELECT ----------------------- */
   useEffect(() => {
@@ -95,50 +106,57 @@ export default function ReadingPanel({
     }
   };
 
-  /* ---------------------- HIGHLIGHT DOMAIN TERMS ---------------------- */
   const renderTextWithHighlights = () => {
-    if (!text) return null;
-    if (!terms || terms.length === 0) return text;
+  if (!text) return null;
 
-    let elements = [text];
+  // 🚫 DO NOT highlight in Q/A mode
+  if (selectedView === "Q/A") {
+    return text;
+  }
 
-    terms.forEach((term) => {
-      if (!term?.name) return;
-      const newElements = [];
+  if (!terms || terms.length === 0) return text;
 
-      elements.forEach((element) => {
-        if (typeof element === "string") {
-          const parts = element.split(new RegExp(`\\b(${term.name})\\b`, "gi"));
+  let elements = [text];
 
-          parts.forEach((part, index) => {
-            if (part.toLowerCase() === term.name.toLowerCase()) {
-              newElements.push(
-                <span
-                  key={`${term.domain_id}-${index}`}
-                  className="highlighted-term"
-                  onClick={() => handleTermClick(term)}
-                  style={{
-                    cursor: "pointer",
-                    backgroundColor: "yellow",
-                  }}
-                >
-                  {part}
-                </span>
-              );
-            } else if (part) {
-              newElements.push(part);
-            }
-          });
-        } else {
-          newElements.push(element);
-        }
-      });
+  terms.forEach((term) => {
+    if (!term?.name) return;
+    const newElements = [];
 
-      elements = newElements;
+    elements.forEach((element) => {
+      if (typeof element === "string") {
+        const parts = element.split(
+          new RegExp(`\\b(${term.name})\\b`, "gi")
+        );
+
+        parts.forEach((part, index) => {
+          if (part.toLowerCase() === term.name.toLowerCase()) {
+            newElements.push(
+              <span
+                key={`${term.domain_id}-${index}`}
+                className="highlighted-term"
+                onClick={() => handleTermClick(term)}
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "yellow",
+                }}
+              >
+                {part}
+              </span>
+            );
+          } else if (part) {
+            newElements.push(part);
+          }
+        });
+      } else {
+        newElements.push(element);
+      }
     });
 
-    return elements;
-  };
+    elements = newElements;
+  });
+
+  return elements;
+};
 
   /* ------------------------------- RENDER ------------------------------- */
 

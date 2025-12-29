@@ -149,7 +149,6 @@ export default function ConceptLayout() {
 
         // 3️⃣ Load dependent data (same APIs as before)
         await fetchTerms(chapterId);
-        await fetchSummary(chapterId);
         await fetchQAPairs(chapterId);
 
       } catch (err) {
@@ -207,19 +206,7 @@ export default function ConceptLayout() {
     }
   };
 
-  /** Fetch full chapter summary (kept for other uses) */
-  const fetchSummary = async (chapterId) => {
-    try {
-      const res = await fetch(`${BASE_URL}/full-summary/?chapter_id=${chapterId}`, {
-      method: "GET",
-      });
-
-      const data = await res.json();
-      setSummary(data.full_summary || "");
-    } catch (err) {
-      console.error("❌ Error fetching summary:", err);
-    }
-  };
+  
 
   return (
     <div className="concept-layout">
@@ -255,11 +242,12 @@ export default function ConceptLayout() {
               {pdfUrl ? (
                 <div className="pdf-viewer-container">
                   <PdfViewer
-                    file={pdfUrl}
-                    terms={terms}
-                    selectedView={selectedView}
-                    sectionIds={sectionIds}
-                  />
+                      key={selectedView} 
+                      file={pdfUrl}
+                      terms={selectedView === "Word" ? terms : []}
+                      sectionIds={selectedView === "Summary" ? sectionIds : []}
+                      selectedView={selectedView}
+                    />
                 </div>
               ) : (
                 <div className="pdf-placeholder">Upload a PDF to view</div>
