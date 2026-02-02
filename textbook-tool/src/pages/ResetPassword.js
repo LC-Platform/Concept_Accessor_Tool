@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "../components/styles/Auth.css";
+import "../styles/Auth.css";
 
-const BASE_URL = "http://10.2.8.12:8500";
+const BASE_URL = "http://10.2.8.12:8100";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
@@ -45,21 +45,32 @@ export default function ResetPassword() {
         }),
       });
 
-      const data = await res.json();
+      let data = {};
+      try {
+        data = await res.json();
+      } catch {
+        // response is not JSON
+      }
 
       if (!res.ok) {
-        setError(data?.message || "Failed to reset password");
+        setError(
+          data?.message ||
+          data?.detail ||
+          data?.error ||
+          "Unable to reset password. Please try again."
+        );
         return;
       }
 
-      setMsg(data.message);
+      setMsg(data.message || "Password reset successful");
 
       setTimeout(() => navigate("/login"), 1500);
 
     } catch (err) {
-      setError("Server error");
+      setError("Unable to connect to server. Please try again later.");
     }
   };
+
 
   return (
     <div className="auth-container">
@@ -76,6 +87,7 @@ export default function ResetPassword() {
             id="new-password"
             type="password"
             name="new_password"
+            className={error ? "input-error" : ""}
             placeholder="Enter new password"
             autoComplete="new-password"
             onChange={handleChange}
@@ -87,6 +99,7 @@ export default function ResetPassword() {
             id="confirm-password"
             type="password"
             name="confirm_password"
+            className={error ? "input-error" : ""}
             placeholder="Confirm password"
             autoComplete="new-password"
             onChange={handleChange}

@@ -5,9 +5,9 @@ import PdfViewer from "./PdfViewer";
 import ReadingPanel from "./ReadingPanel";
 import AnalysisPanel from "./AnalysisPanel";
 import { useParams } from "react-router-dom";
-import "../components/styles/ModernLayout.css";
+import "../styles/ModernLayout.css";
 
-const BASE_URL = "http://10.2.8.12:8500";
+const BASE_URL = "http://10.2.8.12:8100";
 
 /* ===== Helpers ===== */
 function normalizeStringForMatch(s = "") {
@@ -159,6 +159,21 @@ export default function ConceptLayout() {
     loadChapter();
   }, [chapterId]);
 
+  useEffect(() => {
+  window.onTermMediaAction = ({ term, action }) => {
+    setSelectedTerm(term);
+    setSelectedWordText(term?.name || term?.rawName || "");
+    setSelectedView("Word");
+
+    // forward intent to AnalysisPanel
+    window.__analysisIntent = action;
+  };
+
+  return () => {
+    window.onTermMediaAction = null;
+  };
+  }, []);
+
   const fetchQAPairs = async (chapterId) => {
     try {
       const res = await fetch(`${BASE_URL}/get-qa/?chapter_id=${chapterId}`, {
@@ -242,12 +257,11 @@ export default function ConceptLayout() {
               {pdfUrl ? (
                 <div className="pdf-viewer-container">
                   <PdfViewer
-                      key={selectedView} 
-                      file={pdfUrl}
-                      terms={selectedView === "Word" ? terms : []}
-                      sectionIds={selectedView === "Summary" ? sectionIds : []}
-                      selectedView={selectedView}
-                    />
+                    file={pdfUrl}
+                    terms={selectedView === "Word" ? terms : []}
+                    sectionIds={selectedView === "Summary" ? sectionIds : []}
+                    selectedView={selectedView}
+                  />
                 </div>
               ) : (
                 <div className="pdf-placeholder">Upload a PDF to view</div>

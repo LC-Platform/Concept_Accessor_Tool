@@ -1,19 +1,23 @@
 // App.js (with enhanced 404 page)
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-import HomePage from "./components/HomePage";
-import ConceptLayout from "./components/ConceptLayout";
-import AboutPage from "./components/AboutPage";
-import ContactPage from "./components/ContactPage";
-import HowItWorksPage from "./components/HowItWorksPage";
-import LegalPage from "./components/LegalPage";
-import "./components/styles/ModernLayout.css";
-import LoginPage from "./components/LoginPage";
-import SignupPage from "./components/SignupPage";
-import ForgotPassword from "./components/ForgotPassword";
-import VerifyResetCode from "./components/VerifyResetCode";
-import ResetPassword from "./components/ResetPassword";
-import ChapterListPage from "./components/ChapterList";
+import HomePage from "./pages/HomePage";
+import ConceptLayout from "./pages/ConceptLayout";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
+import HowItWorksPage from "./pages/HowItWorksPage";
+import LegalPage from "./pages/LegalPage";
+import "./styles/ModernLayout.css";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyResetCode from "./pages/VerifyResetCode";
+import ResetPassword from "./pages/ResetPassword";
+import ChapterListPage from "./pages/ChapterList";
+import ProtectedRoute from "./auth/ProtectedRoute";
+import SubjectSelectionPage from "./pages/SubjectSelectionPage";
+
+
 
 function App() {
  
@@ -23,8 +27,30 @@ function App() {
       <Routes>
         {/* Main Pages */}
         <Route path="/" element={<HomePage />} />
-        <Route path="/chapters" element={<ChapterListPage />} />
-        <Route path="/analyze/:chapterId" element={<ConceptLayout />} />
+        <Route
+          path="/subjects"
+          element={
+            <ProtectedRoute>
+              <SubjectSelectionPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/chapters"
+          element={
+            <ProtectedRoute>
+              <ChapterListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analyze/:chapterId"
+          element={
+            <ProtectedRoute>
+              <ConceptLayout />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />

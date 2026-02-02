@@ -1,6 +1,6 @@
 // ContactPage.js
 import React, { useState } from "react";
-import "../components/styles/ContactPage.css";
+import "../styles/ContactPage.css";
 import iiithLogo from "../assets/iiith_logo.png";
 import { useNavigate } from "react-router-dom";
 

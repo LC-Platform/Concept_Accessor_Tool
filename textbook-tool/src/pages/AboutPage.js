@@ -1,6 +1,6 @@
 // AboutPage.js
 import React from "react";
-import "../components/styles/AboutPage.css";
+import "../styles/AboutPage.css";
 import { useNavigate } from "react-router-dom"; 
 import iiithLogo from "../assets/iiith_logo.png";
 

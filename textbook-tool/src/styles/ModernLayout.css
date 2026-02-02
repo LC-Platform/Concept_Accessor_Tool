@@ -546,9 +546,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
   margin: 0;
   padding: 0;
   position: relative;
@@ -578,6 +577,7 @@
   width: 100%;
   height: 100%;
   overflow: auto;
+  min-height: 300px;  
   background: #f9fafb;
   border-radius: 10px;
 }
@@ -779,34 +779,129 @@
   transform: scale(1.05);
 }
 
-/* Image popup overlay & content */
 .image-popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: fixed;        /* 🔥 IMPORTANT */
+  inset: 0;               /* top:0 right:0 bottom:0 left:0 */
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0,0,0,0.85);
+  z-index: 99999;         /* above everything */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 20000 !important;
-  animation: fadeIn 0.3s ease-in-out;
 }
 
 .image-popup-content {
   position: relative;
-  background: #111;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 90%;
-  max-height: 90%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
-  z-index: 20001 !important;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
 }
+
+.zoomable-wrapper {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zoomable-popup-img {
+  max-width: none;
+  max-height: none;
+  user-select: none;
+  pointer-events: auto;
+  object-fit: contain; 
+}
+
+
+/* ===== Concept Map Fullscreen (NO ZOOM) ===== */
+.conceptmap-fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  background: #f6f1e3;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.conceptmap-fullscreen-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+  /* 🔥 absolutely critical */
+  transform: none !important;
+}
+
+/* === Media Action Buttons (NEW) === */
+.media-action-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.media-action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.media-action-btn span {
+  white-space: nowrap;
+}
+
+/* Image button */
+.media-action-btn.image {
+  background: linear-gradient(180deg, #34a0ff, #1976d2);
+  color: #fff;
+}
+
+/* Video button */
+.media-action-btn.video {
+  background: linear-gradient(180deg, #9c27b0, #6a1b9a);
+  color: #fff;
+}
+
+/* Hover */
+.media-action-btn:not(.disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+}
+
+/* Disabled */
+.media-action-btn.disabled,
+.media-action-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .media-action-row {
+    flex-direction: column;
+  }
+}
+
 
 /* Ensure close button is visible */
 .image-popup-close {
@@ -830,26 +925,6 @@
   color: #fff;
 }
 
-/* Zoomable wrapper for popup — touch-friendly */
-.zoomable-wrapper {
-  width: 100%;
-  height: 70vh;
-  max-height: 90vh;
-  overflow: hidden;
-  position: relative;
-  touch-action: none; /* Enables pinch gestures */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.zoomable-popup-img {
-  transition: transform 0.1s ease-out;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  pointer-events: none;
-}
 
 /* --- Fixed-size image preview (deprecated) --- kept for compatibility but responsive now --- */
 .image-preview-wrapper {

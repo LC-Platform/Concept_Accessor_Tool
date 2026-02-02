@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../components/styles/Auth.css";
+import "../styles/Auth.css";
 
-const BASE_URL = "http://10.2.8.12:8500";
+const BASE_URL = "http://10.2.8.12:8100";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();

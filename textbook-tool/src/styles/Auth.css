@@ -12,6 +12,7 @@
   font-family: "Inter", sans-serif;
 }
 
+
 /* ================================
    CARD
 ================================ */
@@ -104,6 +105,12 @@
   opacity: 1;
 }
 
+.field-error {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
 /* ================================
    BUTTONS
 ================================ */
@@ -154,22 +161,33 @@
    SUCCESS + ERROR MESSAGE
 ================================ */
 .auth-error {
-  background: #fed7d7;
-  color: #c53030;
-  border-left: 4px solid #c53030;
-  padding: 10px 14px;
+  background: #fdecea;
+  color: #b71c1c;
+  border: 1px solid #f5c6cb;
+  padding: 12px 14px;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  font-weight: 500;
 }
 
-.auth-success {
-  background: #c6f6d5;
-  color: #2f855a;
-  border-left: 4px solid #2f855a;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 0.9rem;
+.input-error {
+  border-color: #d32f2f !important;
+  background: #fff5f5;
 }
+
+
+.auth-success {
+  background: #e6f4ea;
+  color: #1b5e20;
+  border: 1px solid #c8e6c9;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
 
 /* ================================
    ANIMATIONS

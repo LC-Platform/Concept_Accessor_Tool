@@ -1,6 +1,6 @@
 // HowItWorksPage.js
 import React from "react";
-import "../components/styles/HowItWorksPage.css";
+import "../styles/HowItWorksPage.css";
 import { useNavigate } from "react-router-dom";
 import iiithLogo from "../assets/iiith_logo.png";
 

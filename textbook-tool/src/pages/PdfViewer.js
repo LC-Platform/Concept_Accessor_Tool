@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import "../components/styles/ModernLayout.css";
+import "../styles/ModernLayout.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
@@ -14,7 +14,7 @@ function normalizeEnglish(s = "") {
   return String(s || "")
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/['",.!?;:()\-]/g, " ")
+    .replace(/['",.!?;:()-]/g, " ")
     .replace(/\s+/g, " ")
     .toLowerCase()
     .trim();
@@ -190,7 +190,7 @@ export default function PdfViewer({
   const dragPauseTimer = useRef(null);
   const dragWasActiveRef = useRef(false);
   // Backend base URL (match AnalysisPanel)
-  const BASE_URL = "http://10.2.8.12:8500";
+  const BASE_URL = "http://10.2.8.12:8100";
 
   /* Prepare terms */
   useEffect(() => {
@@ -202,6 +202,15 @@ export default function PdfViewer({
       }))
       .filter((x) => x.key);
   }, [terms]);
+
+  useEffect(() => {
+    if (terms.length && numPages) {
+      scheduleHighlight(200);
+    }
+  }, [terms, numPages]);
+
+
+  
 
   /* Prepare section IDs */
   useEffect(() => {
@@ -267,9 +276,16 @@ export default function PdfViewer({
   }, []);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-    scheduleHighlight(500);
+  setNumPages(numPages);
+
+  // 🔥 wait for layout + paint to finish
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      scheduleHighlight(0);
+    });
+  });
   };
+
 
   /* Drive highlighting on key changes */
   useEffect(() => {
@@ -396,7 +412,7 @@ export default function PdfViewer({
   /* ---------------------------------------------------------
      Scheduler (drag-aware)
   --------------------------------------------------------- */
-  function scheduleHighlight(delay = 400) {
+  function scheduleHighlight(delay = 0) {
     // Run highlights in Word and Summary (section ids)
     if (selectedView !== "Word" && selectedView !== "Summary") return;
 
@@ -709,9 +725,9 @@ export default function PdfViewer({
         const hasLabelledImage = (Array.isArray(raw.images) && raw.images.some(isLikelyMedia)) || isLikelyMedia(raw.labelled_img) || isLikelyMedia(raw.labelled_image) || isLikelyMedia(raw.labelledImage) || isLikelyMedia(raw.image) || isLikelyMedia(raw.image_url) || isLikelyMedia(raw.imageUrl);
         const hasVideo = isLikelyMedia(raw.video) || isLikelyMedia(raw.video_url) || isLikelyMedia(raw.videoUrl) || isLikelyMedia(raw.process_video) || isLikelyMedia(raw.processVideo) || isLikelyMedia(raw.process_video_url) || isLikelyMedia(raw.processVideoUrl);
         const hasTaxonomy = isLikelyMedia(raw.taxonomy_image) || isLikelyMedia(raw.taxonomyImage) || isLikelyMedia(raw.taxonomyImg) || isLikelyMedia(raw.taxonomy) || isLikelyMedia(raw.taxonomy_image_url) || isLikelyMedia(raw.taxonomyImageUrl) || isLikelyMedia(raw.concept_map) || isLikelyMedia(raw.conceptMap);
-        const hasStructure = raw.word_structure && Object.keys(raw.word_structure || {}).length > 0;
+        // const hasStructure = raw.word_structure && Object.keys(raw.word_structure || {}).length > 0;
         const hasAudio = isLikelyMedia(raw.audio_binary) || isLikelyMedia(raw.audio_url) || isLikelyMedia(raw.audioUrl) || isLikelyMedia(raw.audio);
-        const hasExtra = !!(hasDefinition || hasLabelledImage || hasVideo || hasTaxonomy || hasStructure || hasAudio);
+        const hasExtra = !!(hasDefinition || hasLabelledImage || hasVideo || hasTaxonomy  || hasAudio);
 
         overlay.className = "term-highlight-overlay" + (hasExtra ? " has-data" : " no-data");
 
@@ -733,7 +749,7 @@ export default function PdfViewer({
         if (hasLabelledImage) available.push("image");
         if (hasVideo) available.push("video");
         if (hasTaxonomy) available.push("concept map");
-        if (hasStructure) available.push("structure");
+        // if (hasStructure) available.push("structure");
         if (hasAudio) available.push("audio");
 
         overlay.title = available.length ? `Available: ${available.join(', ')}` : 'No definition/image/video/concept map available';
@@ -758,7 +774,7 @@ export default function PdfViewer({
             if (cached.hasLabelledImage || hasLabelledImage) available.push("image");
             if (cached.hasVideo || hasVideo) available.push("video");
             if (hasTaxonomy) available.push("concept map");
-            if (hasStructure) available.push("structure");
+            // if (hasStructure) available.push("structure");
             if (hasAudio) available.push("audio");
             overlay.title = available.length ? `Available: ${available.join(", ")}` : 'No definition/image/video/concept map available';
             overlay.setAttribute('data-available', available.length ? available.join(',') : 'none');
@@ -803,7 +819,7 @@ export default function PdfViewer({
             if (imgOk || hasLabelledImage) available.push("image");
             if (vidOk || hasVideo) available.push("video");
             if (hasTaxonomy) available.push("concept map");
-            if (hasStructure) available.push("structure");
+            // if (hasStructure) available.push("structure");
             if (hasAudio) available.push("audio");
 
             overlay.title = available.length ? `Available: ${available.join(", ")}` : 'No definition/image/video/concept map available';
@@ -822,7 +838,7 @@ export default function PdfViewer({
       range.detach?.();
     }
   }
-
+  
   /* ---------------------------------------------------------
      SECTION ID HIGHLIGHT
   --------------------------------------------------------- */

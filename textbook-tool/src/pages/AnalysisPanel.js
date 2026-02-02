@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const BASE_URL = "http://10.2.8.12:8500";
+const BASE_URL = "http://10.2.8.12:8100";
 
 export default function AnalysisPanel({
   selectedTerm,
@@ -24,8 +24,10 @@ export default function AnalysisPanel({
   const [translatedSections, setTranslatedSections] = useState({});
   const [imageError, setImageError] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  const [paraphrasedSentence, setParaphrasedSentence] = useState("");
   const [showSummaryHint, setShowSummaryHint] = useState(true);
+  const [hasImage, setHasImage] = useState(false);
+  const [hasVideo, setHasVideo] = useState(false);
+  const [conceptFullscreen, setConceptFullscreen] = useState(false);
 
 
   // audio states
@@ -35,9 +37,18 @@ export default function AnalysisPanel({
   const audioRef = useRef(null);
   const [popupImg, setPopupImg] = useState(null);
 
+ 
   const openImagePopup = (url) => {
-    setPopupImg(url);
+    setPopupImg(null); // force unmount first
+
+    requestAnimationFrame(() => {
+      setZoom(1);
+      setTranslateX(0);
+      setTranslateY(0);
+      setPopupImg(url);
+    });
   };
+
 
   const closeImagePopup = () => {
     setPopupImg(null);
@@ -76,6 +87,10 @@ export default function AnalysisPanel({
       setImageError(false);
       setVideoError(false);
 
+      setHasImage(false);   
+      setHasVideo(false); 
+      
+
       // prepare audio if base64 present
       prepareAudioFromTerm(selectedTerm);
     } else {
@@ -86,6 +101,8 @@ export default function AnalysisPanel({
       setTaxonomyImg(null);
       setImageError(false);
       setVideoError(false);
+      setHasImage(false);  
+      setHasVideo(false); 
       clearAudio();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,6 +115,44 @@ export default function AnalysisPanel({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+  if (activeTab !== "Media" || !selectedTerm) return;
+
+  const checkAvailability = async () => {
+    try {
+      const imgRes = await fetch(
+        `${BASE_URL}/image/${selectedTerm.domain_id}`,
+        { headers: { Range: "bytes=0-0" } }
+      );
+      setHasImage(imgRes.ok);
+    } catch {
+      setHasImage(false);
+    }
+
+    try {
+      const vidRes = await fetch(
+        `${BASE_URL}/video/${selectedTerm.domain_id}`,
+        { headers: { Range: "bytes=0-0" } }
+      );
+      setHasVideo(vidRes.ok);
+    } catch {
+      setHasVideo(false);
+    }
+  };
+
+  checkAvailability();
+}, [activeTab, selectedTerm]);
+
+
+useEffect(() => {
+  if (activeTab === "ConceptMap") {
+    setZoom(1);
+    setTranslateX(0);
+    setTranslateY(0);
+  }
+}, [activeTab]);
+
 
   const startPan = (e) => {
     e.preventDefault();
@@ -206,27 +261,6 @@ export default function AnalysisPanel({
     }
   };
 
-  const paraphraseSentence = async () => {
-    if (!selectedSentence) return;
-
-    try {
-      setIsLoading(true);
-
-      const res = await fetch(`${BASE_URL}/paraphrase/`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: selectedSentence }),
-      });
-
-      const data = await res.json();
-      setParaphrasedSentence(data.paraphrase || "Unable to paraphrase.");
-    } catch (err) {
-      console.error("Paraphrase error:", err);
-      setParaphrasedSentence("Error generating paraphrase.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
 
   const base64ToUrl = (b64, mime = "audio/mpeg") => {
@@ -394,86 +428,87 @@ export default function AnalysisPanel({
     }
   };
 
-  /** Load labelled image */
-  const loadImages = async () => {
-    if (!selectedTerm) return;
+ const loadImages = async () => {
+  if (!selectedTerm) return;
 
-    setImageError(false);
-    try {
-      setIsLoading(true);
+  setImageError(false);
+  try {
+    setIsLoading(true);
 
-      const url = `${BASE_URL}/image/${selectedTerm.domain_id}`;
-      const res = await fetch(url);
+    const url = `${BASE_URL}/image/${selectedTerm.domain_id}`;
+    const res = await fetch(url);
 
-      if (!res.ok) {
-        setLabelledImg(null);
-        setImageError(true);
-        return;
-      }
-
-      setLabelledImg(url);
-    } catch (err) {
-      console.error("Image load error:", err);
+    if (!res.ok) {
+      setLabelledImg(null);
       setImageError(true);
-    } finally {
-      setIsLoading(false);
+      return;
     }
-  };
+
+    setLabelledImg(url);
+  } catch {
+    setImageError(true);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const loadConceptMap = async () => {
-    if (!selectedTerm || !chapterId) return;
+  if (!selectedTerm || !chapterId) return;
 
-    try {
-      setIsLoading(true);
+  const url = `${BASE_URL}/taxonomy-image/${chapterId}/${selectedTerm.domain_id}`;
 
-      const url = `${BASE_URL}/taxonomy-image/${chapterId}/${selectedTerm.domain_id}`;
-      const res = await fetch(url);
+  try {
+    setIsLoading(true);
 
-      if (!res.ok) {
-        setTaxonomyImg(null);
-        return;
-      }
+    const res = await fetch(url, { method: "GET" });
 
-      setTaxonomyImg(url);
-    } catch (err) {
-      console.error("ConceptMap error:", err);
+    if (!res.ok) {
+      // 404 or other error → no taxonomy image
       setTaxonomyImg(null);
-    } finally {
-      setIsLoading(false);
+      return;
     }
-  };
+
+    // ✅ Image exists → browser will render SVG directly
+    setTaxonomyImg(url);
+
+  } catch (err) {
+    console.error("ConceptMap fetch failed:", err);
+    setTaxonomyImg(null);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
 
   
   const loadVideo = async () => {
-    if (!selectedTerm) return;
+  if (!selectedTerm) return;
 
-    try {
-      setIsLoading(true);
-      setVideoError(false);
+  try {
+    setIsLoading(true);
+    setVideoError(false);
 
-      const url = `${BASE_URL}/video/${selectedTerm.domain_id}`;
-      const res = await fetch(url);
+    const url = `${BASE_URL}/video/${selectedTerm.domain_id}`;
+    const res = await fetch(url);
 
-      if (!res.ok) {
-        console.error("Video not found");
-        setVideo(null);
-        setVideoError(true);
-        return;
-      }
-
-      // Direct video URL to stream
-      setVideo(url);
-      setVideoError(false);
-
-    } catch (err) {
-      console.error("Video load error:", err);
+    if (!res.ok) {
       setVideo(null);
       setVideoError(true);
-    } finally {
-      setIsLoading(false);
+      return;
     }
-  };
+
+    setVideo(url);
+
+  } catch (err) {
+    setVideo(null);
+    setVideoError(true);
+    setHasVideo(false);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
 
  
@@ -658,7 +693,7 @@ export default function AnalysisPanel({
       )}
 
       <div className="analysis-tabs">
-        {["Define", "Media", "Structure", "ConceptMap"].map((tab) => (
+        {["Define", "Media", "ConceptMap"].map((tab) => (
           <button
             key={tab}
             className={`tab-btn ${activeTab === tab ? "active" : ""}`}
@@ -698,21 +733,25 @@ export default function AnalysisPanel({
       {activeTab === "Media" && (
         <div className="media-section">
 
+          <div className="media-action-row">
           <button
-            className="media-load-btn"
+            className={`media-action-btn image ${!hasImage ? "disabled" : ""}`}
             onClick={loadImages}
-            disabled={isLoading}
+            disabled={!hasImage || isLoading}
           >
-            {isLoading ? "⏳ Loading..." : "📷 Load Labelled Image"}
+            📷 <span>Labelled Image</span>
           </button>
 
           <button
-            className="media-load-btn"
+            className={`media-action-btn video ${!hasVideo ? "disabled" : ""}`}
             onClick={loadVideo}
-            disabled={isLoading}
+            disabled={!hasVideo || isLoading}
           >
-            🎞 Load Process Video
+            🎞 <span>Process Video</span>
           </button>
+          </div>
+
+
 
           {isLoading && <div className="media-skeleton"></div>}
 
@@ -755,7 +794,7 @@ export default function AnalysisPanel({
         </div>
       )}
 
-      {/* STRUCTURE */}
+      {/* STRUCTURE
       {activeTab === "Structure" && (
         <div className="structure-section">
           {selectedTerm?.word_structure ? (
@@ -776,7 +815,7 @@ export default function AnalysisPanel({
             <p>No word structure available.</p>
           )}
         </div>
-      )}
+      )} */}
 
       {/* CONCEPT MAP */}
       {activeTab === "ConceptMap" && (
@@ -786,10 +825,11 @@ export default function AnalysisPanel({
               {/* Fullscreen button */}
               <button
                 className="zoom-btn fullscreen-btn"
-                onClick={() => openImagePopup(taxonomyImg)}
-              >
+                onClick={() => setConceptFullscreen(true)}
+                >
                 ⛶
-              </button>
+                </button>
+
 
               {/* Zoom controls */}
               <div className="zoom-controls">
@@ -811,6 +851,29 @@ export default function AnalysisPanel({
 
         </div>
       )}
+
+      {/* ================= CONCEPT MAP FULLSCREEN ================= */}
+      {conceptFullscreen && taxonomyImg && (
+      <div
+        className="conceptmap-fullscreen-overlay"
+        onClick={() => setConceptFullscreen(false)}
+      >
+        <button
+          className="image-popup-close"
+          onClick={() => setConceptFullscreen(false)}
+        >
+          ✕
+        </button>
+
+        <img
+          src={taxonomyImg}
+          alt="Concept Map Fullscreen"
+          className="conceptmap-fullscreen-image"
+          onClick={(e) => e.stopPropagation()}
+        />
+      </div>
+      )}
+
 
       {popupImg && (
         <div className="image-popup-overlay" onClick={closeImagePopup}>
