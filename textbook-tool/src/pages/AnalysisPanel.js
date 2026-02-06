@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const BASE_URL = "http://10.2.8.12:8100";
+const BASE_URL = "http://localhost:8000";
 
 export default function AnalysisPanel({
   selectedTerm,

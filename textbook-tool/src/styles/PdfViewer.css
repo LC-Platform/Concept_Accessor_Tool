@@ -1,0 +1,280 @@
+/* PdfViewer.css - Updated with better visibility */
+
+.pdf-viewer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: #f5f5f5;
+}
+
+.pdf-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  gap: 16px;
+}
+
+.page-controls,
+.zoom-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.pdf-controls button {
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.pdf-controls button:hover:not(:disabled) {
+  background: #f0f0f0;
+  border-color: #bbb;
+  transform: translateY(-1px);
+}
+
+.pdf-controls button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.pdf-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: #fafafa;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+  min-width: 120px;
+  text-align: center;
+}
+
+.highlight-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+  padding: 6px 12px;
+  background: #fffde7;
+  border: 1px solid #fff59d;
+  border-radius: 6px;
+}
+
+.highlight-indicator {
+  width: 12px;
+  height: 12px;
+  background: #ffeb3b;
+  border-radius: 3px;
+  border: 1px solid #fdd835;
+}
+
+.pdf-document-container {
+  flex: 1;
+  overflow: auto;
+  background: #525659;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.pdf-page {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Text Layer Overrides */
+.react-pdf__Page__textContent {
+  /* Ensure text layer is visible and clickable */
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+}
+
+.react-pdf__Page__textContent span {
+  /* Make sure spans can be highlighted */
+  position: relative !important;
+  color: transparent !important;
+  cursor: text;
+}
+
+/* Term Highlighting */
+.pdf-term-highlight {
+  background-color: #ffeb3b !important;
+  color: #000 !important;
+  cursor: pointer !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
+  margin: 0 1px !important;
+  display: inline-block !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 3px rgba(255, 235, 59, 0.3) !important;
+  font-weight: 500 !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.pdf-term-highlight:hover {
+  background-color: #ffd54f !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 2px 8px rgba(255, 235, 59, 0.5) !important;
+  z-index: 20 !important;
+}
+
+.pdf-term-highlight:active {
+  background-color: #ffc107 !important;
+  transform: scale(0.98) !important;
+}
+
+/* Section Highlighting */
+.pdf-section-highlight {
+  background-color: #81c784 !important;
+  color: #000 !important;
+  cursor: pointer !important;
+  padding: 2px 6px !important;
+  border-radius: 3px !important;
+  font-weight: 600 !important;
+  display: inline-block !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 3px rgba(129, 199, 132, 0.3) !important;
+}
+
+.pdf-section-highlight:hover {
+  background-color: #66bb6a !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 2px 8px rgba(129, 199, 132, 0.5) !important;
+}
+
+/* Loading and Error States */
+.pdf-loading,
+.pdf-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  font-size: 16px;
+  color: #666;
+  background: white;
+  border-radius: 8px;
+  padding: 40px;
+}
+
+.pdf-error {
+  color: #d32f2f;
+}
+
+/* Wrapper Styles */
+.pdf-viewer-wrapper {
+  height: 600px;
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.pdf-viewer-container {
+  height: 100%;
+  width: 100%;
+}
+
+.pdf-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 16px;
+  color: #999;
+  background: #f5f5f5;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pdf-placeholder p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.pdf-placeholder small {
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pdf-viewer-wrapper {
+    height: 500px;
+  }
+  
+  .pdf-controls {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .page-controls,
+  .zoom-controls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .highlight-info {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .pdf-document-container {
+    padding: 10px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .pdf-controls {
+    display: none;
+  }
+  
+  .pdf-viewer-wrapper {
+    height: auto;
+  }
+}
+
+/* Accessibility */
+.pdf-term-highlight:focus,
+.pdf-section-highlight:focus {
+  outline: 2px solid #2196f3;
+  outline-offset: 2px;
+}
+
+/* Animation for highlight appearance */
+@keyframes highlightFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.pdf-term-highlight {
+  animation: highlightFadeIn 0.3s ease-out;
+}

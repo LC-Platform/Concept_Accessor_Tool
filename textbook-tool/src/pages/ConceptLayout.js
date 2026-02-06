@@ -7,7 +7,7 @@ import AnalysisPanel from "./AnalysisPanel";
 import { useParams } from "react-router-dom";
 import "../styles/ModernLayout.css";
 
-const BASE_URL = "http://10.2.8.12:8100";
+const BASE_URL = "http://localhost:8000";
 
 /* ===== Helpers ===== */
 function normalizeStringForMatch(s = "") {
@@ -186,18 +186,21 @@ export default function ConceptLayout() {
     }
   };
 
-  /** Fetch extracted domain terms and normalize them for robust matching */
   const fetchTerms = async (chapterId) => {
     try {
       const res = await fetch(
-      `${BASE_URL}/extract-domain-terms/?chapter_id=${chapterId}`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
+        `${BASE_URL}/extract-domain-terms/?chapter_id=${chapterId}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
       );
 
       const data = await res.json();
+      
+      // LOG: Total terms from API
+      console.log("📊 TERMS FROM API:", data.terms?.length || 0);
+      console.log("📋 Term names:", data.terms?.map(t => t.name || t.rawName) || []);
 
       const processed = (data.terms || []).map((t) => {
         const rawName =
@@ -216,6 +219,10 @@ export default function ConceptLayout() {
       });
 
       setTerms(processed);
+      
+      // LOG: Processed terms
+      console.log("✅ PROCESSED TERMS:", processed.length);
+      
     } catch (err) {
       console.error("❌ Error fetching terms:", err);
     }
@@ -314,3 +321,4 @@ export default function ConceptLayout() {
     </div>
   );
 }
+

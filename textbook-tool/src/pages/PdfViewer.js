@@ -14,12 +14,9 @@ function normalizeEnglish(s = "") {
   return String(s || "")
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/['",.!?;:()-]/g, " ")
-    .replace(/\s+/g, " ")
     .toLowerCase()
     .trim();
 }
-
 function makeTermKey(term) {
   if (!term) return "";
   if (term.normalized) return normalizeEnglish(term.normalized);
@@ -29,14 +26,9 @@ function makeTermKey(term) {
 /* ---------------------------------------------------------
    WORD BOUNDARY
 --------------------------------------------------------- */
-function isBoundaryChar(ch) {
-  return !ch || /[^a-zA-Z]/.test(ch);
-}
-function isValidWordBoundary(concat, startIdx, endIdx) {
-  const before = concat[startIdx - 1];
-  const after = concat[endIdx];
-  return isBoundaryChar(before) && isBoundaryChar(after);
-}
+
+
+
 
 /* ---------------------------------------------------------
    LINE / TABLE CLUSTERING
@@ -189,8 +181,7 @@ export default function PdfViewer({
   const resizeDebounce = useRef(null);
   const dragPauseTimer = useRef(null);
   const dragWasActiveRef = useRef(false);
-  // Backend base URL (match AnalysisPanel)
-  const BASE_URL = "http://10.2.8.12:8100";
+  const BASE_URL = "http://localhost:8000";
 
   /* Prepare terms */
   useEffect(() => {
@@ -293,14 +284,14 @@ export default function PdfViewer({
   }, [file, terms, selectedView, numPages, sectionIds]);
 
   /* Reset cache on Word tab */
-  useEffect(() => {
-    if (selectedView === "Word") {
-      if (window.__highlightedOnceGlobal) window.__highlightedOnceGlobal.clear();
-      scheduleHighlight(200);
+    useEffect(() => {
+    if (selectedView === "Word" || selectedView === "Summary") {
+        if (window.__highlightedOnceGlobal) window.__highlightedOnceGlobal.clear();
+        scheduleHighlight(200);
     } else {
-      clearOverlays();
+        clearOverlays();
     }
-  }, [selectedView]);
+    }, [selectedView]);
 
   /* Cleanup */
   useEffect(() => {
@@ -431,28 +422,61 @@ export default function PdfViewer({
     });
   }
 
-  function runHighlightCycle() {
-    if (selectedView !== "Word" && selectedView !== "Summary") return;
-    if (document.body.classList.contains("dragging")) return;
+  function escapeRegex(str = "") {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
-    const pages = Array.from(document.querySelectorAll(".react-pdf__Page"));
-    if (!pages.length) {
-      retryRef.current++;
-      if (retryRef.current <= 8) scheduleHighlight(350);
-      return;
-    }
+// Collapses fake spaced letters from textbook PDFs
+function tightenSpacedLetters(s = "") {
+  return s
+    .toLowerCase()
+    // remove spaces between single letters: c h l o r e l l a
+    .replace(/(?<=\b[a-z])\s+(?=[a-z]\b)/gi, "")
+    // normalize multiple spaces
+    .replace(/\s+/g, " ");
+}
 
-    retryRef.current = 0;
-    clearOverlays();
-    setIsHighlighting(true);
-    try {
-        if (selectedView === "Word") pages.forEach(highlightTermsOnPage);
-      if (selectedView === "Summary") pages.forEach(highlightSectionIdsOnPage);
-    } finally {
-      setIsHighlighting(false);
-      if (pages[0]) attachObserverOnce(pages[0]);
-    }
+// Builds safe flexible regex for terms
+function buildTermRegex(term = "") {
+  const safe = escapeRegex(term.toLowerCase().trim());
+  const flexible = safe
+    .replace(/\s+/g, "\\s+")      // flexible spaces
+    .replace(/-/g, "[-\\s]?");   // hyphen or space
+  return new RegExp(flexible, "gi");
+}
+
+
+ function runHighlightCycle() {
+  if (selectedView !== "Word" && selectedView !== "Summary") return;
+  if (document.body.classList.contains("dragging")) return;
+
+  const pages = Array.from(document.querySelectorAll(".react-pdf__Page"));
+  if (!pages.length) {
+    retryRef.current++;
+    if (retryRef.current <= 8) scheduleHighlight(350);
+    return;
   }
+
+  retryRef.current = 0;
+  clearOverlays();
+  setIsHighlighting(true);
+  
+  try {
+    if (selectedView === "Word") {
+      console.log("\n🚀 STARTING HIGHLIGHT CYCLE");
+      console.log("📄 Total pages:", pages.length);
+      console.log("📝 Total terms to highlight:", preparedTermsRef.current.length);
+      
+      pages.forEach(highlightTermsOnPage);
+      
+      console.log("\n✅ HIGHLIGHT CYCLE COMPLETE\n");
+    }
+    if (selectedView === "Summary") pages.forEach(highlightSectionIdsOnPage);
+  } finally {
+    setIsHighlighting(false);
+    if (pages[0]) attachObserverOnce(pages[0]);
+  }
+}
 
   function attachObserverOnce(pageEl) {
     const textLayer =
@@ -478,460 +502,296 @@ export default function PdfViewer({
   /* ---------------------------------------------------------
      MAIN TERM HIGHLIGHT (multi-span substring + boundaries)
   --------------------------------------------------------- */
-  function highlightTermsOnPage(pageEl) {
-    const textLayer = pageEl.querySelector(".react-pdf__Page__textContent");
-    if (!textLayer) return;
+function highlightTermsOnPage(pageEl) {
+  const textLayer = pageEl.querySelector(".react-pdf__Page__textContent");
+  if (!textLayer) return;
 
-    const overlayContainer = ensureOverlayContainer(pageEl, 10);
-    const pageRect = pageEl.getBoundingClientRect();
+  // 🔥 Attach overlays to textLayer (fixes scaling bug)
+  const overlayContainer = ensureOverlayContainer(textLayer, 10);
+  const layerRect = textLayer.getBoundingClientRect();
 
-    const rawSpans = [...textLayer.querySelectorAll("span")].filter(
-      (s) => (s.textContent || "").trim()
-    );
+  const rawSpans = [...textLayer.querySelectorAll("span")].filter(
+    (s) => (s.textContent || "").trim()
+  );
 
-    const spans = rawSpans.map((s) => {
-      const style = window.getComputedStyle(s);
-      return {
-        el: s,
-        textRaw: s.textContent || "",
-        textTrimmed: (s.textContent || "").trim(),
-        rect: s.getBoundingClientRect(),
-        fontSize: parseFloat(style.fontSize) || 12,
-        fontWeight: parseInt(style.fontWeight) || 400,
-        lineHeight: parseFloat(style.lineHeight) || 0,
-      };
-    });
-    if (!spans.length) return;
+  const spans = rawSpans.map((s) => ({
+    el: s,
+    textRaw: s.textContent || "",
+    textTrimmed: (s.textContent || "").trim(),
+    rect: s.getBoundingClientRect(),
+  }));
 
-    const lines = clusterLines(spans);
+  if (!spans.length) return;
 
-    // label/caption skip
-    const captionSkip = new Set();
-    const labelLines = new Set();
-    lines.forEach((ln, i) => {
-      if (looksLikeFigureOrTableLabel(ln)) {
-        labelLines.add(i);
-        captionSkip.add(i);
-        if (i + 1 < lines.length) captionSkip.add(i + 1);
-        if (i + 2 < lines.length) captionSkip.add(i + 2);
-      }
-    });
+  const lines = clusterLines(spans);
 
-    // heading skip
-    const headingSkip = new Set();
-    lines.forEach((ln, i) => {
-      if (looksLikeHeading(ln)) headingSkip.add(i);
-    });
+  // ---------- SKIP RULES ----------
+const captionSkip = new Set();
+const labelLines = new Set();
+const headingSkip = new Set();
+const sectionSkip = new Set();
 
-    // table detection
-    const tableBlocks = detectTableBlocks(lines);
+lines.forEach((ln, i) => {
+    if (looksLikeFigureOrTableLabel(ln)) {
+    labelLines.add(i);
 
-    // Heuristic: detect single-line table-like rows (e.g., table header rows or small tabular lines)
-    // and skip highlighting on those lines to avoid noisy highlights inside tables
-    const singleLineTable = new Set();
-    lines.forEach((ln, i) => {
-      const cols = clusterColumns(ln, 8);
-      const avgSpanWidth = ln.spans.reduce((a, s) => a + (s.rect?.width || 0), 0) / Math.max(1, ln.spans.length);
-      // If there are multiple column clusters or very narrow columns, treat as table row
-      if (cols.length >= 3 && (ln.fontSizeAvg || 0) <= 16) singleLineTable.add(i);
-      else if (ln.spans.length >= 3 && avgSpanWidth < (pageRect.width || 800) / 6 && (ln.fontSizeAvg || 0) <= 16) singleLineTable.add(i);
-    });
-
-    // Margin/side-heading heuristic: compute median left of spans and skip short lines that sit in page margins
-    const marginSkip = new Set();
-    try {
-      const allLefts = spans.map((s) => s.rect.left).sort((a, b) => a - b);
-      const medianLeft = allLefts.length ? allLefts[Math.floor(allLefts.length / 2)] : 0;
-      const pageW = pageRect.width || 800;
-      lines.forEach((ln, i) => {
-        const avgLeft = ln.spans.reduce((a, s) => a + (s.rect.left || 0), 0) / Math.max(1, ln.spans.length);
-        const txtLen = (ln.text || "").trim().length;
-        // short lines in far-left or far-right margin -> likely side heading/label
-        if (txtLen > 0 && txtLen < 40 && (avgLeft < Math.max(10, medianLeft - 60) || avgLeft > Math.min(pageW - 40, medianLeft + 200))) {
-          marginSkip.add(i);
-        }
-        // also if very short and entirely near right edge
-        if (txtLen > 0 && txtLen < 20 && avgLeft > pageW - 80) marginSkip.add(i);
-      });
-    } catch (e) {
-      // fall back silently if geometry unavailable
-      console.warn("Margin heuristic failed:", e);
+    // Skip caption + area below where diagram labels exist
+    for (let k = 0; k <= 5; k++) {
+        if (i + k < lines.length) captionSkip.add(i + k);
+    }
     }
 
-    // terms
-    const termList = preparedTermsRef.current
-      .map((t) => {
-        const rawName = t.raw?.name || t.raw?.rawName || t.originalName || "";
-        const termLower = rawName.toLowerCase().trim() || t.key;
-        return { pterm: t, termLower };
-      })
-      .filter((x) => x.termLower);
+  if (looksLikeHeading(ln)) headingSkip.add(i);
 
-    const highlightedOnce = new Set();
+  if (SECTION_HEADING_RE.test(ln.text)) sectionSkip.add(i);
+});
 
-    // iterate lines
-    lines.forEach((line, lineIdx) => {
-      const text = line.text;
-      if (headingSkip.has(lineIdx)) return;
-      if (captionSkip.has(lineIdx)) return;
-      if (labelLines.has(lineIdx)) return;
-      if (lineInAnyBlock(lineIdx, tableBlocks)) return;
-      if (singleLineTable.has(lineIdx)) return; // skip suspected single-line table rows
-      if (marginSkip.has(lineIdx)) return; // skip margin/side headings
-      if (SECTION_HEADING_RE.test(text)) return; // numbered section headings
+const tableBlocks = detectTableBlocks(lines);
 
-      const lineSpans = line.spans;
-      if (!lineSpans.length) return;
+// Detect single-line tables (your old logic)
+const singleLineTable = new Set();
+lines.forEach((ln, i) => {
+  const cols = clusterColumns(ln, 8);
+  if (cols.length >= 3) singleLineTable.add(i);
+});
 
-      const concat = lineSpans.map((s) => s.textRaw).join("");
-      const concatLower = concat.toLowerCase();
+const diagramLabelLines = new Set();
 
-      const prefix = [];
-      let acc = 0;
-      for (let i = 0; i < lineSpans.length; i++) {
-        prefix.push(acc);
-        acc += lineSpans[i].textRaw.length;
-      }
+lines.forEach((ln, i) => {
+  const text = ln.text.trim();
 
-      const covered = [];
+  // Very short lines with spaced capitals: "A  B  C"
+  if (/^([A-Z]\s+){2,}[A-Z]$/.test(text)) {
+    diagramLabelLines.add(i);
+  }
 
-      termList.forEach(({ pterm, termLower }) => {
-        if (highlightedOnce.has(pterm.key)) return;
+  // Lines with 1–3 character tokens (typical diagram markers)
+  const tokens = text.split(/\s+/);
+  if (tokens.length <= 6 && tokens.every(t => t.length <= 2)) {
+    diagramLabelLines.add(i);
+  }
+});
 
-        let idx = concatLower.indexOf(termLower);
-        let found = -1;
-        while (idx !== -1) {
-          const end = idx + termLower.length;
-          if (isValidWordBoundary(concat, idx, end)) {
-            found = idx;
-            break;
-          }
-          idx = concatLower.indexOf(termLower, idx + 1);
-        }
-        if (found === -1) return;
 
-        const endPos = found + termLower.length;
 
-        const overlaps = covered.some(([a, b]) => !(endPos <= a || found >= b));
-        if (overlaps) return;
+  const termList = preparedTermsRef.current
+    .map((t) => {
+      const rawName = t.raw?.name || t.raw?.rawName || t.originalName || "";
+      if (!rawName) return null;
+      return {
+        pterm: t,
+        originalName: rawName,
+        termRegex: buildTermRegex(rawName),
+      };
+    })
+    .filter(Boolean);
+
+  lines.forEach((line,lineIdx) => {
+    const lineSpans = line.spans;
+    if (!lineSpans.length) return;
+    
+    if (headingSkip.has(lineIdx)) return;
+    if (captionSkip.has(lineIdx)) return;
+    if (labelLines.has(lineIdx)) return;
+    if (sectionSkip.has(lineIdx)) return;
+    if (lineInAnyBlock(lineIdx, tableBlocks)) return;
+    if (singleLineTable.has(lineIdx)) return;
+    if (diagramLabelLines.has(lineIdx)) return;
+    const concat = lineSpans.map((s) => s.textRaw).join("");
+    const concatTight = tightenSpacedLetters(concat);
+
+    // Map character positions back to spans
+    const prefix = [];
+    let acc = 0;
+    for (let i = 0; i < lineSpans.length; i++) {
+      prefix.push(acc);
+      acc += lineSpans[i].textRaw.length;
+    }
+
+    termList.forEach(({ pterm, termRegex }) => {
+      let match;
+
+      while ((match = termRegex.exec(concatTight)) !== null) {
+        const idx = match.index;
+        const end = idx + match[0].length;
 
         createSubstringOverlaysForRange(
-          pageRect,
+          layerRect,
           overlayContainer,
           lineSpans,
           prefix,
-          found,
-          endPos,
+          idx,
+          end,
           pterm
         );
 
-        covered.push([found, endPos]);
-        highlightedOnce.add(pterm.key);
-      });
+        termRegex.lastIndex = end;
+      }
     });
-  }
+  });
+}
 
   function createSubstringOverlaysForRange(
-    pageRect,
-    overlayContainer,
-    lineSpans,
-    prefix,
-    startIdx,
-    endIdx,
-    pterm
-  ) {
-    for (let i = 0; i < lineSpans.length; i++) {
-      const span = lineSpans[i];
-      const spanStart = prefix[i];
-      const spanEnd = spanStart + span.textRaw.length;
+  layerRect,
+  overlayContainer,
+  lineSpans,
+  prefix,
+  startIdx,
+  endIdx,
+  pterm
+) {
+  for (let i = 0; i < lineSpans.length; i++) {
+    const span = lineSpans[i];
+    const spanStart = prefix[i];
+    const spanEnd = spanStart + span.textRaw.length;
 
-      const ovStart = Math.max(startIdx, spanStart);
-      const ovEnd = Math.min(endIdx, spanEnd);
-      if (ovStart >= ovEnd) continue;
+    const ovStart = Math.max(startIdx, spanStart);
+    const ovEnd = Math.min(endIdx, spanEnd);
+    if (ovStart >= ovEnd) continue;
 
-      const node = span.el.firstChild;
-      if (!node || node.nodeType !== Node.TEXT_NODE) continue;
+    const node = span.el.firstChild;
+    if (!node || node.nodeType !== Node.TEXT_NODE) continue;
 
-      const localStart = ovStart - spanStart;
-      const localEnd = ovEnd - spanStart;
-      if (localStart < 0 || localEnd > node.textContent.length) continue;
+    const localStart = ovStart - spanStart;
+    const localEnd = ovEnd - spanStart;
 
-      const range = document.createRange();
-      range.setStart(node, localStart);
-      range.setEnd(node, localEnd);
+    const range = document.createRange();
+    range.setStart(node, localStart);
+    range.setEnd(node, localEnd);
 
-      const rects = range.getClientRects ? [...range.getClientRects()] : [];
-      rects.forEach((r) => {
-        const overlay = document.createElement("div");
+    const rects = [...range.getClientRects()];
 
-        // Detect whether this term has any extra resources (definition, image, video, concept map, structure, audio)
-        const raw = pterm.raw || {};
+    rects.forEach((r) => {
+      const overlay = document.createElement("div");
+      overlay.className = "term-highlight-overlay";
 
-        // Helper to determine if a string-like field contains useful information
-        const isMeaningfulString = (v) => {
-          if (v === null || v === undefined) return false;
-          const s = String(v).trim();
-          if (!s) return false;
-          const lower = s.toLowerCase();
-          const blacklist = [
-            "definition not found",
-            "not found",
-            "no definition",
-            "no definition available",
-            "unable to find",
-            "not available",
-            "none",
-            "n/a",
-            "—",
-            "-",
-            "no summary available",
-            "no summary",
-            "image not found",
-            "no image",
-            "video not available",
-            "placeholder",
-          ];
-          for (const b of blacklist) if (lower.includes(b)) return false;
-          return true;
-        };
-
-        // Heuristic to detect whether a value likely points to a media resource
-        const isLikelyMedia = (v) => {
-          if (v === null || v === undefined) return false;
-          if (Array.isArray(v)) return v.some(isLikelyMedia);
-          if (!isMeaningfulString(v)) return false;
-          const s = String(v).trim().toLowerCase();
-
-          // Data URIs
-          if (s.startsWith('data:image') || s.startsWith('data:video') || s.startsWith('data:audio')) return true;
-
-          // Common URL patterns
-          if (s.startsWith('http://') || s.startsWith('https://') || s.startsWith('//') || s.startsWith('/')) return true;
-
-          // File-like strings with known extensions
-          if (/(\.(png|jpg|jpeg|gif|svg|webp|bmp|tiff))(\?.*)?$/.test(s)) return true;
-          if (/(\.(mp4|webm|ogg|mov|avi|mkv))(\?.*)?$/.test(s)) return true;
-          if (/(\.(mp3|wav|ogg|m4a|flac))(\?.*)?$/.test(s)) return true;
-
-          // Contains base64 marker
-          if (s.includes('base64,')) return true;
-
-          return false;
-        };
-
-        const hasDefinition = isMeaningfulString(raw.definition);
-        // Only count as available if explicitly in term object (from API response)
-        // Check multiple possible field name variants for each resource type
-        const hasLabelledImage = (Array.isArray(raw.images) && raw.images.some(isLikelyMedia)) || isLikelyMedia(raw.labelled_img) || isLikelyMedia(raw.labelled_image) || isLikelyMedia(raw.labelledImage) || isLikelyMedia(raw.image) || isLikelyMedia(raw.image_url) || isLikelyMedia(raw.imageUrl);
-        const hasVideo = isLikelyMedia(raw.video) || isLikelyMedia(raw.video_url) || isLikelyMedia(raw.videoUrl) || isLikelyMedia(raw.process_video) || isLikelyMedia(raw.processVideo) || isLikelyMedia(raw.process_video_url) || isLikelyMedia(raw.processVideoUrl);
-        const hasTaxonomy = isLikelyMedia(raw.taxonomy_image) || isLikelyMedia(raw.taxonomyImage) || isLikelyMedia(raw.taxonomyImg) || isLikelyMedia(raw.taxonomy) || isLikelyMedia(raw.taxonomy_image_url) || isLikelyMedia(raw.taxonomyImageUrl) || isLikelyMedia(raw.concept_map) || isLikelyMedia(raw.conceptMap);
-        // const hasStructure = raw.word_structure && Object.keys(raw.word_structure || {}).length > 0;
-        const hasAudio = isLikelyMedia(raw.audio_binary) || isLikelyMedia(raw.audio_url) || isLikelyMedia(raw.audioUrl) || isLikelyMedia(raw.audio);
-        const hasExtra = !!(hasDefinition || hasLabelledImage || hasVideo || hasTaxonomy  || hasAudio);
-
-        overlay.className = "term-highlight-overlay" + (hasExtra ? " has-data" : " no-data");
-
-        Object.assign(overlay.style, {
-          position: "absolute",
-          left: `${r.left - pageRect.left}px`,
-          top: `${r.top - pageRect.top}px`,
-          width: `${r.width}px`,
-          height: `${r.height}px`,
-          borderRadius: "2px",
-          cursor: "pointer",
-          zIndex: 20,
-          pointerEvents: "auto",
-          background: hasExtra ? "rgba(255,255,0,0.4)" : "rgba(160,160,160,0.28)",
-        });
-
-        const available = [];
-        if (hasDefinition) available.push("definition");
-        if (hasLabelledImage) available.push("image");
-        if (hasVideo) available.push("video");
-        if (hasTaxonomy) available.push("concept map");
-        // if (hasStructure) available.push("structure");
-        if (hasAudio) available.push("audio");
-
-        overlay.title = available.length ? `Available: ${available.join(', ')}` : 'No definition/image/video/concept map available';
-        overlay.setAttribute('data-available', available.length ? available.join(',') : 'none');
-
-        overlay.onclick = () => {
-          if (window.onPdfTermClick) window.onPdfTermClick(pterm.raw);
-        };
-
-        // On hover, verify server-side media availability if needed (cached per-domain_id)
-        overlay.onmouseenter = async () => {
-          overlay.style.background = hasExtra ? "rgba(255,235,59,0.6)" : "rgba(150,150,150,0.36)";
-
-          const domainId = pterm.raw?.domain_id || pterm.raw?.id || pterm.raw?.domain;
-          if (!domainId) return;
-
-          // If we already checked earlier, update title from cache and skip network
-          const cached = mediaAvailabilityRef.current[domainId];
-          if (cached) {
-            const available = [];
-            if (hasDefinition) available.push("definition");
-            if (cached.hasLabelledImage || hasLabelledImage) available.push("image");
-            if (cached.hasVideo || hasVideo) available.push("video");
-            if (hasTaxonomy) available.push("concept map");
-            // if (hasStructure) available.push("structure");
-            if (hasAudio) available.push("audio");
-            overlay.title = available.length ? `Available: ${available.join(", ")}` : 'No definition/image/video/concept map available';
-            overlay.setAttribute('data-available', available.length ? available.join(',') : 'none');
-            return;
-          }
-
-          // Only perform checks if the term object did not already confidently indicate resources
-          try {
-            // Quick visual feedback
-            overlay.title = 'Checking media availability...';
-
-            // Helper: try HEAD first, fall back to a small GET (Range 0-0) if HEAD returns 405 or fails
-            const checkUrlExists = async (u) => {
-              try {
-                const h = await fetch(u, { method: 'HEAD' });
-                if (h.ok) return true;
-                if (h.status === 405) {
-                  // server doesn't allow HEAD -> try small GET
-                  const g = await fetch(u, { method: 'GET', headers: { Range: 'bytes=0-0' } });
-                  return !!g.ok;
-                }
-                return false;
-              } catch (e) {
-                try {
-                  const g = await fetch(u, { method: 'GET', headers: { Range: 'bytes=0-0' } });
-                  return !!g.ok;
-                } catch (e2) {
-                  return false;
-                }
-              }
-            };
-
-            const [imgOk, vidOk] = await Promise.all([
-              checkUrlExists(`${BASE_URL}/image/${domainId}`),
-              checkUrlExists(`${BASE_URL}/video/${domainId}`),
-            ]);
-
-            mediaAvailabilityRef.current[domainId] = { hasLabelledImage: !!imgOk, hasVideo: !!vidOk };
-
-            const available = [];
-            if (hasDefinition) available.push("definition");
-            if (imgOk || hasLabelledImage) available.push("image");
-            if (vidOk || hasVideo) available.push("video");
-            if (hasTaxonomy) available.push("concept map");
-            // if (hasStructure) available.push("structure");
-            if (hasAudio) available.push("audio");
-
-            overlay.title = available.length ? `Available: ${available.join(", ")}` : 'No definition/image/video/concept map available';
-            overlay.setAttribute('data-available', available.length ? available.join(',') : 'none');
-          } catch (err) {
-            // keep previous title if check fails
-            console.warn('Media availability check failed', err);
-          }
-        };
-
-        overlay.onmouseleave = () => (overlay.style.background = hasExtra ? "rgba(255,255,0,0.4)" : "rgba(160,160,160,0.28)");
-
-        overlayContainer.appendChild(overlay);
+      Object.assign(overlay.style, {
+        position: "absolute",
+        left: `${r.left - layerRect.left}px`,
+        top: `${r.top - layerRect.top}px`,
+        width: `${r.width}px`,
+        height: `${r.height}px`,
+        background: "rgba(255,255,0,0.4)",
+        borderRadius: "2px",
+        pointerEvents: "auto",
+        zIndex: 20,
       });
 
-      range.detach?.();
-    }
+      overlay.onclick = () => {
+        if (window.onPdfTermClick) window.onPdfTermClick(pterm.raw);
+      };
+
+      overlayContainer.appendChild(overlay);
+    });
+
+    range.detach();
   }
+}
+
   
   /* ---------------------------------------------------------
      SECTION ID HIGHLIGHT
   --------------------------------------------------------- */
   function highlightSectionIdsOnPage(pageEl) {
-    const textLayer = pageEl.querySelector(".react-pdf__Page__textContent");
-    if (!textLayer) return;
+  const textLayer = pageEl.querySelector(".react-pdf__Page__textContent");
+  if (!textLayer) return;
 
-    const overlayContainer = ensureOverlayContainer(pageEl, 15);
-    const pageRect = pageEl.getBoundingClientRect();
-    const domSpans = [...textLayer.querySelectorAll("span")];
-    if (!domSpans.length) return;
+  // 🔥 IMPORTANT — attach overlays to textLayer
+  const overlayContainer = ensureOverlayContainer(textLayer, 15);
+  const layerRect = textLayer.getBoundingClientRect();
 
-    // Build lightweight span objects suitable for clustering
-    const spanObjs = domSpans.map((s) => ({
-      el: s,
-      rect: s.getBoundingClientRect(),
-      textTrimmed: (s.textContent || "").trim(),
-      textRaw: s.textContent || "",
-      fontSize: parseFloat(window.getComputedStyle(s).fontSize || 12),
-    }));
+  const domSpans = [...textLayer.querySelectorAll("span")];
+  if (!domSpans.length) return;
 
-    const lines = clusterLines(spanObjs);
+  const spanObjs = domSpans.map((s) => ({
+    el: s,
+    rect: s.getBoundingClientRect(),
+    textTrimmed: (s.textContent || "").trim(),
+    textRaw: s.textContent || "",
+    fontSize: parseFloat(window.getComputedStyle(s).fontSize || 12),
+  }));
 
-    // Skip table blocks / figure labels like we do elsewhere
-    const tableBlocks = detectTableBlocks(lines);
-    const labelLines = new Set();
-    lines.forEach((ln, i) => {
-      if (looksLikeFigureOrTableLabel(ln)) {
-        labelLines.add(i);
-        if (i + 1 < lines.length) labelLines.add(i + 1);
+  const lines = clusterLines(spanObjs);
+
+  const tableBlocks = detectTableBlocks(lines);
+  const labelLines = new Set();
+  lines.forEach((ln, i) => {
+    if (looksLikeFigureOrTableLabel(ln)) {
+      labelLines.add(i);
+      if (i + 1 < lines.length) labelLines.add(i + 1);
+    }
+  });
+
+  const isLineSectionHeading = (ln, sid) => {
+    if (!ln || !ln.text) return false;
+    const txt = ln.text.trim();
+
+    if (SECTION_HEADING_RE.test(txt) && txt.startsWith(sid)) return true;
+
+    const re = new RegExp(`^\\s*${sid}\\s+[A-Z]`);
+    if (re.test(ln.text)) return true;
+
+    if (ln.spans.length > 1 && ln.spans[0].textTrimmed === sid) {
+      const next = ln.spans[1].textTrimmed || "";
+      if (/^[A-Z]/.test(next.trim())) return true;
+    }
+
+    return false;
+  };
+
+  lines.forEach((ln, lineIdx) => {
+    if (!ln || !ln.text) return;
+    if (labelLines.has(lineIdx)) return;
+    if (lineInAnyBlock(lineIdx, tableBlocks)) return;
+
+    const lineText = ln.text.trim();
+
+    preparedSectionIdsRef.current.forEach((sid) => {
+      if (
+        lineText === sid ||
+        isLineSectionHeading(ln, sid) ||
+        lineText.startsWith(sid + " ")
+      ) {
+        let targetSpan =
+          ln.spans.find((s) => s.textTrimmed === sid) ||
+          ln.spans.find((s) => s.textTrimmed.includes(sid));
+
+        if (!targetSpan) targetSpan = ln.spans[0];
+
+        const r = targetSpan.rect || targetSpan.el.getBoundingClientRect();
+        if (!r) return;
+
+        const overlay = document.createElement("div");
+        overlay.className = "section-id-highlight";
+
+        Object.assign(overlay.style, {
+          position: "absolute",
+          left: `${r.left - layerRect.left}px`,
+          top: `${r.top - layerRect.top}px`,
+          width: `${r.width}px`,
+          height: `${r.height}px`,
+          background: "rgba(255,200,0,0.5)",
+          borderRadius: "2px",
+          cursor: "pointer",
+          zIndex: 20,
+          pointerEvents: "auto",
+        });
+
+        overlay.onclick = () => {
+          if (window.onSectionIdClick) window.onSectionIdClick(sid);
+        };
+
+        overlay.onmouseenter = () =>
+          (overlay.style.background = "rgba(255,220,0,0.7)");
+        overlay.onmouseleave = () =>
+          (overlay.style.background = "rgba(255,200,0,0.5)");
+
+        overlayContainer.appendChild(overlay);
       }
     });
+  });
+}
 
-    // Helper: does this line look like a section heading for this sid?
-    const isLineSectionHeading = (ln, sid) => {
-      if (!ln || !ln.text) return false;
-      const txt = ln.text.trim();
-      // Direct numbered heading (e.g., "2.1 Title")
-      if (SECTION_HEADING_RE.test(txt) && txt.startsWith(sid)) return true;
-      // If line starts with the sid then a title follows (sid + space + TitleCase)
-      const re = new RegExp(`^\\s*${sid}\\s+[A-Z]`);
-      if (re.test(ln.text)) return true;
-      // If the first span is exactly the sid and the next span appears like a title
-      if (ln.spans.length > 1 && ln.spans[0].textTrimmed === sid) {
-        const next = ln.spans[1].textTrimmed || "";
-        if (/^[A-Z]/.test(next.trim())) return true;
-      }
-      return false;
-    };
-
-    // Iterate lines and only highlight section ids when line appears to be a heading
-    lines.forEach((ln, lineIdx) => {
-      if (!ln || !ln.text) return;
-      if (labelLines.has(lineIdx)) return;
-      if (lineInAnyBlock(lineIdx, tableBlocks)) return; // skip table rows / blocks
-
-      const lineText = ln.text.trim();
-      preparedSectionIdsRef.current.forEach((sid) => {
-        // Exact match in this line or heading-like match
-        if (lineText === sid || isLineSectionHeading(ln, sid) || lineText.startsWith(sid + " ")) {
-          // Find span within this line that contains the sid (prefer exact match)
-          let targetSpan = ln.spans.find((s) => s.textTrimmed === sid) || ln.spans.find((s) => s.textTrimmed.includes(sid));
-          if (!targetSpan) targetSpan = ln.spans[0];
-
-          const r = targetSpan.rect || targetSpan.el?.getBoundingClientRect();
-          if (!r) return;
-
-          const overlay = document.createElement("div");
-          overlay.className = "section-id-highlight";
-          Object.assign(overlay.style, {
-            position: "absolute",
-            left: `${r.left - pageRect.left}px`,
-            top: `${r.top - pageRect.top}px`,
-            width: `${r.width}px`,
-            height: `${r.height}px`,
-            background: "rgba(255,200,0,0.5)",
-            borderRadius: "2px",
-            cursor: "pointer",
-            zIndex: 20,
-            pointerEvents: "auto",
-          });
-
-          overlay.onclick = () => {
-            if (window.onSectionIdClick) window.onSectionIdClick(sid);
-          };
-          overlay.onmouseenter = () => (overlay.style.background = "rgba(255,220,0,0.7)");
-          overlay.onmouseleave = () => (overlay.style.background = "rgba(255,200,0,0.5)");
-
-          overlayContainer.appendChild(overlay);
-        }
-      });
-    });
-  }
 
   /* ---------------------------------------------------------
      UTIL

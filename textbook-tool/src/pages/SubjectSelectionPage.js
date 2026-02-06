@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AppNavbar from "../components/AppNavbar";
 import "../styles/SubjectSelectionPage.css";
 
-const BASE_URL = "http://10.2.8.12:8100";
+const BASE_URL = "http://localhost:8000";
 
 export default function SubjectSelectionPage() {
   const [subjects, setSubjects] = useState([]);
