@@ -138,14 +138,15 @@ useEffect(() => {
               <img src={iiithLogo} alt="IIIT Hyderabad" className="iiith-logo" />
             </div>
             <span className="brand-name">
-              <span className="brand-letter">L</span>
+              <span className="brand-letter">E</span>
+              <span className="brand-letter">-</span>
+              <span className="brand-letter">R</span>
               <span className="brand-letter">e</span>
               <span className="brand-letter">a</span>
+              <span className="brand-letter">d</span>
+              <span className="brand-letter">e</span>
               <span className="brand-letter">r</span>
-              <span className="brand-letter">n</span>
-              <span className="brand-letter">L</span>
-              <span className="brand-letter">a</span>
-              <span className="brand-letter">b</span>
+              
             </span>
           </div>
 
@@ -288,7 +289,7 @@ useEffect(() => {
                 <div className="ring ring-3"></div>
               </div>
 
-              <div className="floating-card card-1">
+              {/* <div className="floating-card card-1">
                 <div className="card-icon">📚</div>
                 <div className="card-content">
                   <div className="card-title">Smart Analysis</div>
@@ -313,7 +314,7 @@ useEffect(() => {
                   <div className="card-desc">Save 50% time</div>
                 </div>
                 <div className="card-glow"></div>
-              </div>
+              </div> */}
               
               <div className="image-container">
                 <img src={heroImage} alt="AI Learning Illustration" />

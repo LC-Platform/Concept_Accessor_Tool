@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MapPin, X } from "lucide-react";
 import PdfViewer from "./PdfViewer";
 import ReadingPanel from "./ReadingPanel";
 import AnalysisPanel from "./AnalysisPanel";
 import { useParams } from "react-router-dom";
 import "../styles/ModernLayout.css";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://10.2.8.12:8300";
 
 /* ===== Helpers ===== */
 function normalizeStringForMatch(s = "") {
@@ -47,8 +47,17 @@ export default function ConceptLayout() {
   const [selectedSectionId, setSelectedSectionId] = useState(null);
   const [selectedWordText, setSelectedWordText] = useState("");
   const [qaPairs, setQaPairs] = useState([]);
+  const [isReadMode, setIsReadMode] = useState(true);
+  
+  // 👇 NEW: Pin marker states
+  const [pinPosition, setPinPosition] = useState(null); // { page: number, yOffset: number }
+  const [isPinMode, setIsPinMode] = useState(false);
+  const [isSavingPin, setIsSavingPin] = useState(false);
+  
   const navigate = useNavigate();
   const { chapterId } = useParams();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.user_id;
 
 
   /* ========== RESIZE STATE ========== */
@@ -61,15 +70,27 @@ export default function ConceptLayout() {
   const startDragging = (e) => {
     e.preventDefault();
     setIsDragging(true);
-    document.body.classList.add("dragging"); // prevents text selection + shows grabbing cursor
+    document.body.classList.add("dragging");
   };
+
+  useEffect(() => {
+    if (!userId) {
+      navigate("/login");
+    }
+  }, [userId, navigate]);
+
+  useEffect(() => {
+    if (selectedView !== "Word") {
+      setSelectedTerm(null);
+      setSelectedWordText("");
+    }
+  }, [selectedView]);
 
   useEffect(() => {
     const handlePointerMove = (clientX) => {
       if (!isDragging || !containerRef.current) return;
       const totalWidth = containerRef.current.offsetWidth;
       const newLeft = (clientX / totalWidth) * 100;
-      // Keep in 20–80% bounds while dragging
       const bounded = clamp(newLeft, 20, 80);
       setLeftWidth(bounded.toFixed(3) + "%");
       setRightWidth((100 - bounded).toFixed(3) + "%");
@@ -83,7 +104,6 @@ export default function ConceptLayout() {
 
     const stopDragging = () => {
       if (!isDragging) return;
-      // Snap to presets when released
       const currentLeft = parseFloat(leftWidth);
       const snapped = clamp(snapToNearest(currentLeft, [30, 50, 70]), 20, 80);
       setLeftWidth(snapped + "%");
@@ -106,8 +126,6 @@ export default function ConceptLayout() {
       window.removeEventListener("touchcancel", stopDragging);
     };
   }, [isDragging, leftWidth]);
-
- 
 
   useEffect(() => {
     window.onPdfTermClick = (term) => {
@@ -138,7 +156,6 @@ export default function ConceptLayout() {
 
     const loadChapter = async () => {
       try {
-        // 1️⃣ Fetch chapter metadata
         const res = await fetch(`${BASE_URL}/chapters/${chapterId}`);
         if (!res.ok) throw new Error("Failed to fetch chapter");
 
@@ -147,10 +164,9 @@ export default function ConceptLayout() {
         setSectionIds(data.section_ids || []);
         setPdfUrl(`${BASE_URL}${data.pdf_url}`);
 
-        // 3️⃣ Load dependent data (same APIs as before)
         await fetchTerms(chapterId);
         await fetchQAPairs(chapterId);
-
+        await fetchReadingProgress(chapterId); // 👈 NEW: Load saved pin
       } catch (err) {
         console.error("❌ Error loading chapter:", err);
       }
@@ -160,18 +176,16 @@ export default function ConceptLayout() {
   }, [chapterId]);
 
   useEffect(() => {
-  window.onTermMediaAction = ({ term, action }) => {
-    setSelectedTerm(term);
-    setSelectedWordText(term?.name || term?.rawName || "");
-    setSelectedView("Word");
+    window.onTermMediaAction = ({ term, action }) => {
+      setSelectedTerm(term);
+      setSelectedWordText(term?.name || term?.rawName || "");
+      setSelectedView("Word");
+      window.__analysisIntent = action;
+    };
 
-    // forward intent to AnalysisPanel
-    window.__analysisIntent = action;
-  };
-
-  return () => {
-    window.onTermMediaAction = null;
-  };
+    return () => {
+      window.onTermMediaAction = null;
+    };
   }, []);
 
   const fetchQAPairs = async (chapterId) => {
@@ -197,10 +211,9 @@ export default function ConceptLayout() {
       );
 
       const data = await res.json();
-      
-      // LOG: Total terms from API
+
       console.log("📊 TERMS FROM API:", data.terms?.length || 0);
-      console.log("📋 Term names:", data.terms?.map(t => t.name || t.rawName) || []);
+      console.log("📋 Term names:", data.terms?.map((t) => t.name || t.rawName) || []);
 
       const processed = (data.terms || []).map((t) => {
         const rawName =
@@ -219,23 +232,99 @@ export default function ConceptLayout() {
       });
 
       setTerms(processed);
-      
-      // LOG: Processed terms
+
       console.log("✅ PROCESSED TERMS:", processed.length);
-      
     } catch (err) {
       console.error("❌ Error fetching terms:", err);
     }
   };
 
+  /* ---------------- 👇 NEW: PIN MARKER FUNCTIONS ---------------- */
   
+  const fetchReadingProgress = async (chapterId) => {
+    if (!userId) return;
+
+    try {
+      const res = await fetch(
+        `${BASE_URL}/reading-progress/${chapterId}?user_id=${userId}`
+      );
+
+      if (!res.ok) return;
+
+      const data = await res.json();
+      if (data.pin_position) {
+        setPinPosition(data.pin_position);
+      }
+    } catch (err) {
+      console.error("❌ Error fetching reading progress:", err);
+    }
+  };
+
+
+  const saveReadingProgress = async (position) => {
+  if (!chapterId || !userId) return;
+
+  setIsSavingPin(true);
+
+  try {
+    const res = await fetch(
+      `${BASE_URL}/reading-progress/${chapterId}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: userId,
+          pin_position: position,
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      console.error("❌ Failed to save progress");
+    }
+  } catch (err) {
+    console.error("❌ Error saving reading progress:", err);
+  } finally {
+    setIsSavingPin(false);
+  }
+};
+
+
+  // Handle pin placement
+  const handlePinPlace = (position) => {
+    setPinPosition(position);
+    setIsPinMode(false);
+    saveReadingProgress(position);
+  };
+
+  const handleRemovePin = async () => {
+    if (!chapterId || !userId) return;
+
+    setPinPosition(null);
+
+    await fetch(
+      `${BASE_URL}/reading-progress/${chapterId}?user_id=${userId}`,
+      { method: "DELETE" }
+    );
+  };
+
+
+  // Jump to pin location
+  const handleJumpToPin = () => {
+  if (!pinPosition) return;
+
+  const pdfViewer = document.querySelector(".pdf-viewer-scroll");
+  if (!pdfViewer) return;
+
+  pdfViewer.scrollTo({
+    top: pinPosition.yOffset,
+    behavior: "smooth",
+  });
+};
+
 
   return (
     <div className="concept-layout">
-      <div className="floating-back-btn" onClick={() => navigate("/chapters")}>
-        <ArrowLeft size={22} />
-      </div>
-
       <div className="concept-main" ref={containerRef}>
         {/* LEFT: PDF Viewer + Reading Panel */}
         <div
@@ -243,10 +332,74 @@ export default function ConceptLayout() {
           style={{ width: leftWidth }}
         >
           <div className="reading-card">
-            {/* Top tabs */}
-            <h2 className="chapter-name">
-              {chapterTitle ? chapterTitle : "Untitled Chapter"}
-            </h2>
+            {/* Top header */}
+            <div className="chapter-header-row">
+              <button className="inline-back-btn" onClick={() => navigate(-1)}>
+                <ArrowLeft size={20} />
+              </button>
+
+              <h2 className="chapter-name">
+                {chapterTitle ? chapterTitle : "Untitled Chapter"}
+              </h2>
+
+              {/* Read Mode Toggle - only show in Word view */}
+              {selectedView === "Word" && (
+                <button
+                  className={`read-mode-toggle ${isReadMode ? "active" : ""}`}
+                  onClick={() => setIsReadMode(!isReadMode)}
+                  title={isReadMode ? "Switch to Highlight Mode" : "Switch to Read Mode"}
+                >
+                  {isReadMode ? "🔍 Highlight" : "📖 Read"}
+                </button>
+              )}
+
+              {/* 👇 NEW: Pin Controls */}
+              <div className="pin-controls">
+                {pinPosition && !isPinMode && (
+                  <>
+                    <button
+                      className="pin-control-btn jump-to-pin"
+                      onClick={handleJumpToPin}
+                      title="Jump to reading marker"
+                    >
+                      <MapPin size={18} />
+                      Go to Pin
+                    </button>
+                    <button
+                      className="pin-control-btn remove-pin"
+                      onClick={handleRemovePin}
+                      title="Remove reading marker"
+                    >
+                      <X size={16} />
+                    </button>
+                  </>
+                )}
+                
+                {!pinPosition && !isPinMode && (
+                  <button
+                    className="pin-control-btn place-pin"
+                    onClick={() => setIsPinMode(true)}
+                    title="Mark your reading progress"
+                  >
+                    <MapPin size={18} />
+                    Place Pin
+                  </button>
+                )}
+
+                {isPinMode && (
+                  <button
+                    className="pin-control-btn cancel-pin"
+                    onClick={() => setIsPinMode(false)}
+                  >
+                    Cancel
+                  </button>
+                )}
+
+                {isSavingPin && (
+                  <span className="pin-saving-indicator">Saving...</span>
+                )}
+              </div>
+            </div>
 
             <div className="view-toggle top-tabs">
               {["Word", "Sentence", "Summary", "Q/A"].map((v) => (
@@ -268,6 +421,10 @@ export default function ConceptLayout() {
                     terms={selectedView === "Word" ? terms : []}
                     sectionIds={selectedView === "Summary" ? sectionIds : []}
                     selectedView={selectedView}
+                    isReadMode={isReadMode}
+                    pinPosition={pinPosition} // 👈 NEW
+                    onPinPlace={handlePinPlace} // 👈 NEW
+                    isPinMode={isPinMode} // 👈 NEW
                   />
                 </div>
               ) : (
@@ -295,7 +452,9 @@ export default function ConceptLayout() {
           aria-label="Resize panels"
         >
           <span className="drag-grip" aria-hidden="true">
-            <span></span><span></span><span></span>
+            <span></span>
+            <span></span>
+            <span></span>
           </span>
         </div>
 
@@ -321,4 +480,3 @@ export default function ConceptLayout() {
     </div>
   );
 }
-

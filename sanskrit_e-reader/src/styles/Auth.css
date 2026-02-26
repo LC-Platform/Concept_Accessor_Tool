@@ -1,0 +1,236 @@
+/* ================================
+   GLOBAL AUTH PAGE WRAPPER
+================================ */
+.auth-container {
+  min-height: 100vh;
+  width: 100%;
+  background: var(--light-gradient, linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: "Inter", sans-serif;
+}
+
+
+/* ================================
+   CARD
+================================ */
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  padding: 40px 35px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  animation: fadeInUp 0.6s ease forwards;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.auth-card h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+  text-align: center;
+  color: #1a202c;
+  background: linear-gradient(135deg, #1a202c, #4a5568);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ================================
+   FORMS
+================================ */
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.auth-card label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #4a5568;
+}
+
+/* NORMAL INPUTS + PASSWORD INPUTS (UNIFIED HEIGHT) */
+.auth-card input,
+.password-field input {
+  height: 48px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e0;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.25s ease;
+  background: rgba(255, 255, 255, 0.85);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-card input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+/* ================================
+   PASSWORD FIELD (FIXED)
+================================ */
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-field input {
+  padding-right: 48px !important; /* space for eye icon */
+  box-sizing: border-box;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+  opacity: 0.75;
+  user-select: none;
+  transition: 0.2s ease;
+}
+
+.password-toggle:hover {
+  opacity: 1;
+}
+
+.field-error {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+/* ================================
+   BUTTONS
+================================ */
+.primary-btn {
+  margin-top: 10px;
+  padding: 14px;
+  width: 100%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.primary-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(102, 126, 234, 0.35);
+}
+
+/* ================================
+   LINKS/SUBTEXT
+================================ */
+.auth-switch,
+.auth-link {
+  text-align: center;
+  margin-top: 14px;
+  color: #4a5568;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.auth-switch span {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.auth-switch:hover span,
+.auth-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* ================================
+   SUCCESS + ERROR MESSAGE
+================================ */
+.auth-error {
+  background: #fdecea;
+  color: #b71c1c;
+  border: 1px solid #f5c6cb;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.input-error {
+  border-color: #d32f2f !important;
+  background: #fff5f5;
+}
+
+
+.auth-success {
+  background: #e6f4ea;
+  color: #1b5e20;
+  border: 1px solid #c8e6c9;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+
+/* ================================
+   ANIMATIONS
+================================ */
+@keyframes fadeInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 30px 24px;
+  }
+
+  .auth-card h2 {
+    font-size: 1.7rem;
+  }
+}
+
+
+/* FINAL MOBILE REFINEMENTS */
+@media (max-width: 420px) {
+  .auth-card {
+    padding: 24px !important;
+    max-width: 100% !important;
+  }
+
+  .auth-card input {
+    height: 44px !important;
+    font-size: 0.95rem;
+  }
+
+  .primary-btn {
+    padding: 12px !important;
+    font-size: 1rem !important;
+  }
+}

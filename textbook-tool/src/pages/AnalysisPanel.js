@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useMemo } from "react";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://10.2.8.12:8300";
 
 export default function AnalysisPanel({
   selectedTerm,
@@ -29,6 +29,16 @@ export default function AnalysisPanel({
   const [hasVideo, setHasVideo] = useState(false);
   const [conceptFullscreen, setConceptFullscreen] = useState(false);
 
+  const getDynamicFontSize = (text = "") => {
+    const length = text?.length || 0;
+
+    if (length < 200) return "22px";
+    if (length < 500) return "19px";
+    if (length < 1000) return "17px";
+    if (length < 2000) return "15px";
+    return "14px";
+  };
+
 
   // audio states
   const [audioUrl, setAudioUrl] = useState(null);
@@ -37,7 +47,7 @@ export default function AnalysisPanel({
   const audioRef = useRef(null);
   const [popupImg, setPopupImg] = useState(null);
 
- 
+  
   const openImagePopup = (url) => {
     setPopupImg(null); // force unmount first
 
@@ -398,35 +408,35 @@ useEffect(() => {
 
   /** Translate Section Summary */
   const translateSectionSummary = async (sectionId, lang) => {
-    try {
-      setIsLoading(true);
+  try {
+    setIsLoading(true);
 
-      const res = await fetch(`${BASE_URL}/translate/section-summary/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chapter_id: chapterId,
-          section_id: sectionId,
-          target_language: lang,
-        }),
-      });
+    const url =
+      `${BASE_URL}/translate/section-summary/` +
+      `?chapter_id=${chapterId}` +
+      `&section_id=${sectionId}` +
+      `&target_language=${lang}`;
 
-      const data = await res.json();
-      const value =
-        data.translated_section_summary?.data ||
-        data.translated_section_summary ||
-        "Translation unavailable.";
+    const res = await fetch(url, { method: "GET" });
 
-      setTranslatedSections((prev) => ({
-        ...prev,
-        [sectionId]: value,
-      }));
-    } catch (err) {
-      console.error("Translate summary error:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    const data = await res.json();
+
+    const value =
+      data.translated_section_summary?.data ||
+      data.translated_section_summary ||
+      "Translation unavailable.";
+
+    setTranslatedSections((prev) => ({
+      ...prev,
+      [sectionId]: value,
+    }));
+  } catch (err) {
+    console.error("Translate summary error:", err);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
  const loadImages = async () => {
   if (!selectedTerm) return;
@@ -528,7 +538,16 @@ useEffect(() => {
         {selectedSentence && (
           <>
             <p><strong>Selected Sentence:</strong></p>
-            <p className="selected-sentence-box">{selectedSentence}</p>
+            <p 
+              className="selected-sentence-box"
+              style={{
+                fontSize: getDynamicFontSize(selectedSentence),
+                lineHeight: "1.6"
+              }}
+            >
+              {selectedSentence}
+            </p>
+
 
             {/* TRANSLATE SENTENCE */}
             <div className="translation-box">
@@ -545,7 +564,12 @@ useEffect(() => {
             {translatedSentence && (
               <div className="translated-text-box">
                 <h4>Translated Sentence:</h4>
-                <p>{translatedSentence}</p>
+                <p style={{ 
+                  fontSize: getDynamicFontSize(translatedSentence),
+                  lineHeight: "1.6"
+                }}>
+                  {translatedSentence}
+                </p>
               </div>
             )}
 
@@ -607,7 +631,16 @@ useEffect(() => {
 
         {/* SUMMARY CONTENT */}
         {sectionSummary && (
-          <p className="section-summary">{sectionSummary}</p>
+          <p 
+          className="section-summary"
+          style={{
+            fontSize: getDynamicFontSize(sectionSummary),
+            lineHeight: "1.7"
+          }}
+        >
+          {sectionSummary}
+        </p>
+
         )}
 
         {/* TRANSLATION DROPDOWN */}
@@ -625,9 +658,16 @@ useEffect(() => {
             </select>
 
             {translatedSections[selectedSectionId] && (
-              <p className="translated-text">
-                {translatedSections[selectedSectionId]}
+             <p 
+              className="translated-text"
+              style={{
+                fontSize: getDynamicFontSize(translatedSections[selectedSectionId]),
+                lineHeight: "1.7"
+              }}
+              >
+              {translatedSections[selectedSectionId]}
               </p>
+
             )}
           </div>
         )}
@@ -644,20 +684,25 @@ useEffect(() => {
 
         <div className="qa-container">
           {qaPairs.length === 0 && (
-            <p>No Q/A pairs found for this chapter.</p>
+            <p className="qa-empty">No Q&A pairs found for this chapter.</p>
           )}
 
           {qaPairs.map((item, index) => (
             <div key={index} className="qa-card">
-              <p><strong>{index + 1}. Question:</strong> {item.question}</p>
-              <p><strong>Answer:</strong> {item.answer}</p>
+              <div className="qa-question">
+                <span className="qa-number">Q{index + 1}</span>
+                <span className="qa-question-text">{item.question}</span>
+              </div>
+              <div className="qa-answer">
+                <span className="qa-answer-label">A</span>
+                <p className="qa-answer-text">{item.answer}</p>
+              </div>
             </div>
           ))}
         </div>
       </div>
     );
   }
-
   // ---------------------------------------------------------------------
   // WORD VIEW
   // ---------------------------------------------------------------------
@@ -708,7 +753,14 @@ useEffect(() => {
       {activeTab === "Define" && (
         <div className="define-section">
           <h4>Definition</h4>
-          <p>{definition || "No definition available."}</p>
+          <p style={{ 
+            fontSize: getDynamicFontSize(definition),
+            lineHeight: "1.6",
+            transition: "font-size 0.3s ease"
+          }}>
+            {definition || "No definition available."}
+          </p>
+
 
           <div className="translation-box">
             <label>Translate:</label>
@@ -723,7 +775,13 @@ useEffect(() => {
           {translatedDef && (
             <div className="translated-text">
               <h4>Translated:</h4>
-              <p>{translatedDef}</p>
+              <p style={{ 
+                fontSize: getDynamicFontSize(translatedDef),
+                lineHeight: "1.6",
+                transition: "font-size 0.3s ease"
+              }}>
+                {translatedDef}
+              </p>
             </div>
           )}
         </div>

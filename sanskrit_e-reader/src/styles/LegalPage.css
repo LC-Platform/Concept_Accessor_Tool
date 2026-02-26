@@ -1,0 +1,314 @@
+/* ===========================
+   LEGAL PAGE - FULLY RESPONSIVE
+=========================== */
+
+.legal-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  position: relative;
+}
+
+.legal-container::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(102,126,234,0.03) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(118,75,162,0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+.header-bar {
+  display: flex;
+  align-items: center;
+  padding: 15px 40px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 30px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.iiith-logo {
+  height: 45px;
+  transition: 0.3s ease;
+}
+
+.iiith-logo:hover {
+  transform: scale(1.05);
+}
+
+/* ===========================
+   MAIN CONTENT
+=========================== */
+.legal-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.legal-hero {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.legal-hero h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  color: transparent;
+  background: var(--dark-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  color: var(--medium-text);
+  max-width: 550px;
+  margin: 10px auto 0;
+}
+
+.back-btn {
+  margin-left: 20px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1.5px solid #444;
+  color: #222;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background: #eee;
+}
+
+
+/* ===========================
+   TABS
+=========================== */
+.legal-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 20px 25px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 16px 16px 0 0;
+  backdrop-filter: blur(20px);
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 12px 26px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--light-text);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  border-radius: 8px 8px 0 0;
+  transition: 0.3s ease;
+}
+
+.tab-btn:hover {
+  color: var(--dark-text);
+  transform: translateY(-2px);
+}
+
+.tab-btn.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+  font-weight: 600;
+  background: rgba(102,126,234,0.06);
+}
+
+/* ===========================
+   CONTENT AREA
+=========================== */
+.legal-content-area {
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  padding: clamp(25px, 4vw, 50px) clamp(20px, 4vw, 40px);
+  border-radius: 0 0 20px 20px;
+  box-shadow: var(--shadow-light);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-top: none;
+  min-height: 500px;
+}
+
+.policy-content h2,
+.terms-content h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.3rem);
+  font-weight: 700;
+  color: transparent;
+  background: var(--dark-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.last-updated {
+  margin-bottom: 35px;
+  color: var(--light-text);
+  font-size: 0.9rem;
+}
+
+/* ===========================
+   SECTION HEADINGS
+=========================== */
+.policy-section,
+.terms-section {
+  margin-bottom: 40px;
+  padding-bottom: 35px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.policy-section h3,
+.terms-section h3 {
+  font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+  font-weight: 600;
+  background: rgba(102,126,234,0.05);
+  border-left: 5px solid #667eea;
+  margin-left: -30px;
+  margin-right: -30px;
+  padding: 16px 25px;
+  border-radius: 0 12px 12px 0;
+}
+
+.policy-section p,
+.terms-section p {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--medium-text);
+}
+
+/* ===========================
+   LISTS
+=========================== */
+.policy-section ul,
+.terms-section ul {
+  padding-left: 25px;
+  margin: 20px 0;
+}
+
+.policy-section li,
+.terms-section li {
+  margin-bottom: 10px;
+  color: var(--medium-text);
+  padding-left: 10px;
+  position: relative;
+}
+
+.policy-section li::before,
+.terms-section li::before {
+  content: "•";
+  color: #667eea;
+  position: absolute;
+  left: -15px;
+}
+
+/* ===========================
+   CONTACT INFO BOX
+=========================== */
+.contact-info {
+  background: rgba(248,250,252,0.8);
+  padding: 20px 25px;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+  margin-top: 20px;
+}
+
+.contact-info p {
+  margin: 10px 0;
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+.legal-footer {
+  text-align: center;
+  margin-top: 40px;
+  padding: 25px 30px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 16px;
+  box-shadow: var(--shadow-light);
+}
+
+.legal-footer p {
+  color: var(--light-text);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* ===========================
+   RESPONSIVE BREAKPOINTS
+=========================== */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .legal-content {
+    padding: 60px 25px;
+  }
+
+  .policy-section h3,
+  .terms-section h3 {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 14px 20px;
+  }
+
+  .legal-tabs {
+    padding: 15px 20px;
+  }
+}
+
+/* Mobiles */
+@media (max-width: 480px) {
+  .legal-content {
+    padding: 50px 18px;
+  }
+
+  .tab-btn {
+    width: 100%;
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom-width: 2px;
+  }
+
+  .policy-section h3,
+  .terms-section h3 {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding: 12px 16px;
+    font-size: 1.15rem;
+  }
+
+  .legal-content-area {
+    padding: 25px 18px;
+  }
+}
+
+/* Smooth anchor scrolling */
+.policy-section h3,
+.terms-section h3 {
+  scroll-margin-top: 120px;
+}
+
+/* Print */
+@media print {
+  .legal-tabs,
+  .legal-footer,
+  .header-bar {
+    display: none;
+  }
+}

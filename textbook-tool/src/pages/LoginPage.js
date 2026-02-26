@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Auth.css";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://10.2.8.12:8300";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -23,9 +23,6 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
-    console.log("🔥 LOGIN FORM SUBMITTED");
-    console.log("📦 REQUEST BODY:", form);
-
     try {
       const res = await fetch(`${BASE_URL}/login/`, {
         method: "POST",
@@ -33,34 +30,27 @@ export default function LoginPage() {
         body: JSON.stringify(form),
       });
 
-      console.log("📩 RAW RESPONSE:", res);
-
       const data = await res.json();
-      console.log("📨 API RESPONSE JSON:", data);
 
       if (!res.ok) {
-        setError(data?.message || "Login failed");
+        setError(data?.detail || "Login failed");
         return;
       }
 
-      console.log("✅ LOGIN SUCCESS");
-
-      // Store login state
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userEmail", form.email);
-
-      // If API returns username, store it
-      if (data?.username) {
-        localStorage.setItem("username", data.username);
-      }
+      // Store full user object
+      localStorage.setItem("user", JSON.stringify({
+        user_id: data.user_id,
+        username: data.username,
+        email: data.email
+      }));
 
       navigate("/subjects", { replace: true });
 
     } catch (err) {
-      console.log("💥 NETWORK ERROR:", err);
       setError("Server error");
     }
   };
+
 
   return (
     <div className="auth-container">

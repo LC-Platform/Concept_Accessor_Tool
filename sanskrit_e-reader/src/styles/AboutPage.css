@@ -1,0 +1,122 @@
+/* =========================================================
+   ABOUT PAGE - FULL RESPONSIVE VERSION
+========================================================= */
+
+.about-container {
+  min-height: 100vh;
+  background: var(--light-gradient);
+  font-family: "Inter", sans-serif;
+  position: relative;
+}
+
+/* Header */
+.header-bar {
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.iiith-logo {
+  height: 42px;
+}
+
+.back-btn {
+  margin-left: 20px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1.5px solid #444;
+  color: #222;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background: #eee;
+}
+
+
+/* Main Content */
+.about-content {
+  max-width: 1200px;
+  margin: auto;
+  padding: clamp(50px, 8vw, 100px) 20px;
+}
+
+/* HERO */
+.about-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  background: var(--dark-gradient);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  max-width: 600px;
+  margin: auto;
+}
+
+/* Section */
+.about-section {
+  padding: clamp(25px, 4vw, 50px) clamp(20px, 4vw, 40px);
+  border-radius: 18px;
+  margin-bottom: 50px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+}
+
+/* Section title */
+.about-section h2 {
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+}
+
+/* Paragraph */
+.about-section p {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+  gap: 25px;
+}
+
+/* Technologies grid */
+.tech-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 15px;
+}
+
+/* Team Members */
+.team-members {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+  gap: 25px;
+}
+
+/* MOBILE BREAKPOINTS */
+@media (max-width: 650px) {
+  .about-hero {
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section {
+    padding: 22px 16px;
+  }
+
+  .tech-list {
+    grid-template-columns: 1fr;
+  }
+}
+
