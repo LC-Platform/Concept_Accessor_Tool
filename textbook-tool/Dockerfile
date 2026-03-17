@@ -1,32 +1,37 @@
-# ---------- 1. Build Stage ----------
-FROM node:18-alpine AS builder
+dockerfile lo kuda mention cheyali. ee file refer chey
+
+# Step 1: Build with Node
+FROM node:22-alpine AS build
 
 WORKDIR /app
-
-# Copy package files and install dependencies
-COPY package.json package-lock.json ./
+COPY package*.json ./
 RUN npm install
-
-# Copy rest of the project
 COPY . .
 
-# Build the production files
+ARG REACT_APP_BASE_PATH="/chatbotiframefestage/"
+ENV PUBLIC_URL=$REACT_APP_BASE_PATH
+
 RUN npm run build
 
-# ---------- 2. Nginx Stage ----------
-FROM nginx:stable-alpine
+# Step 2: Serve with Nginx
+FROM nginx:alpine
 
-# Remove default nginx static files
-RUN rm -rf /usr/share/nginx/html/*
+# Copy built files
+COPY --from=build /app/dist /usr/share/nginx/html/chatbotiframefestage
 
-# Copy built files from builder
-COPY --from=builder /app/build /usr/share/nginx/html
+# Expose the port
+EXPOSE 5173
 
-# Copy a custom nginx config (optional but recommended)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80
-EXPOSE 80
+# Configure Nginx
+RUN echo "server { \
+    listen 5173; \
+    server_name localhost; \
+    root /usr/share/nginx/html/chatbotiframefestage; \
+    index index.html; \
+    location / { \
+        try_files \$uri \$uri/ /index.html; \
+    } \
+}" > /etc/nginx/conf.d/default.conf
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
