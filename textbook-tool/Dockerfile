@@ -1,4 +1,3 @@
-dockerfile lo kuda mention cheyali. ee file refer chey
 
 # Step 1: Build with Node
 FROM node:22-alpine AS build
@@ -8,7 +7,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-ARG REACT_APP_BASE_PATH="/chatbotiframefestage/"
+ARG REACT_APP_BASE_PATH="/bioereaderfe/"
 ENV PUBLIC_URL=$REACT_APP_BASE_PATH
 
 RUN npm run build
@@ -17,7 +16,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copy built files
-COPY --from=build /app/dist /usr/share/nginx/html/chatbotiframefestage
+COPY --from=build /app/dist /usr/share/nginx/html/bioereaderfe
 
 # Expose the port
 EXPOSE 5173
@@ -26,7 +25,7 @@ EXPOSE 5173
 RUN echo "server { \
     listen 5173; \
     server_name localhost; \
-    root /usr/share/nginx/html/chatbotiframefestage; \
+    root /usr/share/nginx/html/bioereaderfe; \
     index index.html; \
     location / { \
         try_files \$uri \$uri/ /index.html; \
