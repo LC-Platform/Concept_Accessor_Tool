@@ -31,7 +31,7 @@ app = FastAPI(title="Concept Accessor User API")
 # -----------------------------------
 load_dotenv()
 MONGODB_URI = os.getenv("MONGODB_URI")
-MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT", "10.2.8.12:9001")
+MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT", "localhost:9000")
 MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY")
 MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY")
 MINIO_BUCKET = os.getenv("MINIO_BUCKET", "concept-accessor")
@@ -40,7 +40,7 @@ MINIO_SECURE = os.getenv("MINIO_SECURE", "False").lower() == "true"
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://10.2.8.12:3002",
+        "http://localhost:3000",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -57,7 +57,7 @@ minio_client = Minio(
 
 # MongoDB setup
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGODB_URI)
-db_mongo = client["concept_accessor"]
+db_mongo = client["yog_darshan"]
 chapters_col = db_mongo["chapters"]
 full_summary_col = db_mongo["full_summary"]
 section_summary_col = db_mongo["section_summary"]
@@ -207,11 +207,10 @@ async def signup(user: SignupModel):
         "username": user.username,
         "name": user.name,
         "email": user.email,
-        "standard": user.standard,
         "password_hash": hashed_pw.decode("utf-8"),
     }
     await users_col.insert_one(user_doc)
-    return {"message": "Signup successful", "username": user.username, "email": user.email, "standard": user.standard}
+    return {"message": "Signup successful", "username": user.username, "email": user.email}
 
 # Login route
 @app.post("/login/")

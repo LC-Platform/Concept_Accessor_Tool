@@ -10,7 +10,8 @@ def xml_to_image(xml_str, domain_name):
     # ---------- helper: parse tree ----------
     def parse_tree(node):
         label = node.attrib.get("name", "")
-        return {"label": label, "children": [parse_tree(c) for c in node]}
+        children = [parse_tree(c) for c in node if c.attrib.get("name","").strip()]
+        return {"label": label, "children": children}
 
     # ---------- helper: sanitize xml ----------
     def sanitize_xml(s: str) -> str:
@@ -25,7 +26,7 @@ def xml_to_image(xml_str, domain_name):
 
     # ---------- helper: draw wrapped text and return height ----------
     def draw_wrapped_text(ax, x, y, text, max_width_chars,
-                      font_size=12, line_height=0.30,
+                      font_size=18, line_height=0.40,
                       ha='center', va='center',
                       color='#000000', weight='bold',
                       zorder=7, draw=True):
@@ -68,239 +69,367 @@ def xml_to_image(xml_str, domain_name):
 
     try:
         # ============================================================
-        # PROCESS MAP
+        # PROCESS MAP  –  two-level mind-map layout
+        #
+        # Level 1 (center → directly):  Definition, Purpose, Types/Subtypes
+        # Level 2 (Purpose → children): everything else
         # ============================================================
         if is_process:
-            sections = tree.get("children", [])
-            child_counts = [
-                len([s for s in n.get("children", [])
-                     if "note:" not in s["label"].lower()])
-                for n in sections
-            ]
-            max_children = max(child_counts) if child_counts else 1
-            height = max(24, 12 + len(sections) * 4 + max_children * 0.8)
+            sections = [s for s in tree.get("children", []) if s.get("label", "").strip()]
 
-            fig, ax = plt.subplots(figsize=(18, height / 1.3), dpi=130)
-            ax.set_facecolor('white')
-            ax.axis('off')
-
-            # Title (BIGGER with better visibility)
-            title = root_label_full if ":" in root_label_full else f"Process Map: {root_label}"
-            ax.text(0, height - 2.0, title, fontsize=48,
-                    ha='center', va='center',
-                    color='#000000', weight='bold',
-                    fontfamily='sans-serif')
-
-            # Main box - BRIGHTER COLORS
-            main_y = height - 5.5
-            ax.add_patch(patches.FancyBboxPatch(
-                (-3.8, main_y - 1.1), 7.6, 2.2,
-                boxstyle="round,pad=0.15", facecolor="#2E7D32",
-                linewidth=3, edgecolor='#1B5E20', zorder=10))
-            ax.text(0, main_y, root_label.lower(), fontsize=38,
-                    ha='center', va='center',
-                    color='white', weight='bold', zorder=11)
-
-            # Layout parameters
-            spine_x = 0
-            section_w = 7.0
-            section_h_base = 2.0
-            section_gap = 4.0
-            left_x, right_x = -9.0, 9.0
-            child_w = 7.0
-            child_base_h = 1.5
-            child_gap = 2.0
-
-            current_y = main_y - 3.0
-
-            # Connect main to first section
-            if sections:
-                ax.plot([0, 0], [main_y - 1.1, current_y + section_h_base / 2],
-                        color='#424242', linewidth=3, zorder=3)
-
-            for idx, section in enumerate(sections):
-                sec_y = current_y
-
-                # Section text + height
-                sec_label = section["label"]
-                line_h = 0.50
-                _, sec_text_height = draw_wrapped_text(
-                     ax, spine_x, sec_y, sec_label,
-                     max_width_chars=22, font_size=22,
-                      line_height=line_h, color='#000000', zorder=9,
-                    draw=False
-                        )
-                section_h = max(section_h_base, sec_text_height + 1.4)
-
-                # Section box - BRIGHTER COLOR
+            # ── helpers ──────────────────────────────────────────────
+            def _draw_box(ax, cx, cy, w, h, facecolor, edgecolor,
+                          radius=0.18, lw=2.0, zorder=5):
                 ax.add_patch(patches.FancyBboxPatch(
-                    (spine_x - section_w / 2, sec_y - section_h / 2),
-                    section_w, section_h,
-                    boxstyle="round,pad=0.12", facecolor="#1976D2",
-                    linewidth=2.5, edgecolor='#0D47A1', zorder=8))
+                    (cx - w / 2, cy - h / 2), w, h,
+                    boxstyle=f"round,pad={radius}",
+                    facecolor=facecolor, edgecolor=edgecolor,
+                    linewidth=lw, zorder=zorder))
 
-                # Section text centered and larger
-                draw_wrapped_text(
-                    ax, spine_x, sec_y, sec_label,
-                    max_width_chars=22,
-                    font_size=22,
-                    line_height=line_h,
-                    color='#FFFFFF', zorder=9,
-                    draw=True
-                )
+            def _draw_curve(ax, x0, y0, x1, y1, color, lw, zorder=3):
+                mid_x = (x0 + x1) / 2
+                mid_y = (y0 + y1) / 2
+                dx, dy = x1 - x0, y1 - y0
+                length = max((dx**2 + dy**2) ** 0.5, 0.001)
+                px, py = -dy / length, dx / length
+                cx_ = mid_x + 0.3 * px
+                cy_ = mid_y + 0.3 * py
+                verts = [(x0, y0), (cx_, cy_), (x1, y1)]
+                codes = [Path.MOVETO, Path.CURVE3, Path.CURVE3]
+                ax.add_patch(patches.PathPatch(
+                    Path(verts, codes),
+                    facecolor='none', edgecolor=color,
+                    linewidth=lw, zorder=zorder))
 
-                # Children in two columns
-                children = [
-                    c for c in section.get("children", [])
-                    if "note:" not in c["label"].lower()
-                ]
+            def _draw_elbow(ax, x0, y0, x1, y1, color, lw, zorder=3):
+                mid_x = (x0 + x1) / 2
+                verts = [(x0, y0), (mid_x, y0), (mid_x, y1), (x1, y1)]
+                codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO]
+                ax.add_patch(patches.PathPatch(
+                    Path(verts, codes),
+                    facecolor='none', edgecolor=color,
+                    linewidth=lw, zorder=zorder))
 
-                if children:
-                    left_col = children[::2]
-                    right_col = children[1::2]
+            def _measure_h(text, max_chars, font_size, line_h):
+                lines = textwrap.wrap(text, width=max_chars,
+                                      break_long_words=True) or [text]
+                return max(font_size * 0.035,
+                           (len(lines) - 1) * line_h + font_size * 0.038)
 
-                    # -------- left column --------
-                    for i, child in enumerate(left_col):
-                        cy = sec_y - section_h / 2 - (i + 1) * child_gap
+            # ── colour palettes ───────────────────────────────────────
+            # Level-1 branches (directly connected to center)
+            L1_COLORS = {
+                'definition': ('#6EC6F5', '#039BE5', '#E1F5FE'),  # blue
+                'purpose':    ('#81C784', '#388E3C', '#E8F5E9'),  # green
+                'types':      ('#CE93D8', '#8E24AA', '#F3E5F5'),  # purple
+                'subtypes':   ('#CE93D8', '#8E24AA', '#F3E5F5'),  # purple
+            }
+            L1_DEFAULT = ('#FFB74D', '#EF6C00', '#FFF3E0')
 
-                        if "step" in child["label"].lower():
-                            bg, edge, txt = "#FF9800", "#E65100", "#FFFFFF"
-                        else:
-                            bg, edge, txt = "#FFC107", "#F57C00", "#000000"
+            # Level-2 branches (connected to Purpose) - distinct colors
+            L2_PALETTE = [
+                ('#FF8A65', '#E64A19', '#FBE9E7'),  # deep orange
+                ('#4DB6AC', '#00796B', '#E0F2F1'),  # teal
+                ('#F06292', '#C2185B', '#FCE4EC'),  # pink
+                ('#FFD54F', '#F57F17', '#FFFDE7'),  # yellow
+                ('#7986CB', '#303F9F', '#E8EAF6'),  # indigo
+                ('#A5D6A7', '#2E7D32', '#F1F8E9'),  # light green
+                ('#90CAF9', '#1565C0', '#E3F2FD'),  # light blue
+                ('#FFCC80', '#E65100', '#FFF8E1'),  # orange
+            ]
 
-                        # compute text height first
-                        _, total_text_height = draw_wrapped_text(
-                            ax, left_x, cy,
-                            child["label"],
-                            max_width_chars=22,
-                            font_size=18,
-                            line_height=0.48,
-                            color=txt, zorder=7,
-                            draw=False
-                        )
-                        box_height = max(child_base_h, total_text_height + 1.3)
+            # ── categorise sections ───────────────────────────────────
+            DIRECT_KEYWORDS = ('definition', 'purpose', 'type', 'subtype')
 
-                        # box
-                        ax.add_patch(patches.FancyBboxPatch(
-                            (left_x - child_w / 2, cy - box_height / 2),
-                            child_w, box_height,
-                            boxstyle="round,pad=0.15",
-                            facecolor=bg, edgecolor=edge,
-                            linewidth=2, zorder=6))
-                        draw_wrapped_text(
-                            ax, left_x, cy,
-                             child["label"],
-                            max_width_chars=22,
-                            font_size=18,
-                            line_height=0.48,
-                            color=txt, zorder=7,
-                            draw=True
-                        )
+            direct_secs = []   # go straight from center
+            purpose_secs = []  # go under Purpose
+            purpose_node = None
 
-                        # curved connector
-                        bend_x = spine_x - section_w / 2 - 1.5
-                        verts = [
-                            (spine_x - section_w / 2, sec_y),
-                            (bend_x, sec_y),
-                            (bend_x, cy),
-                            (left_x + child_w / 2, cy)
-                        ]
-                        codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO]
-                        path = Path(verts, codes)
-                        ax.add_patch(patches.PathPatch(
-                            path, facecolor='none',
-                            edgecolor='#616161', linewidth=2.2,
-                            zorder=4, alpha=0.85))
-
-                    # -------- right column --------
-                    for i, child in enumerate(right_col):
-                        cy = sec_y - section_h / 2 - (i + 1) * child_gap
-
-                        if "step" in child["label"].lower():
-                            bg, edge, txt = "#FF9800", "#E65100", "#FFFFFF"
-                        else:
-                            bg, edge, txt = "#FFC107", "#F57C00", "#000000"
-
-                        _, total_text_height = draw_wrapped_text(
-                            ax, right_x, cy,
-                            child["label"],
-                            max_width_chars=22,
-                            font_size=18,
-                            line_height=0.48,
-                            color=txt, zorder=7,
-                            draw=False
-                        )
-                        box_height = max(child_base_h, total_text_height + 1.3)
-
-                        ax.add_patch(patches.FancyBboxPatch(
-                            (right_x - child_w / 2, cy - box_height / 2),
-                            child_w, box_height,
-                            boxstyle="round,pad=0.15",
-                            facecolor=bg, edgecolor=edge,
-                            linewidth=2, zorder=6))
-                        draw_wrapped_text(
-                        ax, right_x, cy,
-                        child["label"],
-                        max_width_chars=22,
-                        font_size=18,
-                        line_height=0.48,
-                         color=txt, zorder=7,
-                         draw=True
-                        )
-                        bend_x = spine_x + section_w / 2 + 1.5
-                        verts = [
-                            (spine_x + section_w / 2, sec_y),
-                            (bend_x, sec_y),
-                            (bend_x, cy),
-                            (right_x - child_w / 2, cy)
-                        ]
-                        codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO]
-                        path = Path(verts, codes)
-                        ax.add_patch(patches.PathPatch(
-                            path, facecolor='none',
-                            edgecolor='#616161', linewidth=2.2,
-                            zorder=4, alpha=0.85))
-
-                    # Note box if Types or Sub-processes
-                    label_lower = section["label"].lower()
-                    note = None
-                    if "type" in label_lower:
-                        note = "Types = Different KINDS of this process"
-                    elif "sub" in label_lower and "process" in label_lower:
-                        note = "Sub-processes = Sequential STAGES within the process"
-
-                    if note:
-                        max_rows = max(len(left_col), len(right_col))
-                        note_y = sec_y - section_h / 2 - (max_rows + 0.5) * child_gap - 0.5
-                        ax.add_patch(patches.FancyBboxPatch(
-                            (-6.5, note_y - 0.45), 13, 0.9,
-                            boxstyle="round,pad=0.10", facecolor="#FFEB3B",
-                            linewidth=2, edgecolor='#F57F17',
-                            linestyle='--', zorder=5))
-                        ax.text(0, note_y, note, fontsize=15,
-                                ha='center', va='center',
-                                color='#000000', style='italic',
-                                weight='bold', zorder=6)
-                        current_y = note_y - 1.5
-                    else:
-                        max_rows = max(len(left_col), len(right_col))
-                        current_y = sec_y - section_h / 2 - max_rows * child_gap - 0.8
+            for sec in sections:
+                lbl = sec['label'].strip().lower()
+                if any(lbl.startswith(k) or k in lbl for k in DIRECT_KEYWORDS):
+                    direct_secs.append(sec)
+                    if 'purpose' in lbl:
+                        purpose_node = sec   # keep reference for positioning
                 else:
-                    current_y -= section_gap
+                    purpose_secs.append(sec)
 
-                # Spine connector to next section
-                if idx < len(sections) - 1:
-                    next_y = current_y - section_gap
-                    ax.plot([spine_x, spine_x],
-                            [sec_y - section_h / 2, next_y + section_h_base / 2],
-                            color='#424242', linewidth=3, zorder=3)
-                    current_y = next_y
+            # ── figure ───────────────────────────────────────────────
+            fig, ax = plt.subplots(figsize=(36, 26), dpi=130)
+            ax.set_facecolor('#FFFFFF')
+            ax.axis('off')
+            XLIM, YLIM = (-15, 15), (-10, 10)
 
-            ax.set_xlim(-15, 15)
-            ax.set_ylim(current_y - 3, height)
-            plt.tight_layout()
+            # ── title (drawn after layout so x-centre is known) ──────
+            _title_placeholder = True  # drawn below after autoscale
+
+            # ── central node ─────────────────────────────────────────
+            CX, CY = -2.2, 0.0   # offset so full layout (left+right branches) is centred
+            center_w, center_h = 4.4, 2.2
+            _draw_box(ax, CX, CY, center_w, center_h,
+                      '#81C784', '#388E3C', radius=0.35, lw=2.8, zorder=12)
+            draw_wrapped_text(ax, CX, CY, root_label,
+                              max_width_chars=14, font_size=34,
+                              line_height=0.42, color='#1B5E20',
+                              weight='bold', zorder=13)
+
+            # ── sizing constants ──────────────────────────────────────
+            L1_W, L1_H_BASE, L1_FONT = 4.2, 1.8, 26
+            L1_CHILD_W, L1_CHILD_H, L1_CHILD_FONT = 4.0, 1.6, 23
+
+            L2_W, L2_H_BASE, L2_FONT = 4.0, 1.8, 25
+            L2_CHILD_W, L2_CHILD_H, L2_CHILD_FONT = 3.8, 1.6, 23
+
+            V_SP   = 0.35   # vertical gap between siblings (increased for larger fonts)
+            LINE_W = 1.7
+
+            # ── helper: stack children vertically centred on anchor_y ─
+            def _stack_children(children, cx, anchor_y,
+                                 child_w, child_h_base, child_font,
+                                 v_sp=V_SP):
+                valid_children = [c for c in children if c['label'].strip()]
+
+                child_hs = [
+                max(child_h_base,
+                    _measure_h(c['label'], 16, child_font, 0.38) + 0.5)
+                for c in valid_children
+                ]
+                total = sum(child_hs) + max(0, len(child_hs) - 1) * v_sp
+                positions = []
+                cy = anchor_y + total / 2
+                for i, c in enumerate(valid_children):
+                    ch = child_hs[i]
+                    positions.append((c['label'], cx, cy - ch / 2, ch))
+                    cy -= ch + v_sp
+                return positions
+
+            # ── helper: layout a list of branches on one side ─────────
+            def _layout_branches(branch_list, sign,
+                                  bx, branch_w, branch_h_base,
+                                  child_x, child_w, child_h_base,
+                                  branch_font, child_font,
+                                  center_y=CY):
+                """Returns list of dicts with position info."""
+                def _branch_block_h(sec):
+                    kids = sec.get('children', [])
+                    if not kids:
+                        return branch_h_base + 0.3
+                    kids_h = sum(
+                        max(child_h_base,
+                            _measure_h(c['label'], 16, child_font, 0.38) + 0.5) + V_SP
+                        for c in kids)
+                    return max(branch_h_base, kids_h) + 0.3
+
+                branch_list = [s for s in branch_list if s['label'].strip()]
+                heights = [_branch_block_h(s) for s in branch_list]
+                total_h = sum(heights) + max(0, len(heights) - 1) * 0.6
+                y = center_y + total_h / 2
+                result = []
+                for i, sec in enumerate(branch_list):
+                    h = heights[i]
+                    by = y - h / 2
+                    y -= h + 0.6
+                    kids = sec.get('children', [])
+                    child_pos = _stack_children(kids, child_x, by,
+                                                child_w, child_h_base,
+                                                child_font) if kids else []
+                    result.append({'sec': sec, 'bx': bx, 'by': by,
+                                   'children': child_pos})
+                return result
+
+            # ── helper: draw a branch + its leaf children ─────────────
+            def _draw_branch(item, branch_w, branch_h_base, branch_font,
+                              child_w, child_font,
+                              face, edge, child_face,
+                              from_x, from_y, lw_conn):
+                sec  = item['sec']
+                bx   = item['bx']
+                by   = item['by']
+                kids = item['children']
+                sign = np.sign(bx - from_x) if bx != from_x else 1
+
+                lines = textwrap.wrap(sec['label'], width=14,
+                                      break_long_words=True) or [sec['label']]
+                bh = max(branch_h_base, len(lines) * 0.52 + 0.50)
+
+                _draw_box(ax, bx, by, branch_w, bh,
+                          face, edge, radius=0.22, lw=2.0, zorder=10)
+                draw_wrapped_text(ax, bx, by, sec['label'],
+                                  max_width_chars=14, font_size=branch_font,
+                                  line_height=0.48, color='#1A1A1A',
+                                  weight='bold', zorder=11)
+
+                # connector from parent → this branch
+                _draw_curve(ax, from_x, from_y,
+                            bx - np.sign(bx - from_x) * branch_w / 2, by,
+                            color=edge, lw=lw_conn, zorder=4)
+
+                # this branch → leaf children
+                for (clabel, cxc, cyc, ch) in kids:
+                    lines_c = textwrap.wrap(clabel, width=16,
+                                            break_long_words=True) or [clabel]
+                    ch_actual = max(ch, len(lines_c) * 0.46 + 0.50)
+                    _draw_box(ax, cxc, cyc, child_w, ch_actual,
+                              child_face, edge, radius=0.18, lw=1.5, zorder=8)
+                    draw_wrapped_text(ax, cxc, cyc, clabel,
+                                      max_width_chars=16,
+                                      font_size=child_font, line_height=0.44,
+                                      color='#1A1A1A', weight='normal', zorder=9)
+                    _draw_elbow(ax,
+                                bx + np.sign(cxc - bx) * branch_w / 2, by,
+                                cxc - np.sign(cxc - bx) * child_w / 2, cyc,
+                                color=edge, lw=LINE_W, zorder=4)
+
+                return bh   # return actual box height drawn
+
+            # ════════════════════════════════════════════════════════
+            # LEVEL 1  – direct branches from center
+            # Layout: Definition on left, Purpose in middle-right,
+            #         Types on far right (or left if no room)
+            # ════════════════════════════════════════════════════════
+
+            # Separate out Definition / Purpose / Types for fixed placement
+            def _is(label, keyword):
+                return keyword in label.strip().lower()
+
+            def_sec   = next((s for s in direct_secs if _is(s['label'], 'definition')), None)
+            purp_sec  = next((s for s in direct_secs if _is(s['label'], 'purpose')), None)
+            types_sec = next((s for s in direct_secs
+                              if _is(s['label'], 'type') or _is(s['label'], 'subtype')), None)
+            other_direct = [s for s in direct_secs
+                            if s not in (def_sec, purp_sec, types_sec)]
+
+            # ── place Definition on the LEFT of center ────────────────
+            L1_gap = 1.2   # horizontal gap center-edge → branch-edge
+            def_bx    = CX - center_w / 2 - L1_gap - L1_W / 2
+            purp_bx   = CX + center_w / 2 + L1_gap + L1_W / 2
+            types_bx  = purp_bx  # will be placed further right below
+
+            drawn_purpose_pos = None   # will store (px, py) once Purpose is drawn
+
+            # ── Definition ───────────────────────────────────────────
+            if def_sec:
+                fc, ec, chc = L1_COLORS.get('definition', L1_DEFAULT)
+                child_x_def = def_bx - L1_W / 2 - 0.6 - L1_CHILD_W / 2
+                def_layout = _layout_branches(
+                    [def_sec], -1,
+                    def_bx, L1_W, L1_H_BASE,
+                    child_x_def, L1_CHILD_W, L1_CHILD_H,
+                    L1_FONT, L1_CHILD_FONT, center_y=CY + 2.5)
+                for item in def_layout:
+                    _draw_branch(item, L1_W, L1_H_BASE, L1_FONT,
+                                 L1_CHILD_W, L1_CHILD_FONT,
+                                 fc, ec, chc,
+                                 from_x=CX - center_w / 2,
+                                 from_y=CY, lw_conn=LINE_W + 0.5)
+
+            # ── Purpose ──────────────────────────────────────────────
+            # Purpose sits to the RIGHT of center, vertically centred
+            # It also serves as the hub for L2 branches, so we need its position
+            PURPOSE_BY = CY  # vertical centre of Purpose box
+
+            if purp_sec:
+                fc, ec, chc = L1_COLORS.get('purpose', L1_DEFAULT)
+                # Purpose has its own leaf children (from XML) shown to its right
+                child_x_purp = purp_bx + L1_W / 2 + 0.5 + L1_CHILD_W / 2
+                purp_layout = _layout_branches(
+                    [purp_sec], +1,
+                    purp_bx, L1_W, L1_H_BASE,
+                    child_x_purp, L1_CHILD_W, L1_CHILD_H,
+                    L1_FONT, L1_CHILD_FONT, center_y=PURPOSE_BY)
+                for item in purp_layout:
+                    bh = _draw_branch(item, L1_W, L1_H_BASE, L1_FONT,
+                                      L1_CHILD_W, L1_CHILD_FONT,
+                                      fc, ec, chc,
+                                      from_x=CX + center_w / 2,
+                                      from_y=CY, lw_conn=LINE_W + 0.5)
+                    drawn_purpose_pos = (purp_bx, PURPOSE_BY)
+            else:
+                # No Purpose node in XML – create a virtual hub at purp_bx
+                drawn_purpose_pos = (purp_bx, PURPOSE_BY)
+
+            # ── Types ────────────────────────────────────────────────
+            if types_sec:
+                fc, ec, chc = L1_COLORS.get('types', L1_DEFAULT)
+                # Place Types below center on the left side
+                types_bx2 = CX - center_w / 2 - L1_gap - L1_W / 2
+                types_by  = CY - 2.8
+                child_x_types = types_bx2 - L1_W / 2 - 0.6 - L1_CHILD_W / 2
+                types_item = {'sec': types_sec, 'bx': types_bx2, 'by': types_by,
+                              'children': _stack_children(
+                                  types_sec.get('children', []),
+                                  child_x_types, types_by,
+                                  L1_CHILD_W, L1_CHILD_H, L1_CHILD_FONT)}
+                _draw_branch(types_item, L1_W, L1_H_BASE, L1_FONT,
+                             L1_CHILD_W, L1_CHILD_FONT,
+                             fc, ec, chc,
+                             from_x=CX - center_w / 2,
+                             from_y=CY, lw_conn=LINE_W + 0.5)
+
+            # ── other direct sections (if any) ────────────────────────
+            for i, sec in enumerate(other_direct):
+                fc, ec, chc = L1_DEFAULT
+                obx = CX - center_w / 2 - L1_gap - L1_W / 2
+                oby = CY + 2.5 + (i + 1) * 2.0
+                child_x_o = obx - L1_W / 2 - 0.6 - L1_CHILD_W / 2
+                oitem = {'sec': sec, 'bx': obx, 'by': oby,
+                         'children': _stack_children(
+                             sec.get('children', []),
+                             child_x_o, oby,
+                             L1_CHILD_W, L1_CHILD_H, L1_CHILD_FONT)}
+                _draw_branch(oitem, L1_W, L1_H_BASE, L1_FONT,
+                             L1_CHILD_W, L1_CHILD_FONT,
+                             fc, ec, chc,
+                             from_x=CX - center_w / 2,
+                             from_y=CY, lw_conn=LINE_W + 0.5)
+
+            # ════════════════════════════════════════════════════════
+            # LEVEL 2  – branches hanging off Purpose
+            # Spread to the RIGHT of Purpose (and below/above)
+            # ════════════════════════════════════════════════════════
+            if purpose_secs and drawn_purpose_pos:
+                px, py = drawn_purpose_pos
+
+                # L2 branches go further right
+                L2_bx       = px + L1_W / 2 + 1.2 + L2_W / 2
+                L2_child_x  = L2_bx + L2_W / 2 + 0.55 + L2_CHILD_W / 2
+
+                offset = max(1.5, len(purpose_secs) * 0.3)
+
+                l2_layout = _layout_branches(
+                purpose_secs, +1,
+                L2_bx, L2_W, L2_H_BASE,
+                L2_child_x, L2_CHILD_W, L2_CHILD_H,
+                L2_FONT, L2_CHILD_FONT,
+                center_y = py - offset
+                )
+                for i, item in enumerate(l2_layout):
+                    fc, ec, chc = L2_PALETTE[i % len(L2_PALETTE)]
+                    _draw_branch(item, L2_W, L2_H_BASE, L2_FONT,
+                                 L2_CHILD_W, L2_CHILD_FONT,
+                                 fc, ec, chc,
+                                 from_x=px + L1_W / 2,
+                                 from_y=py, lw_conn=LINE_W)
+
+            ax.autoscale_view()
+            xmin, xmax = ax.get_xlim()
+            ymin, ymax = ax.get_ylim()
+            # Draw title centred on content, above everything
+            title_cx = (xmin + xmax) / 2
+            ax.text(title_cx, ymax + 0.8, root_label,
+                    fontsize=46, ha='center', va='bottom',
+                    color='#000000', weight='bold', zorder=20,
+                    bbox=dict(boxstyle='round,pad=0.45',
+                              facecolor='#A5D6A7',
+                              edgecolor='#388E3C', linewidth=2.5))
+            pad_x = max(1.5, (xmax - xmin) * 0.06)
+            pad_y = max(1.5, (ymax - ymin) * 0.06)
+            ax.set_xlim(xmin - pad_x, xmax + pad_x)
+            ax.set_ylim(ymin - pad_y, ymax + 3.5)  # extra top room for title
+            plt.tight_layout(pad=1.0)
             buf = BytesIO()
-            plt.savefig(buf, format='svg', bbox_inches='tight', pad_inches=0.3)
+            plt.savefig(buf, format='svg', bbox_inches='tight',
+                        pad_inches=0.6, facecolor='#FFFFFF')
             plt.close()
             buf.seek(0)
             return buf.read()
@@ -309,7 +438,7 @@ def xml_to_image(xml_str, domain_name):
         # CONCEPT / ENTITY MAP
         # ============================================================
         else:
-            fig, ax = plt.subplots(figsize=(22, 22), dpi=130)  # Increased height
+            fig, ax = plt.subplots(figsize=(28, 26), dpi=130)  # Wider and taller to prevent cut-off
             ax.set_facecolor('#FFFFFF')
             ax.axis('off')
 
@@ -328,7 +457,7 @@ def xml_to_image(xml_str, domain_name):
                    color='#000000', linewidth=3, zorder=100)
             
             # Move main content down to avoid overlap
-            main_center = (-2, 0)  # Centered vertically
+            main_center = (0, 0)  # Centered on page
 
             # main oval width depending on label length
             base_width = 8.5
@@ -673,7 +802,7 @@ def xml_to_image(xml_str, domain_name):
                                 ax, child_x, child_y,
                                 child_label,
                                 max_width_chars=17,
-                                font_size=22,
+                                font_size=28,
                                 line_height=0.48,
                                 color='#000000', zorder=7,
                                 draw=False
@@ -713,12 +842,12 @@ def xml_to_image(xml_str, domain_name):
                                 edgecolor='#616161',
                                 linewidth=2.6, zorder=5, alpha=0.9))
 
-            ax.set_xlim(-17, 17)
-            ax.set_ylim(-18, 20)  # Expanded to show all content
-            plt.tight_layout()
+            ax.set_xlim(-16, 18)
+            ax.set_ylim(-20, 21)  # Expanded to show all content including children
+            plt.tight_layout(pad=1.0)
             buf = BytesIO()
             plt.savefig(buf, format='svg', bbox_inches='tight',
-                        pad_inches=0.5, facecolor='#FFFFFF')
+                        pad_inches=0.8, facecolor='#FFFFFF')
             plt.close()
             buf.seek(0)
             return buf.read()
@@ -728,11 +857,9 @@ def xml_to_image(xml_str, domain_name):
         import traceback
         traceback.print_exc()
         return None
-
-# Test code
 xml_string = '''<node name="Concept Map: chlorophyll-containing organisms">
   <node name="Taxonomy">
-    <node name="Kingdom Protista"/>
+    <node name="Kingdom Protista1111"/>
     <node name="Division Chlorophyta"/>
     <node name="Class Chlorophyceae"/>
     <node name="Order Ulotrichales"/>
@@ -744,20 +871,20 @@ xml_string = '''<node name="Concept Map: chlorophyll-containing organisms">
     <node name="Filamentous unbranched chains"/>
     <node name="Girdle-shaped chloroplasts"/>
     <node name="Cell walls with cellulose"/>
-    
   </node>
   <node name="Reproduction">
-    <node name="Vegetative fragmentation"/>
+    <node name="Vegetative fragmentation11"/>
     <node name="Asexual via biflagellate zoospores"/>
     <node name="Sexual by isogamous gamete fusion"/>
   </node>
   <node name="Habitat">
-    <node name="Freshwater ponds and streams"/>
+    <node name="Freshwater ponds and stream11s"/>
     <node name="Attached to rocks in cold water"/>
     <node name="Moist soil and tree trunks"/>
   </node>
 </node>
 '''
+
 
 process = '''<node name="Process Map: Photosynthesis">
   <node name="Definition">
@@ -773,7 +900,7 @@ process = '''<node name="Process Map: Photosynthesis">
   </node>
   <node name="Steps">
     <node name="Step 1: Light absorption by chlorophyll"/>
-    <node name="Step 2: Water splitting"/>
+    <node name="Step 2: Water splitting11"/>
     <node name="Step 3: ATP formation"/>
     <node name="Step 4: Carbon fixation"/>
   </node>
@@ -787,27 +914,19 @@ process = '''<node name="Process Map: Photosynthesis">
     <node name="Sunlight"/>
   </node>
   <node name="Where does it occur?">
-    <node name="Chloroplasts in plant cells"/>
+    <node name="Chloroplasts in p1ant cells"/>
   </node>
   <node name="Types">
     <node name="Oxygenic photosynthesis"/>
     <node name="Anoxygenic photosynthesis"/>
   </node>
 </node>'''
-
 # Generate SVG
 svg_data = xml_to_image(xml_string, "YourDomain")
-process_data = xml_to_image(process, "YourDomain")
-
-# Save files
+process = xml_to_image(process, "YourDomain")
+# Save file
 with open("fixed_output.svg", "wb") as f:
     f.write(svg_data)
 with open("fixed_process.svg", "wb") as f:
-    f.write(process_data)
-    
-print("✅ Created: fixed_output.svg and fixed_process.svg")
-print("\nFixes applied:")
-print("1. ✅ Taxonomy boxes now have BLACK text")
-print("2. ✅ Title has horizontal underline")
-print("3. ✅ Title is single line (no wrapping)")
-print("4. ✅ ALL habitat boxes are now visible with proper z-order")
+    f.write(process)
+print("Created: fixed_output.svg and fixed_process.svg")

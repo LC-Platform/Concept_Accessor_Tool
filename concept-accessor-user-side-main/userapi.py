@@ -40,7 +40,7 @@ MINIO_SECURE = os.getenv("MINIO_SECURE", "False").lower() == "true"
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://10.2.8.12:3001",
+        "http://10.2.8.12:3003",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -79,6 +79,18 @@ reading_progress_col = db_mongo["reading_progress"]
 
 def compute_pdf_hash(pdf_bytes: bytes) -> str:
     return hashlib.sha256(pdf_bytes).hexdigest()
+
+def convert_binary_to_bytes(binary_data) -> bytes:
+    """
+    Convert binary data to bytes.
+    Handles both direct bytes and base64-encoded strings.
+    """
+    if isinstance(binary_data, bytes):
+        return binary_data
+    elif isinstance(binary_data, str):
+        return base64.b64decode(binary_data)
+    else:
+        raise ValueError(f"Unsupported binary data type: {type(binary_data)}")
 
 # -----------------------------------
 # Pydantic models for user signup/login
@@ -1085,3 +1097,108 @@ async def get_all_user_progress(user_id: str):
             status_code=500,
             detail=f"Error retrieving user progress: {str(e)}"
         )
+
+
+@app.get("/api/get-section-summary-audio")
+async def get_section_summary_audio(
+    chapter_id: str,
+    section_id: str
+):
+
+    doc = await section_summary_col.find_one(
+        {
+            "chapter_id": chapter_id,
+            "section_id": section_id
+        }
+    )
+
+    if not doc or not doc.get("audio_summary_en"):
+        return {"status": "error", "message": "Audio not found"}
+
+    audio_bytes = convert_binary_to_bytes(
+        doc["audio_summary_en"]
+    )
+
+    return StreamingResponse(
+        BytesIO(audio_bytes),
+        media_type="audio/mpeg"
+    )
+@app.get("/api/get-section-summary-audio-translation")
+async def get_section_summary_audio_translation(
+    chapter_id: str,
+    section_id: str,
+    language: str
+):
+
+    field_name = f"audio_summary_{language}"
+
+    doc = await translated_section_summary_col.find_one(
+        {
+            "chapter_id": chapter_id,
+            "section_id": section_id,
+            "language": language
+        }
+    )
+
+    if not doc or not doc.get(field_name):
+        return {"status": "error", "message": "Translated audio not found"}
+
+    audio_bytes = convert_binary_to_bytes(
+        doc[field_name]
+    )
+
+    return StreamingResponse(
+        BytesIO(audio_bytes),
+        media_type="audio/mpeg"
+    )
+@app.get("/api/get-definition-audio")
+async def get_definition_audio(
+    chapter_id: str,
+    domain_id: str
+):
+
+    doc = await domain_words_col.find_one(
+        {
+            "chapter_id": chapter_id,
+            "domain_id": domain_id
+        }
+    )
+
+    if not doc or not doc.get("audio_definition_en"):
+        return {"status": "error", "message": "Definition audio not found"}
+
+    audio_bytes = convert_binary_to_bytes(
+        doc["audio_definition_en"]
+    )
+
+    return StreamingResponse(
+        BytesIO(audio_bytes),
+        media_type="audio/mpeg"
+    )
+@app.get("/api/get-definition-audio-translation")
+async def get_definition_audio_translation(
+    chapter_id: str,
+    domain_id: str,
+    language: str
+):
+
+    field_name = f"audio_definition_{language}"
+
+    doc = await domain_words_col.find_one(
+        {
+            "chapter_id": chapter_id,
+            "domain_id": domain_id
+        }
+    )
+
+    if not doc or not doc.get(field_name):
+        return {"status": "error", "message": "Translated definition audio not found"}
+
+    audio_bytes = convert_binary_to_bytes(
+        doc[field_name]
+    )
+
+    return StreamingResponse(
+        BytesIO(audio_bytes),
+        media_type="audio/mpeg"
+    )

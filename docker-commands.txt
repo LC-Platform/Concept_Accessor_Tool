@@ -13,4 +13,48 @@ sudo docker pull sashank662/concept_accessor_frontend:latest
 sudo docker run -d -p 3001:80 sashank662/concept_accessor_frontend:latest
 
 
+
+docker build -t concept_accessor_backend:Mar6 .
+
+docker tag concept_accessor_backend:Mar6 sashank662/concept_accessor_backend:Mar6
+docker push sashank662/concept_accessor_backend:Mar6
+
+sudo docker run -d -p 8500:3000 sashank662/concept_accessor_backend:Mar13 
+
+  
 uvicorn userapi:app --host 0.0.0.0 --port 8000 --reload
+
+
+
+
+
+
+
+
+
+docker build -t sanskrit_e-reader_frontend:Feb26 .
+
+docker tag sanskrit_e-reader_frontend:Feb26 sashank662/sanskrit_e-reader_frontend:Feb26
+
+docker push sashank662/sanskrit_e-reader_frontend:Feb26
+
+
+docker build -t sanskrit_e-reader_backend:Feb26 .
+
+docker tag sanskrit_e-reader_backend:Feb26 sashank662/sanskrit_e-reader_backend:Feb26
+
+docker push sashank662/sanskrit_e-reader_backend:Feb26
+
+
+
+sudo docker pull sashank662/sanskrit_e-reader_frontend:Feb26
+
+
+sudo docker run -d -p 3002:80 sashank662/sanskrit_e-reader_frontend:Feb26
+
+
+sudo docker pull sashank662/sanskrit_e-reader_backend:Feb26 
+
+
+sudo docker run -d -p 8400:3000 sashank662/sanskrit_e-reader_backend:Feb26 
+

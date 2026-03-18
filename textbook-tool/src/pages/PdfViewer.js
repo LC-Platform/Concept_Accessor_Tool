@@ -487,57 +487,55 @@ function setupReadModeHover() {
     pages.forEach(highlightSectionIdsOnPage);
   }
 
-  function highlightSectionIdsOnPage(pageEl) {
-    const textLayer = pageEl.querySelector(".react-pdf__Page__textContent");
-    if (!textLayer) return;
+ function highlightSectionIdsOnPage(pageEl) {
+  const textLayer = pageEl.querySelector(".react-pdf__Page__textContent");
+  if (!textLayer) return;
 
-    const overlayContainer = ensureOverlayContainer(pageEl);
-    const pageRect = pageEl.getBoundingClientRect();
+  const overlayContainer = ensureOverlayContainer(pageEl);
+  const textLayerRect = textLayer.getBoundingClientRect();
 
-    const spans = [...textLayer.querySelectorAll("span")].filter((s) =>
-      (s.textContent || "").trim()
-    );
+  const spans = [...textLayer.querySelectorAll("span")].filter((s) =>
+    (s.textContent || "").trim()
+  );
 
-    if (!spans.length) return;
+  if (!spans.length) return;
 
-    spans.forEach((span) => {
-      const text = span.textContent.trim();
-      const lower = text.toLowerCase();
-      const style = window.getComputedStyle(span);
-      const fontSize = parseFloat(style.fontSize || "0");
+  spans.forEach((span) => {
+    const text = span.textContent.trim();
+ 
+    sectionIds.forEach((sectionId) => {
+      if (!sectionId) return;
 
-      sectionIds.forEach((sectionId) => {
-        if (!sectionId) return;
+      if (/^(figure|table)/i.test(text)) return;
 
-        if (lower.startsWith("figure") || lower.startsWith("table")) return;
-        if (fontSize < 14) return;
 
-        const regex = new RegExp(`^${sectionId}(\\s|$)`);
-        if (!regex.test(text)) return;
+      const regex = new RegExp(`^${sectionId}(\\s|$)`);
+      if (!regex.test(text)) return;
 
-        const rect = span.getBoundingClientRect();
+      const rect = span.getBoundingClientRect();
 
-        const div = document.createElement("div");
-        div.className = "section-highlight-overlay";
+      const div = document.createElement("div");
+      div.className = "section-highlight-overlay";
 
-        Object.assign(div.style, {
-          position: "absolute",
-          left: `${rect.left - pageRect.left}px`,
-          top: `${rect.top - pageRect.top}px`,
-          width: `${rect.width}px`,
-          height: `${rect.height}px`,
-          background: "rgba(0,150,255,0.35)",
-          borderRadius: "3px",
-          zIndex: 20,
-          pointerEvents: "auto",
-        });
-
-        div.onclick = () => window.onSectionIdClick && window.onSectionIdClick(sectionId);
-
-        overlayContainer.appendChild(div);
+      Object.assign(div.style, {
+        position: "absolute",
+        left: `${rect.left - textLayerRect.left}px`,
+        top: `${rect.top - textLayerRect.top}px`,
+        width: `${rect.width}px`,
+        height: `${rect.height}px`,
+        background: "rgba(0,150,255,0.35)",
+        borderRadius: "3px",
+        zIndex: 20,
+        pointerEvents: "auto",
       });
+
+      div.onclick = () =>
+        window.onSectionIdClick && window.onSectionIdClick(sectionId);
+
+      overlayContainer.appendChild(div);
     });
-  }
+  });
+}
 
   /* ---------------- HIGHLIGHT MODE SCHEDULER ---------------- */
   function scheduleHighlight(delay = 0) {
