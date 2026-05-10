@@ -111,9 +111,9 @@
 
 /* PDF canvas */
 .pdf-viewer-scroll canvas {
-  width: 100% !important;
-  height: auto !important;
-  margin-bottom: 20px;
+  display: block;
+  max-width: 100%;
+  margin: 0 auto 20px auto;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
@@ -461,23 +461,73 @@
 }
 
 .react-pdf__Page {
-  position: relative;
+  position: relative !important;
+  margin: 0 auto !important;
+  overflow: visible !important;
 }
 
 .react-pdf__Page__canvas {
-  width: 100% !important;
-  height: auto !important;
+  display: block;
+  max-width: 100%;
 }
-
 /* Prevent text overlay overflow */
 .react-pdf__Page__textContent,
 .react-pdf__TextLayer {
-  max-width: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: unset !important;
+  bottom: unset !important;
+  overflow: hidden !important;
+  opacity: 1 !important;
+  line-height: 1 !important;
+}
+/* 4. Add to ModernLayout.css */
+.pdf-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(4px);
+  border-radius: inherit;
 }
 
-.react-pdf__Page__textContent {
-  transform-origin: top left !important;
+.pdf-loading-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 28px 36px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
+
+.pdf-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: pdf-spin 0.75s linear infinite;
+}
+
+@keyframes pdf-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pdf-loading-text {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  letter-spacing: 0.01em;
+}
+
+
 
 .react-pdf__Page canvas {
   position: relative;
@@ -499,6 +549,21 @@
   background: #bcbcbc;
   border-radius: 6px;
 }
+
+
+.term-highlight-overlay.ner {
+  background-color: rgba(100, 220, 160, 0.45) !important;
+}
+
+.term-highlight-overlay.ner:hover {
+  background-color: rgba(34, 180, 100, 0.55) !important;
+  box-shadow: 0 0 4px rgba(34, 180, 100, 0.4);
+}
+
+/* Legend chip colors for any legend UI you add later */
+.legend-chip-ner   { background: rgba(100,220,160,0.45); border: 1.5px solid rgba(34,180,100,0.6); }
+.legend-chip-mwe   { background: rgba(255,105,180,0.45); border: 1.5px solid rgba(255,105,180,0.6); }
+.legend-chip-term  { background: rgba(255,230,0,0.45);   border: 1.5px solid rgba(255,200,0,0.6);  }
 
 /* ============================================
    READ MODE STYLES
@@ -537,6 +602,7 @@
   background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
   box-shadow: 0 3px 6px rgba(76, 175, 80, 0.4);
 }
+
 
 /* ============================================
    PIN MARKER STYLES

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, MapPin, X } from "lucide-react";
 import PdfViewer from "./PdfViewer";
@@ -18,19 +18,14 @@ function normalizeStringForMatch(s = "") {
     .toLowerCase();
 }
 
-/** Clamp a number between min and max */
 const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
 
-/** Snap to nearest preset from a list of percentages */
 const snapToNearest = (valuePct, presets = [30, 50, 70]) => {
   let closest = presets[0];
   let minDiff = Math.abs(valuePct - presets[0]);
   for (let i = 1; i < presets.length; i++) {
     const diff = Math.abs(valuePct - presets[i]);
-    if (diff < minDiff) {
-      closest = presets[i];
-      minDiff = diff;
-    }
+    if (diff < minDiff) { closest = presets[i]; minDiff = diff; }
   }
   return closest;
 };
@@ -48,16 +43,28 @@ export default function ConceptLayout() {
   const [selectedWordText, setSelectedWordText] = useState("");
   const [qaPairs, setQaPairs] = useState([]);
   const [isReadMode, setIsReadMode] = useState(true);
-  
-  // 👇 NEW: Pin marker states
-  const [pinPosition, setPinPosition] = useState(null); // { page: number, yOffset: number }
+
+  const [termOccurrences, setTermOccurrences] = useState({});
+  const [displayToFileMap, setDisplayToFileMap] = useState({});
+
+  // Pin marker states
+  const [pinPosition, setPinPosition] = useState(null);
   const [isPinMode, setIsPinMode] = useState(false);
   const [isSavingPin, setIsSavingPin] = useState(false);
   
+  // Concept map availability state
+  const [hasConceptMap, setHasConceptMap] = useState(false);
+  const [isCheckingConceptMap, setIsCheckingConceptMap] = useState(false);
+
   const navigate = useNavigate();
   const { chapterId } = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.user_id;
+  const [isPdfLoading, setIsPdfLoading] = useState(false);
+
+  useEffect(() => {
+    if (pdfUrl) setIsPdfLoading(true);
+  }, [pdfUrl]);
 
 
   /* ========== RESIZE STATE ========== */
@@ -66,19 +73,18 @@ export default function ConceptLayout() {
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
 
-  // Start drag (mouse + touch)
   const startDragging = (e) => {
     e.preventDefault();
     setIsDragging(true);
     document.body.classList.add("dragging");
   };
 
+  /* ========== AUTH CHECK ========== */
   useEffect(() => {
-    if (!userId) {
-      navigate("/login");
-    }
+    if (!userId) navigate("/login");
   }, [userId, navigate]);
 
+  /* ========== CLEAR TERM ON VIEW CHANGE ========== */
   useEffect(() => {
     if (selectedView !== "Word") {
       setSelectedTerm(null);
@@ -86,6 +92,7 @@ export default function ConceptLayout() {
     }
   }, [selectedView]);
 
+  /* ========== DRAG RESIZE ========== */
   useEffect(() => {
     const handlePointerMove = (clientX) => {
       if (!isDragging || !containerRef.current) return;
@@ -101,7 +108,6 @@ export default function ConceptLayout() {
       if (!e.touches || e.touches.length === 0) return;
       handlePointerMove(e.touches[0].clientX);
     };
-
     const stopDragging = () => {
       if (!isDragging) return;
       const currentLeft = parseFloat(leftWidth);
@@ -117,7 +123,6 @@ export default function ConceptLayout() {
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", stopDragging, { passive: true });
     window.addEventListener("touchcancel", stopDragging, { passive: true });
-
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", stopDragging);
@@ -127,6 +132,7 @@ export default function ConceptLayout() {
     };
   }, [isDragging, leftWidth]);
 
+  /* ========== PDF CLICK HANDLERS ========== */
   useEffect(() => {
     window.onPdfTermClick = (term) => {
       setSelectedTerm(term);
@@ -151,27 +157,24 @@ export default function ConceptLayout() {
     }
   }, [selectedView]);
 
+  /* ========== LOAD CHAPTER ========== */
   useEffect(() => {
     if (!chapterId) return;
-
     const loadChapter = async () => {
       try {
         const res = await fetch(`${BASE_URL}/chapters/${chapterId}`);
         if (!res.ok) throw new Error("Failed to fetch chapter");
-
         const data = await res.json();
         setChapterTitle(data.chapter_name || "Untitled Chapter");
         setSectionIds(data.section_ids || []);
         setPdfUrl(`${BASE_URL}${data.pdf_url}`);
-
         await fetchTerms(chapterId);
         await fetchQAPairs(chapterId);
-        await fetchReadingProgress(chapterId); // 👈 NEW: Load saved pin
+        await fetchReadingProgress(chapterId);
       } catch (err) {
         console.error("❌ Error loading chapter:", err);
       }
     };
-
     loadChapter();
   }, [chapterId]);
 
@@ -182,17 +185,13 @@ export default function ConceptLayout() {
       setSelectedView("Word");
       window.__analysisIntent = action;
     };
-
-    return () => {
-      window.onTermMediaAction = null;
-    };
+    return () => { window.onTermMediaAction = null; };
   }, []);
 
+  /* ========== FETCHERS ========== */
   const fetchQAPairs = async (chapterId) => {
     try {
-      const res = await fetch(`${BASE_URL}/get-qa/?chapter_id=${chapterId}`, {
-        method: "GET",
-      });
+      const res = await fetch(`${BASE_URL}/get-qa/?chapter_id=${chapterId}`);
       const data = await res.json();
       setQaPairs(data.qa_pairs || []);
     } catch (err) {
@@ -204,93 +203,86 @@ export default function ConceptLayout() {
     try {
       const res = await fetch(
         `${BASE_URL}/extract-domain-terms/?chapter_id=${chapterId}`,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        }
+        { method: "GET", headers: { "Content-Type": "application/json" } }
       );
-
       const data = await res.json();
-
-      console.log("📊 TERMS FROM API:", data.terms?.length || 0);
-      console.log("📋 Term names:", data.terms?.map((t) => t.name || t.rawName) || []);
-
       const processed = (data.terms || []).map((t) => {
-        const rawName =
-          t.name || (t.tokens_with_pos && t.tokens_with_pos.join(" ")) || "";
-        const normalized = normalizeStringForMatch(rawName);
-        const tokensNormalized = (t.tokens_with_pos || [])
-          .map((tk) => normalizeStringForMatch(String(tk)))
-          .filter(Boolean);
-
+        const rawName = t.name || (t.tokens_with_pos && t.tokens_with_pos.join(" ")) || "";
         return {
           ...t,
           rawName,
-          normalized,
-          tokensNormalized,
+          normalized: normalizeStringForMatch(rawName),
+          tokensNormalized: (t.tokens_with_pos || [])
+            .map((tk) => normalizeStringForMatch(String(tk)))
+            .filter(Boolean),
         };
       });
-
       setTerms(processed);
-
-      console.log("✅ PROCESSED TERMS:", processed.length);
     } catch (err) {
       console.error("❌ Error fetching terms:", err);
     }
   };
 
-  /* ---------------- 👇 NEW: PIN MARKER FUNCTIONS ---------------- */
+  /* ========== CHECK IF CONCEPT MAP EXISTS ========== */
+  const checkConceptMapAvailability = async (term) => {
+    if (!term || !chapterId) {
+      setHasConceptMap(false);
+      return;
+    }
+    
+    setIsCheckingConceptMap(true);
+    try {
+      const res = await fetch(`${BASE_URL}/taxonomy-image/${chapterId}/${term.domain_id}`);
+      setHasConceptMap(res.ok);
+    } catch (err) {
+      console.error("Error checking concept map:", err);
+      setHasConceptMap(false);
+    } finally {
+      setIsCheckingConceptMap(false);
+    }
+  };
+
+  // Check concept map availability whenever selected term changes
+  useEffect(() => {
+    if (selectedTerm && selectedView === "Word") {
+      checkConceptMapAvailability(selectedTerm);
+    } else {
+      setHasConceptMap(false);
+    }
+  }, [selectedTerm, selectedView, chapterId]);
+
   
+
+  /* ========== PIN FUNCTIONS ========== */
   const fetchReadingProgress = async (chapterId) => {
     if (!userId) return;
-
     try {
-      const res = await fetch(
-        `${BASE_URL}/reading-progress/${chapterId}?user_id=${userId}`
-      );
-
+      const res = await fetch(`${BASE_URL}/reading-progress/${chapterId}?user_id=${userId}`);
       if (!res.ok) return;
-
       const data = await res.json();
-      if (data.pin_position) {
-        setPinPosition(data.pin_position);
-      }
+      if (data.pin_position) setPinPosition(data.pin_position);
     } catch (err) {
       console.error("❌ Error fetching reading progress:", err);
     }
   };
 
-
   const saveReadingProgress = async (position) => {
-  if (!chapterId || !userId) return;
-
-  setIsSavingPin(true);
-
-  try {
-    const res = await fetch(
-      `${BASE_URL}/reading-progress/${chapterId}`,
-      {
+    if (!chapterId || !userId) return;
+    setIsSavingPin(true);
+    try {
+      const res = await fetch(`${BASE_URL}/reading-progress/${chapterId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id: userId,
-          pin_position: position,
-        }),
-      }
-    );
-
-    if (!res.ok) {
-      console.error("❌ Failed to save progress");
+        body: JSON.stringify({ user_id: userId, pin_position: position }),
+      });
+      if (!res.ok) console.error("❌ Failed to save progress");
+    } catch (err) {
+      console.error("❌ Error saving reading progress:", err);
+    } finally {
+      setIsSavingPin(false);
     }
-  } catch (err) {
-    console.error("❌ Error saving reading progress:", err);
-  } finally {
-    setIsSavingPin(false);
-  }
-};
+  };
 
-
-  // Handle pin placement
   const handlePinPlace = (position) => {
     setPinPosition(position);
     setIsPinMode(false);
@@ -299,39 +291,35 @@ export default function ConceptLayout() {
 
   const handleRemovePin = async () => {
     if (!chapterId || !userId) return;
-
     setPinPosition(null);
-
-    await fetch(
-      `${BASE_URL}/reading-progress/${chapterId}?user_id=${userId}`,
-      { method: "DELETE" }
-    );
+    await fetch(`${BASE_URL}/reading-progress/${chapterId}?user_id=${userId}`, { method: "DELETE" });
   };
 
-
-  // Jump to pin location
   const handleJumpToPin = () => {
-  if (!pinPosition) return;
+    if (!pinPosition) return;
+    const pdfViewer = document.querySelector(".pdf-viewer-scroll");
+    if (!pdfViewer) return;
+    pdfViewer.scrollTo({ top: pinPosition.yOffset, behavior: "smooth" });
+  };
 
-  const pdfViewer = document.querySelector(".pdf-viewer-scroll");
-  if (!pdfViewer) return;
+  /* ========== OCCURRENCE HANDLER ========== */
+  const handleOccurrencesFound = useCallback((occurrences, displayToFile = {}) => {
+    setTermOccurrences(occurrences);
+    setDisplayToFileMap(displayToFile);
+  }, []);
 
-  pdfViewer.scrollTo({
-    top: pinPosition.yOffset,
-    behavior: "smooth",
-  });
-};
-
-
+  /* ========== RENDER ========== */
   return (
     <div className="concept-layout">
       <div className="concept-main" ref={containerRef}>
+
         {/* LEFT: PDF Viewer + Reading Panel */}
         <div
           className={`concept-left ${isDragging ? "no-pointer-events" : ""}`}
           style={{ width: leftWidth }}
         >
           <div className="reading-card">
+
             {/* Top header */}
             <div className="chapter-header-row">
               <button className="inline-back-btn" onClick={() => navigate(-1)}>
@@ -339,10 +327,10 @@ export default function ConceptLayout() {
               </button>
 
               <h2 className="chapter-name">
-                {chapterTitle ? chapterTitle : "Untitled Chapter"}
+                {chapterTitle || "Untitled Chapter"}
               </h2>
 
-              {/* Read Mode Toggle - only show in Word view */}
+              {/* Read Mode Toggle */}
               {selectedView === "Word" && (
                 <button
                   className={`read-mode-toggle ${isReadMode ? "active" : ""}`}
@@ -353,7 +341,7 @@ export default function ConceptLayout() {
                 </button>
               )}
 
-              {/* 👇 NEW: Pin Controls */}
+              {/* Pin Controls */}
               <div className="pin-controls">
                 {pinPosition && !isPinMode && (
                   <>
@@ -374,7 +362,6 @@ export default function ConceptLayout() {
                     </button>
                   </>
                 )}
-                
                 {!pinPosition && !isPinMode && (
                   <button
                     className="pin-control-btn place-pin"
@@ -385,7 +372,6 @@ export default function ConceptLayout() {
                     Place Pin
                   </button>
                 )}
-
                 {isPinMode && (
                   <button
                     className="pin-control-btn cancel-pin"
@@ -394,13 +380,13 @@ export default function ConceptLayout() {
                     Cancel
                   </button>
                 )}
-
                 {isSavingPin && (
                   <span className="pin-saving-indicator">Saving...</span>
                 )}
               </div>
             </div>
 
+            {/* View tabs */}
             <div className="view-toggle top-tabs">
               {["Word", "Sentence", "Summary", "Q/A"].map((v) => (
                 <button
@@ -413,18 +399,33 @@ export default function ConceptLayout() {
               ))}
             </div>
 
+            {/* PDF Viewer */}
             <div className="pdf-viewer-wrapper">
               {pdfUrl ? (
-                <div className="pdf-viewer-container">
+                <div className="pdf-viewer-container" style={{ position: "relative" }}>
+
+                  {/* Loading overlay */}
+                  {isPdfLoading && (
+                    <div className="pdf-loading-overlay">
+                      <div className="pdf-loading-card">
+                        <div className="pdf-spinner" />
+                        <p className="pdf-loading-text">Loading PDF…</p>
+                      </div>
+                    </div>
+                  )}
+
                   <PdfViewer
                     file={pdfUrl}
                     terms={selectedView === "Word" ? terms : []}
                     sectionIds={selectedView === "Summary" ? sectionIds : []}
                     selectedView={selectedView}
                     isReadMode={isReadMode}
-                    pinPosition={pinPosition} // 👈 NEW
-                    onPinPlace={handlePinPlace} // 👈 NEW
-                    isPinMode={isPinMode} // 👈 NEW
+                    pinPosition={pinPosition}
+                    onPinPlace={handlePinPlace}
+                    isPinMode={isPinMode}
+                    onOccurrencesFound={handleOccurrencesFound}
+                    highlightedTermText={selectedWordText || null}
+                    onLoadSuccess={() => setIsPdfLoading(false)}
                   />
                 </div>
               ) : (
@@ -442,7 +443,7 @@ export default function ConceptLayout() {
           </div>
         </div>
 
-        {/* DRAGGABLE DIVIDER with GRIP */}
+        {/* DRAGGABLE DIVIDER */}
         <div
           className={`drag-divider ${isDragging ? "active" : ""}`}
           onMouseDown={startDragging}
@@ -473,9 +474,14 @@ export default function ConceptLayout() {
               selectedView={selectedView}
               selectedSectionId={selectedSectionId}
               qaPairs={qaPairs}
+              termOccurrences={termOccurrences}
+              displayToFileMap={displayToFileMap}
+              pdfViewerRef={containerRef}
+              externalConceptMapTrigger={hasConceptMap}
             />
           </div>
         </div>
+
       </div>
     </div>
   );

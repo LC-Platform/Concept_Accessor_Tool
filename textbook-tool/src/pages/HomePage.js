@@ -9,10 +9,17 @@ export default function HomePage({ onUpload }) {
   const fileInputRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   // ===== AUTH CHECK =====
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const username = localStorage.getItem("username") || "User";
+
+ 
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -21,48 +28,63 @@ export default function HomePage({ onUpload }) {
     }
   }, [navigate]);
 
-  // ===== SCROLL & MOUSE TRACKING =====
+  // ===== SCROLL & MOUSE TRACKING (Only on non-touch devices) =====
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
 
     const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth) * 2 - 1,
-        y: (e.clientY / window.innerHeight) * 2 - 1,
-      });
+      if (!isTouchDevice) {
+        setMousePosition({
+          x: (e.clientX / window.innerWidth) * 2 - 1,
+          y: (e.clientY / window.innerHeight) * 2 - 1,
+        });
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("mousemove", handleMouseMove);
+    if (!isTouchDevice) {
+      window.addEventListener("mousemove", handleMouseMove);
+    }
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("mousemove", handleMouseMove);
+      if (!isTouchDevice) {
+        window.removeEventListener("mousemove", handleMouseMove);
+      }
     };
-  }, []);
+  }, [isTouchDevice]);
 
-  // Add this useEffect to your HomePage component for animated counters
+  // Parallax effect only for non-touch devices
+  useEffect(() => {
+    if (isTouchDevice) return;
 
+    const handleParallax = (e) => {
+      const cards = document.querySelectorAll('.floating-card');
+      const moveX = (e.clientX - window.innerWidth / 2) / 50;
+      const moveY = (e.clientY - window.innerHeight / 2) / 50;
 
+      cards.forEach((card, index) => {
+        const depth = (index + 1) * 0.5;
+        card.style.transform = `translate(${moveX * depth}px, ${moveY * depth}px)`;
+      });
+    };
 
-// You can also add this for smooth parallax scrolling on mouse move
-useEffect(() => {
-  const handleParallax = (e) => {
-    const cards = document.querySelectorAll('.floating-card');
-    const moveX = (e.clientX - window.innerWidth / 2) / 50;
-    const moveY = (e.clientY - window.innerHeight / 2) / 50;
+    window.addEventListener('mousemove', handleParallax);
+    return () => window.removeEventListener('mousemove', handleParallax);
+  }, [isTouchDevice]);
 
-    cards.forEach((card, index) => {
-      const depth = (index + 1) * 0.5;
-      card.style.transform = `translate(${moveX * depth}px, ${moveY * depth}px)`;
-    });
-  };
-
-  window.addEventListener('mousemove', handleParallax);
-  return () => window.removeEventListener('mousemove', handleParallax);
-}, []);
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (mobileMenuOpen && !e.target.closest('.mobile-menu') && !e.target.closest('.menu-toggle')) {
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [mobileMenuOpen]);
 
   // ===== FILE UPLOAD =====
   const handleFileChange = (e) => {
@@ -84,6 +106,7 @@ useEffect(() => {
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
+    setMobileMenuOpen(false);
   };
 
   // ===== LOGOUT =====
@@ -92,6 +115,7 @@ useEffect(() => {
     localStorage.removeItem("username");
     localStorage.removeItem("userEmail");
     navigate("/login");
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -100,31 +124,33 @@ useEffect(() => {
       <div className="bg-orbs">
         <div 
           className="orb orb-1"
-          style={{
+          style={!isTouchDevice ? {
             transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 20}px) translateY(${scrollY * 0.3}px)`
-          }}
+          } : {}}
         ></div>
         <div 
           className="orb orb-2"
-          style={{
+          style={!isTouchDevice ? {
             transform: `translate(${mousePosition.x * -15}px, ${mousePosition.y * -15}px) translateY(${scrollY * 0.2}px)`
-          }}
+          } : {}}
         ></div>
         <div 
           className="orb orb-3"
-          style={{
+          style={!isTouchDevice ? {
             transform: `translate(${mousePosition.x * 25}px, ${mousePosition.y * 25}px) translateY(${scrollY * 0.4}px)`
-          }}
+          } : {}}
         ></div>
       </div>
 
-      {/* Floating particles */}
+      {/* Floating particles - optimized for performance */}
       <div className="particles">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(12)].map((_, i) => (
           <div key={i} className="particle" style={{
             left: `${Math.random() * 100}%`,
             animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${5 + Math.random() * 10}s`
+            animationDuration: `${8 + Math.random() * 12}s`,
+            width: `${2 + Math.random() * 4}px`,
+            height: `${2 + Math.random() * 4}px`,
           }}></div>
         ))}
       </div>
@@ -135,7 +161,7 @@ useEffect(() => {
           {/* LOGO */}
           <div className="header-left" onClick={() => navigate("/")}>
             <div className="logo-wrapper">
-              <img src={iiithLogo} alt="IIIT Hyderabad" className="iiith-logo" />
+              <img src={iiithLogo} alt="IIIT Hyderabad" className="iiith-logo" loading="eager" />
             </div>
             <span className="brand-name">
               <span className="brand-letter">E</span>
@@ -146,12 +172,11 @@ useEffect(() => {
               <span className="brand-letter">d</span>
               <span className="brand-letter">e</span>
               <span className="brand-letter">r</span>
-              
             </span>
           </div>
 
-          {/* NAV */}
-          <nav className="header-links">
+          {/* Desktop NAV */}
+          <nav className="header-links desktop-nav">
             <button className="nav-link-btn" onClick={() => scrollToSection("features")}>
               <span>Features</span>
               <div className="nav-underline"></div>
@@ -196,6 +221,51 @@ useEffect(() => {
                   <path d="M2 8H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
                 <div className="btn-shine"></div>
+              </button>
+            )}
+          </nav>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className={`menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
+          <nav className="mobile-nav">
+            <button className="mobile-nav-link" onClick={() => scrollToSection("features")}>
+              Features
+            </button>
+            <button className="mobile-nav-link" onClick={() => navigate("/how-it-works")}>
+              How It Works
+            </button>
+            <button className="mobile-nav-link" onClick={() => navigate("/about")}>
+              About
+            </button>
+            
+            {isLoggedIn && (
+              <div className="mobile-user-info">
+                <div className="mobile-avatar">
+                  {username.charAt(0).toUpperCase()}
+                </div>
+                <span className="mobile-username">{username}</span>
+              </div>
+            )}
+            
+            {isLoggedIn ? (
+              <button className="mobile-logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
+            ) : (
+              <button className="mobile-login-btn" onClick={() => navigate("/login")}>
+                Login
               </button>
             )}
           </nav>
@@ -254,23 +324,6 @@ useEffect(() => {
               </button>
             </div>
 
-            {/* <div className="hero-stats">
-              <div className="stat-item">
-                <div className="stat-number" data-target="10000">0</div>
-                <div className="stat-label">Active Learners</div>
-              </div>
-              <div className="stat-divider"></div>
-              <div className="stat-item">
-                <div className="stat-number" data-target="500">0</div>
-                <div className="stat-label">Textbooks</div>
-              </div>
-              <div className="stat-divider"></div>
-              <div className="stat-item">
-                <div className="stat-number" data-target="98">0</div>
-                <div className="stat-label">Satisfaction</div>
-              </div>
-            </div> */}
-
             <input
               type="file"
               accept="application/pdf"
@@ -288,36 +341,14 @@ useEffect(() => {
                 <div className="ring ring-2"></div>
                 <div className="ring ring-3"></div>
               </div>
-
-              {/* <div className="floating-card card-1">
-                <div className="card-icon">📚</div>
-                <div className="card-content">
-                  <div className="card-title">Smart Analysis</div>
-                  <div className="card-desc">AI-powered insights</div>
-                </div>
-                <div className="card-glow"></div>
-              </div>
-              
-              <div className="floating-card card-2">
-                <div className="card-icon">🎯</div>
-                <div className="card-content">
-                  <div className="card-title">Personalized</div>
-                  <div className="card-desc">Adapts to your pace</div>
-                </div>
-                <div className="card-glow"></div>
-              </div>
-              
-              <div className="floating-card card-3">
-                <div className="card-icon">⚡</div>
-                <div className="card-content">
-                  <div className="card-title">Fast Learning</div>
-                  <div className="card-desc">Save 50% time</div>
-                </div>
-                <div className="card-glow"></div>
-              </div> */}
               
               <div className="image-container">
-                <img src={heroImage} alt="AI Learning Illustration" />
+                <img 
+                  src={heroImage} 
+                  alt="AI Learning Illustration" 
+                  loading="eager"
+                  decoding="async"
+                />
                 <div className="image-overlay"></div>
               </div>
             </div>
@@ -325,8 +356,7 @@ useEffect(() => {
         </div>
       </section>
 
-
-     {/* ================= FEATURES ================= */}
+      {/* ================= FEATURES ================= */}
       <section className="features-section" id="features">
         <div className="section-header">
           <span className="section-badge">
@@ -390,8 +420,6 @@ useEffect(() => {
               <h3>{feature.title}</h3>
               <p>{feature.desc}</p>
 
-              {/* Arrow removed intentionally */}
-
               <div className="card-shine"></div>
             </div>
           ))}
@@ -402,7 +430,7 @@ useEffect(() => {
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-left">
-            <img src={iiithLogo} alt="IIIT Hyderabad" className="footer-logo" />
+            <img src={iiithLogo} alt="IIIT Hyderabad" className="footer-logo" loading="lazy" />
             <p className="footer-tagline">Empowering education through AI</p>
           </div>
           <div className="footer-right">

@@ -12,37 +12,69 @@ export default function ReadingPanel({
   const [toastMessage, setToastMessage] = useState("");
 
   /* --------------------------- TOAST COMPONENT --------------------------- */
-  const Toast = ({ message, onClose }) => (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "20px",
-        right: "20px",
-        background: "#d9534f",
-        color: "white",
-        padding: "12px 16px",
-        borderRadius: "6px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
-        zIndex: 9999,
-        fontSize: "14px",
-      }}
-    >
-      {message}
-      <button
+  const Toast = ({ message, onClose }) => {
+    const [visible, setVisible] = useState(true);
+
+    useEffect(() => {
+      if (!message) return;
+
+      const hideTimer = setTimeout(() => {
+        setVisible(false); // trigger fade out
+      }, 2500); // start fade before removal
+
+      const removeTimer = setTimeout(() => {
+        onClose(); // remove completely
+      }, 3000);
+
+      return () => {
+        clearTimeout(hideTimer);
+        clearTimeout(removeTimer);
+      };
+    }, [message, onClose]);
+
+    if (!message) return null;
+
+    return (
+      <div
         style={{
-          marginLeft: "12px",
-          background: "transparent",
-          color: "#fff",
-          border: "none",
-          cursor: "pointer",
-          fontWeight: "bold",
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          background: "#d9534f",
+          color: "white",
+          padding: "12px 16px",
+          borderRadius: "6px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+          zIndex: 9999,
+          fontSize: "14px",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+
+          // ✨ Animation
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(20px)",
+          transition: "all 0.4s ease",
         }}
-        onClick={onClose}
       >
-        ✕
-      </button>
-    </div>
-  );
+        <span>{message}</span>
+
+        <button
+          onClick={onClose}
+          style={{
+            background: "transparent",
+            color: "#fff",
+            border: "none",
+            cursor: "pointer",
+            fontWeight: "bold",
+            fontSize: "16px",
+          }}
+        >
+          ✕
+        </button>
+      </div>
+    );
+  };
 
   /* --------------------------- TITLE EXTRACT ---------------------------- */
   useEffect(() => {
@@ -52,44 +84,81 @@ export default function ReadingPanel({
       setTitle(cleaned || "Untitled Document");
     }
   }, [text]);
+
+  useEffect(() => {
+    if (!toastMessage) return;
+
+    const timer = setTimeout(() => {
+      setToastMessage("");
+    }, 3000); // ⏱ auto close after 3 sec
+
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
   
   useEffect(() => {
-  // 🔥 When in Q/A mode → remove ALL highlights completely
-  if (selectedView === "Q/A") {
-    document
-      .querySelectorAll(".term-highlight-overlay, .section-id-highlight")
-      .forEach(el => el.remove());
-    return;
-  }
-}, [selectedView]);
+    // 🔥 When in Q/A mode → remove ALL highlights completely
+    if (selectedView === "Q/A") {
+      document
+        .querySelectorAll(".term-highlight-overlay, .section-id-highlight")
+        .forEach(el => el.remove());
+      return;
+    }
+  }, [selectedView]);
 
 
   /* ----------------------- MANUAL SENTENCE SELECT ----------------------- */
   useEffect(() => {
     if (selectedView !== "Sentence") return;
 
-    const ENGLISH_SENTENCE_DELIMITER = /[.!?]$/;
+    const ENGLISH_SENTENCE_DELIMITER = /[.!?]["')\]]?\s*$/;
+    
+    // 🔥 Track if selection is in progress
+    let selectionInProgress = false;
+    let selectionTimeout = null;
 
-    const handleMouseUp = () => {
-      const selectedText = window.getSelection().toString().trim();
-      if (!selectedText) return;
+    const handleSelectionChange = () => {
+      const selection = window.getSelection();
+      console.log("🟡 RAW SELECTION OBJECT:", selection);
 
-      const isCompleteSentence = ENGLISH_SENTENCE_DELIMITER.test(selectedText);
+      if (!selection) return;
 
-      if (!isCompleteSentence) {
-        setToastMessage(
-          "Please select at least one complete sentence ending with ., ! or ?"
-        );
-        return;
+      const selectedText = selection.toString().replace(/\s+/g, " ").trim();
+      console.log("🟢 SELECTED TEXT (RAW):", selectedText); 
+      // 🔥 Only process when selection is complete (not dragging)
+      if (!selection.isCollapsed && selectedText && !selectionInProgress) {
+        selectionInProgress = true;
+        
+        // Clear any previous timeout
+        if (selectionTimeout) clearTimeout(selectionTimeout);
+        
+        // Small delay to ensure selection is final
+        selectionTimeout = setTimeout(() => {
+          const finalText = window.getSelection().toString().replace(/\s+/g, " ").trim();
+          console.log("🟣 FINAL TEXT:", finalText);
+          if (finalText) {
+            const isCompleteSentence = ENGLISH_SENTENCE_DELIMITER.test(finalText);
+            console.log("🟠 IS COMPLETE SENTENCE:", isCompleteSentence);
+            if (!isCompleteSentence) {
+              setToastMessage(
+                "Please select at least one complete sentence ending with ., ! or ?"
+              );
+            } else if (onSentenceSelect) {
+              console.log("✅ SENDING TO ANALYSIS PANEL:", finalText);
+              onSentenceSelect(finalText);
+            }
+          }
+          
+          selectionInProgress = false;
+          selectionTimeout = null;
+        }, 50);
       }
-
-      if (onSentenceSelect) onSentenceSelect(selectedText);
     };
 
-    document.addEventListener("mouseup", handleMouseUp);
-    return () => {
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
+      document.addEventListener("mouseup", handleSelectionChange);
+
+      return () => {
+      document.removeEventListener("mouseup", handleSelectionChange);
+      };
   }, [selectedView, onSentenceSelect]);
 
   /* --------------------------- WORD CLICK --------------------------- */

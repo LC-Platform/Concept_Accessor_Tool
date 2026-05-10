@@ -56,6 +56,10 @@ export default function ChapterListPage() {
       .replace(/\b\w/g, (c) => c.toUpperCase());
   };
 
+  const handleChapterClick = (chapterId) => {
+  navigate(`/analyze/${chapterId}`);
+};
+
   return (
     <>
       <AppNavbar />
@@ -177,7 +181,7 @@ export default function ChapterListPage() {
               <div
                 key={ch.chapter_id}
                 className="chapter-card"
-                onClick={() => navigate(`/analyze/${ch.chapter_id}`)}
+                onClick={() => handleChapterClick(ch.chapter_id)}
                 style={{ animationDelay: `${index * 30}ms` }}
               >
                 <div className="card-decoration"></div>
