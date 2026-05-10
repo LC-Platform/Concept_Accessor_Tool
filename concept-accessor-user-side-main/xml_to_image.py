@@ -70,14 +70,10 @@ def xml_to_image(xml_str, domain_name):
     try:
         # ============================================================
         # PROCESS MAP  –  two-level mind-map layout
-        #
-        # Level 1 (center → directly):  Definition, Purpose, Types/Subtypes
-        # Level 2 (Purpose → children): everything else
         # ============================================================
         if is_process:
             sections = [s for s in tree.get("children", []) if s.get("label", "").strip()]
 
-            # ── helpers ──────────────────────────────────────────────
             def _draw_box(ax, cx, cy, w, h, facecolor, edgecolor,
                           radius=0.18, lw=2.0, zorder=5):
                 ax.add_patch(patches.FancyBboxPatch(
@@ -116,33 +112,29 @@ def xml_to_image(xml_str, domain_name):
                 return max(font_size * 0.035,
                            (len(lines) - 1) * line_h + font_size * 0.038)
 
-            # ── colour palettes ───────────────────────────────────────
-            # Level-1 branches (directly connected to center)
             L1_COLORS = {
-                'definition': ('#6EC6F5', '#039BE5', '#E1F5FE'),  # blue
-                'purpose':    ('#81C784', '#388E3C', '#E8F5E9'),  # green
-                'types':      ('#CE93D8', '#8E24AA', '#F3E5F5'),  # purple
-                'subtypes':   ('#CE93D8', '#8E24AA', '#F3E5F5'),  # purple
+                'definition': ('#6EC6F5', '#039BE5', '#E1F5FE'),
+                'purpose':    ('#81C784', '#388E3C', '#E8F5E9'),
+                'types':      ('#CE93D8', '#8E24AA', '#F3E5F5'),
+                'subtypes':   ('#CE93D8', '#8E24AA', '#F3E5F5'),
             }
             L1_DEFAULT = ('#FFB74D', '#EF6C00', '#FFF3E0')
 
-            # Level-2 branches (connected to Purpose) - distinct colors
             L2_PALETTE = [
-                ('#FF8A65', '#E64A19', '#FBE9E7'),  # deep orange
-                ('#4DB6AC', '#00796B', '#E0F2F1'),  # teal
-                ('#F06292', '#C2185B', '#FCE4EC'),  # pink
-                ('#FFD54F', '#F57F17', '#FFFDE7'),  # yellow
-                ('#7986CB', '#303F9F', '#E8EAF6'),  # indigo
-                ('#A5D6A7', '#2E7D32', '#F1F8E9'),  # light green
-                ('#90CAF9', '#1565C0', '#E3F2FD'),  # light blue
-                ('#FFCC80', '#E65100', '#FFF8E1'),  # orange
+                ('#FF8A65', '#E64A19', '#FBE9E7'),
+                ('#4DB6AC', '#00796B', '#E0F2F1'),
+                ('#F06292', '#C2185B', '#FCE4EC'),
+                ('#FFD54F', '#F57F17', '#FFFDE7'),
+                ('#7986CB', '#303F9F', '#E8EAF6'),
+                ('#A5D6A7', '#2E7D32', '#F1F8E9'),
+                ('#90CAF9', '#1565C0', '#E3F2FD'),
+                ('#FFCC80', '#E65100', '#FFF8E1'),
             ]
 
-            # ── categorise sections ───────────────────────────────────
             DIRECT_KEYWORDS = ('definition', 'purpose', 'type', 'subtype')
 
-            direct_secs = []   # go straight from center
-            purpose_secs = []  # go under Purpose
+            direct_secs = []
+            purpose_secs = []
             purpose_node = None
 
             for sec in sections:
@@ -150,21 +142,15 @@ def xml_to_image(xml_str, domain_name):
                 if any(lbl.startswith(k) or k in lbl for k in DIRECT_KEYWORDS):
                     direct_secs.append(sec)
                     if 'purpose' in lbl:
-                        purpose_node = sec   # keep reference for positioning
+                        purpose_node = sec
                 else:
                     purpose_secs.append(sec)
 
-            # ── figure ───────────────────────────────────────────────
             fig, ax = plt.subplots(figsize=(36, 26), dpi=130)
             ax.set_facecolor('#FFFFFF')
             ax.axis('off')
-            XLIM, YLIM = (-15, 15), (-10, 10)
 
-            # ── title (drawn after layout so x-centre is known) ──────
-            _title_placeholder = True  # drawn below after autoscale
-
-            # ── central node ─────────────────────────────────────────
-            CX, CY = -2.2, 0.0   # offset so full layout (left+right branches) is centred
+            CX, CY = -2.2, 0.0
             center_w, center_h = 4.4, 2.2
             _draw_box(ax, CX, CY, center_w, center_h,
                       '#81C784', '#388E3C', radius=0.35, lw=2.8, zorder=12)
@@ -173,26 +159,23 @@ def xml_to_image(xml_str, domain_name):
                               line_height=0.42, color='#1B5E20',
                               weight='bold', zorder=13)
 
-            # ── sizing constants ──────────────────────────────────────
             L1_W, L1_H_BASE, L1_FONT = 4.2, 1.8, 26
             L1_CHILD_W, L1_CHILD_H, L1_CHILD_FONT = 4.0, 1.6, 23
 
             L2_W, L2_H_BASE, L2_FONT = 4.0, 1.8, 25
             L2_CHILD_W, L2_CHILD_H, L2_CHILD_FONT = 3.8, 1.6, 23
 
-            V_SP   = 0.35   # vertical gap between siblings (increased for larger fonts)
+            V_SP   = 0.35
             LINE_W = 1.7
 
-            # ── helper: stack children vertically centred on anchor_y ─
             def _stack_children(children, cx, anchor_y,
                                  child_w, child_h_base, child_font,
                                  v_sp=V_SP):
                 valid_children = [c for c in children if c['label'].strip()]
-
                 child_hs = [
-                max(child_h_base,
-                    _measure_h(c['label'], 16, child_font, 0.38) + 0.5)
-                for c in valid_children
+                    max(child_h_base,
+                        _measure_h(c['label'], 16, child_font, 0.38) + 0.5)
+                    for c in valid_children
                 ]
                 total = sum(child_hs) + max(0, len(child_hs) - 1) * v_sp
                 positions = []
@@ -203,13 +186,11 @@ def xml_to_image(xml_str, domain_name):
                     cy -= ch + v_sp
                 return positions
 
-            # ── helper: layout a list of branches on one side ─────────
             def _layout_branches(branch_list, sign,
                                   bx, branch_w, branch_h_base,
                                   child_x, child_w, child_h_base,
                                   branch_font, child_font,
                                   center_y=CY):
-                """Returns list of dicts with position info."""
                 def _branch_block_h(sec):
                     kids = sec.get('children', [])
                     if not kids:
@@ -237,7 +218,6 @@ def xml_to_image(xml_str, domain_name):
                                    'children': child_pos})
                 return result
 
-            # ── helper: draw a branch + its leaf children ─────────────
             def _draw_branch(item, branch_w, branch_h_base, branch_font,
                               child_w, child_font,
                               face, edge, child_face,
@@ -246,7 +226,6 @@ def xml_to_image(xml_str, domain_name):
                 bx   = item['bx']
                 by   = item['by']
                 kids = item['children']
-                sign = np.sign(bx - from_x) if bx != from_x else 1
 
                 lines = textwrap.wrap(sec['label'], width=14,
                                       break_long_words=True) or [sec['label']]
@@ -259,12 +238,10 @@ def xml_to_image(xml_str, domain_name):
                                   line_height=0.48, color='#1A1A1A',
                                   weight='bold', zorder=11)
 
-                # connector from parent → this branch
                 _draw_curve(ax, from_x, from_y,
                             bx - np.sign(bx - from_x) * branch_w / 2, by,
                             color=edge, lw=lw_conn, zorder=4)
 
-                # this branch → leaf children
                 for (clabel, cxc, cyc, ch) in kids:
                     lines_c = textwrap.wrap(clabel, width=16,
                                             break_long_words=True) or [clabel]
@@ -280,15 +257,8 @@ def xml_to_image(xml_str, domain_name):
                                 cxc - np.sign(cxc - bx) * child_w / 2, cyc,
                                 color=edge, lw=LINE_W, zorder=4)
 
-                return bh   # return actual box height drawn
+                return bh
 
-            # ════════════════════════════════════════════════════════
-            # LEVEL 1  – direct branches from center
-            # Layout: Definition on left, Purpose in middle-right,
-            #         Types on far right (or left if no room)
-            # ════════════════════════════════════════════════════════
-
-            # Separate out Definition / Purpose / Types for fixed placement
             def _is(label, keyword):
                 return keyword in label.strip().lower()
 
@@ -299,15 +269,12 @@ def xml_to_image(xml_str, domain_name):
             other_direct = [s for s in direct_secs
                             if s not in (def_sec, purp_sec, types_sec)]
 
-            # ── place Definition on the LEFT of center ────────────────
-            L1_gap = 1.2   # horizontal gap center-edge → branch-edge
+            L1_gap = 1.2
             def_bx    = CX - center_w / 2 - L1_gap - L1_W / 2
             purp_bx   = CX + center_w / 2 + L1_gap + L1_W / 2
-            types_bx  = purp_bx  # will be placed further right below
 
-            drawn_purpose_pos = None   # will store (px, py) once Purpose is drawn
+            drawn_purpose_pos = None
 
-            # ── Definition ───────────────────────────────────────────
             if def_sec:
                 fc, ec, chc = L1_COLORS.get('definition', L1_DEFAULT)
                 child_x_def = def_bx - L1_W / 2 - 0.6 - L1_CHILD_W / 2
@@ -323,14 +290,10 @@ def xml_to_image(xml_str, domain_name):
                                  from_x=CX - center_w / 2,
                                  from_y=CY, lw_conn=LINE_W + 0.5)
 
-            # ── Purpose ──────────────────────────────────────────────
-            # Purpose sits to the RIGHT of center, vertically centred
-            # It also serves as the hub for L2 branches, so we need its position
-            PURPOSE_BY = CY  # vertical centre of Purpose box
+            PURPOSE_BY = CY
 
             if purp_sec:
                 fc, ec, chc = L1_COLORS.get('purpose', L1_DEFAULT)
-                # Purpose has its own leaf children (from XML) shown to its right
                 child_x_purp = purp_bx + L1_W / 2 + 0.5 + L1_CHILD_W / 2
                 purp_layout = _layout_branches(
                     [purp_sec], +1,
@@ -345,13 +308,10 @@ def xml_to_image(xml_str, domain_name):
                                       from_y=CY, lw_conn=LINE_W + 0.5)
                     drawn_purpose_pos = (purp_bx, PURPOSE_BY)
             else:
-                # No Purpose node in XML – create a virtual hub at purp_bx
                 drawn_purpose_pos = (purp_bx, PURPOSE_BY)
 
-            # ── Types ────────────────────────────────────────────────
             if types_sec:
                 fc, ec, chc = L1_COLORS.get('types', L1_DEFAULT)
-                # Place Types below center on the left side
                 types_bx2 = CX - center_w / 2 - L1_gap - L1_W / 2
                 types_by  = CY - 2.8
                 child_x_types = types_bx2 - L1_W / 2 - 0.6 - L1_CHILD_W / 2
@@ -366,7 +326,6 @@ def xml_to_image(xml_str, domain_name):
                              from_x=CX - center_w / 2,
                              from_y=CY, lw_conn=LINE_W + 0.5)
 
-            # ── other direct sections (if any) ────────────────────────
             for i, sec in enumerate(other_direct):
                 fc, ec, chc = L1_DEFAULT
                 obx = CX - center_w / 2 - L1_gap - L1_W / 2
@@ -383,26 +342,17 @@ def xml_to_image(xml_str, domain_name):
                              from_x=CX - center_w / 2,
                              from_y=CY, lw_conn=LINE_W + 0.5)
 
-            # ════════════════════════════════════════════════════════
-            # LEVEL 2  – branches hanging off Purpose
-            # Spread to the RIGHT of Purpose (and below/above)
-            # ════════════════════════════════════════════════════════
             if purpose_secs and drawn_purpose_pos:
                 px, py = drawn_purpose_pos
-
-                # L2 branches go further right
                 L2_bx       = px + L1_W / 2 + 1.2 + L2_W / 2
                 L2_child_x  = L2_bx + L2_W / 2 + 0.55 + L2_CHILD_W / 2
-
                 offset = max(1.5, len(purpose_secs) * 0.3)
-
                 l2_layout = _layout_branches(
-                purpose_secs, +1,
-                L2_bx, L2_W, L2_H_BASE,
-                L2_child_x, L2_CHILD_W, L2_CHILD_H,
-                L2_FONT, L2_CHILD_FONT,
-                center_y = py - offset
-                )
+                    purpose_secs, +1,
+                    L2_bx, L2_W, L2_H_BASE,
+                    L2_child_x, L2_CHILD_W, L2_CHILD_H,
+                    L2_FONT, L2_CHILD_FONT,
+                    center_y=py - offset)
                 for i, item in enumerate(l2_layout):
                     fc, ec, chc = L2_PALETTE[i % len(L2_PALETTE)]
                     _draw_branch(item, L2_W, L2_H_BASE, L2_FONT,
@@ -414,7 +364,6 @@ def xml_to_image(xml_str, domain_name):
             ax.autoscale_view()
             xmin, xmax = ax.get_xlim()
             ymin, ymax = ax.get_ylim()
-            # Draw title centred on content, above everything
             title_cx = (xmin + xmax) / 2
             ax.text(title_cx, ymax + 0.8, root_label,
                     fontsize=46, ha='center', va='bottom',
@@ -425,7 +374,7 @@ def xml_to_image(xml_str, domain_name):
             pad_x = max(1.5, (xmax - xmin) * 0.06)
             pad_y = max(1.5, (ymax - ymin) * 0.06)
             ax.set_xlim(xmin - pad_x, xmax + pad_x)
-            ax.set_ylim(ymin - pad_y, ymax + 3.5)  # extra top room for title
+            ax.set_ylim(ymin - pad_y, ymax + 3.5)
             plt.tight_layout(pad=1.0)
             buf = BytesIO()
             plt.savefig(buf, format='svg', bbox_inches='tight',
@@ -435,31 +384,30 @@ def xml_to_image(xml_str, domain_name):
             return buf.read()
 
         # ============================================================
-        # CONCEPT / ENTITY MAP
+        # CONCEPT / ENTITY MAP  — FIXED VERSION
+        # Key changes:
+        #   1. Section header boxes: dark bg (#1565C0) → light bg (#DDEEFF) + dark text
+        #   2. All node text: weight='bold' → weight='normal' for better legibility
+        #   3. Child box colors softened: taxonomy uses white text on medium-dark bg,
+        #      structure/habitat/other child boxes use very light bg + dark text
         # ============================================================
         else:
-            fig, ax = plt.subplots(figsize=(28, 26), dpi=130)  # Wider and taller to prevent cut-off
+            fig, ax = plt.subplots(figsize=(28, 26), dpi=130)
             ax.set_facecolor('#FFFFFF')
             ax.axis('off')
 
-            # Title - SINGLE LINE with underline
+            # ── Title ─────────────────────────────────────────────────
             title_text = root_label_full if ":" in root_label_full else f"CONCEPT MAP: {root_label}"
-            title_y = 18.5  # Higher position
-            
-            # Draw title text
+            title_y = 22.0
             ax.text(0, title_y, title_text.upper(), fontsize=38,
                     ha='center', va='center',
                     color='#000000', weight='bold',
                     fontfamily='sans-serif', zorder=100)
-            
-            # Draw horizontal underline
-            ax.plot([-12, 12], [title_y - 0.6, title_y - 0.6], 
+            ax.plot([-12, 12], [title_y - 0.6, title_y - 0.6],
                    color='#000000', linewidth=3, zorder=100)
-            
-            # Move main content down to avoid overlap
-            main_center = (0, 0)  # Centered on page
 
-            # main oval width depending on label length
+            main_center = (0, 0)
+
             base_width = 8.5
             extra = max(0, len(root_label) - 14) * 0.18
             oval_width = base_width + extra
@@ -474,7 +422,7 @@ def xml_to_image(xml_str, domain_name):
                     taxonomy_labels = [c["label"] for c in node.get("children", [])]
                     taxonomy_labels.reverse()
 
-            # taxonomy
+            # ── Taxonomy column ───────────────────────────────────────
             if taxonomy_labels:
                 tax_x = -11.0
                 tax_box_width = 5.5
@@ -484,6 +432,7 @@ def xml_to_image(xml_str, domain_name):
                 total_tax_height = num_tax * tax_box_height_base + (num_tax - 1) * tax_spacing
                 start_tax_y = -total_tax_height / 2 + tax_box_height_base / 2
 
+                # "TAXONOMY" header: dark blue bg, white bold text — keeps header readable
                 ax.text(tax_x, start_tax_y + total_tax_height + 1.2, "TAXONOMY",
                         fontsize=22, ha='center', va='center',
                         color='white', weight='bold',
@@ -492,29 +441,33 @@ def xml_to_image(xml_str, domain_name):
                                   edgecolor='#01579B',
                                   linewidth=2.5))
 
-                # BRIGHTER taxonomy colors
-                colors = ["#B76FEB", "#C18DE7", "#AF82CE",
-                          "#A36CCA", "#C89FE6", "#C086E9", "#AF7FD1"]
+                # Taxonomy item boxes: medium-tone palette, dark text for contrast
+                # Using muted/desaturated purples so dark text (#1A1A1A) is legible
+                tax_colors = [
+                    "#D1B3F5",  # soft lavender
+                    "#C9A8F0",
+                    "#BF9EEB",
+                    "#B594E6",
+                    "#CE9FF7",  # slightly pinker
+                    "#C8A5F3",
+                    "#BA96EC",
+                ]
+                # Highlight color for the current species row — warm amber, dark text works well
+                tax_highlight_color = "#FFB347"
 
                 last_tax_y = start_tax_y
                 for i, label in enumerate(taxonomy_labels):
                     tax_y = start_tax_y + i * (tax_box_height_base + tax_spacing)
-                    color_idx = min(i, len(colors) - 1)
-                    box_color = colors[color_idx]
+                    color_idx = min(i, len(tax_colors) - 1)
+                    box_color = tax_colors[color_idx]
                     is_highlight = root_label.lower() in label.lower()
                     if is_highlight:
-                        box_color = "#FF6F00"
+                        box_color = tax_highlight_color
 
-                    # estimate text
                     _, total_text_height = draw_wrapped_text(
-                        ax, tax_x, tax_y,
-                        label,
-                        max_width_chars=20,
-                        font_size=22,
-                        line_height=0.48,
-                        color='#000000', zorder=5,  # CHANGED TO BLACK
-                        draw=False
-                    )
+                        ax, tax_x, tax_y, label,
+                        max_width_chars=20, font_size=22, line_height=0.48,
+                        color='#1A1A1A', zorder=5, draw=False)
                     tax_box_height = max(tax_box_height_base, total_text_height + 0.9)
 
                     tax_rect = patches.FancyBboxPatch(
@@ -523,22 +476,19 @@ def xml_to_image(xml_str, domain_name):
                         boxstyle="round,pad=0.15",
                         facecolor=box_color,
                         linewidth=2.8 if is_highlight else 2.2,
-                        edgecolor='#01579B', zorder=4)
+                        edgecolor='#7B1FA2', zorder=4)
                     ax.add_patch(tax_rect)
+                    # Text: dark color, normal weight for better readability
                     draw_wrapped_text(
-                        ax, tax_x, tax_y,
-                        label,
-                        max_width_chars=20,
-                        font_size=22,
-                        line_height=0.48,
-                        color='#000000', zorder=5,  # CHANGED TO BLACK
-                        draw=True
-                    )
+                        ax, tax_x, tax_y, label,
+                        max_width_chars=20, font_size=22, line_height=0.48,
+                        color='#1A1A1A', weight='normal', zorder=5, draw=True)
+
                     if i < num_tax - 1:
                         next_tax_y = start_tax_y + (i + 1) * (tax_box_height_base + tax_spacing)
                         ax.plot([tax_x, tax_x],
                                 [tax_y + tax_box_height / 2, next_tax_y - tax_box_height_base / 2],
-                                color='#1565C0', linewidth=3.5, zorder=3)
+                                color='#7B1FA2', linewidth=3.5, zorder=3)
                     last_tax_y = tax_y
 
                 control_x = tax_x + tax_box_width / 2 + 2.0
@@ -551,30 +501,26 @@ def xml_to_image(xml_str, domain_name):
                 codes = [Path.MOVETO, Path.CURVE3, Path.CURVE3]
                 path = Path(verts, codes)
                 patch = patches.PathPatch(path, facecolor='none',
-                                          edgecolor='#1565C0',
+                                          edgecolor='#7B1FA2',
                                           linewidth=3.5, zorder=3)
                 ax.add_patch(patch)
 
-            # Main label - compute first
+            # ── Main oval ─────────────────────────────────────────────
             main_lines = textwrap.wrap(root_label, width=14, break_long_words=False) or [root_label]
             main_line_h = 0.50
             main_total_h = (len(main_lines) - 1) * main_line_h
             main_start_y = main_center[1] + main_total_h / 2
-
-            # Increase oval height based on text
             oval_height = max(5.0, main_total_h + 1.8)
-            
-            # main oval - BRIGHTER COLOR
+
             oval = patches.Ellipse(main_center, oval_width, oval_height,
                        color='#C62828', zorder=10)
             ax.add_patch(oval)
-
             for i, mline in enumerate(main_lines):
                 ax.text(main_center[0], main_start_y - i * main_line_h, mline,
                  fontsize=30, ha='center', va='center',
                     color='white', weight='bold', zorder=11)
 
-            # other sections
+            # ── Section branches ──────────────────────────────────────
             others = [
                 node for idx, node in enumerate(tree.get("children", []))
                 if idx != taxonomy_idx
@@ -594,6 +540,16 @@ def xml_to_image(xml_str, domain_name):
                 section_radius = 9.0
                 section_width = 5.5
 
+                # Section header palette: light bg + dark text
+                # Each section gets a distinct light color so headers are easy to tell apart
+                SECTION_COLORS = [
+                    ('#1565C0', '#0D47A1', 'white'),   # blue  (Structure)
+                    ('#2E7D32', '#1B5E20', 'white'),   # green (Reproduction)
+                    ('#E65100', '#BF360C', 'white'),   # orange(Habitat)
+                    ('#6A1B9A', '#4A148C', 'white'),   # purple
+                    ('#00838F', '#006064', 'white'),   # teal
+                ]
+
                 for idx, (node, angle_deg) in enumerate(zip(others, angles)):
                     section_label = node["label"]
                     angle_rad = np.deg2rad(angle_deg)
@@ -601,66 +557,30 @@ def xml_to_image(xml_str, domain_name):
                     sec_x = main_center[0] + section_radius * np.cos(angle_rad)
                     sec_y = main_center[1] + section_radius * np.sin(angle_rad)
 
-                    # Section label size
+                    sec_face, sec_edge, sec_txt = SECTION_COLORS[idx % len(SECTION_COLORS)]
+
                     _, total_text_height = draw_wrapped_text(
-                        ax, sec_x, sec_y,
-                        section_label.upper(),
-                        max_width_chars=22,
-                        font_size=20,
-                        line_height=0.40,
-                        color='white', zorder=9,
-                        draw=False
-                    )
+                        ax, sec_x, sec_y, section_label.upper(),
+                        max_width_chars=22, font_size=20, line_height=0.40,
+                        color=sec_txt, zorder=9, draw=False)
                     section_height = max(2.0, total_text_height + 1.0)
 
                     sec_box = patches.FancyBboxPatch(
                         (sec_x - section_width / 2, sec_y - section_height / 2),
                         section_width, section_height,
-                        boxstyle="round,pad=0.15", facecolor="#1565C0",
-                        linewidth=2.8, edgecolor='#0D47A1', zorder=8)
+                        boxstyle="round,pad=0.15",
+                        facecolor=sec_face,
+                        linewidth=2.8, edgecolor=sec_edge, zorder=8)
                     ax.add_patch(sec_box)
+                    # Section label: bold white on dark bg — clear contrast
                     draw_wrapped_text(
-                        ax, sec_x, sec_y,
-                        section_label.upper(),
-                        max_width_chars=13,
-                        font_size=20,
-                        line_height=0.40,
-                        color='white', zorder=9,
-                        draw=True
-                    )
-                    # === EXTRA connector: Main oval → Reproduction section ONLY ===
-                    if "reproduction" in section_label.lower():
+                        ax, sec_x, sec_y, section_label.upper(),
+                        max_width_chars=13, font_size=20, line_height=0.40,
+                        color=sec_txt, weight='bold', zorder=9, draw=True)
 
-                        start_x = main_center[0] + (oval_width / 2) * np.cos(angle_rad)
-                        start_y = main_center[1] + (oval_height / 2) * np.sin(angle_rad)
-
-                        end_x = sec_x
-                        end_y = sec_y + section_height / 2
-
-                        mid_x = (start_x + end_x) / 2
-                        mid_y = (start_y + end_y) / 2 + 1.2  # gentle curve
-
-                        verts = [
-                                (start_x, start_y),
-                                (mid_x, mid_y),
-                                (end_x, end_y)
-                            ]
-                        codes = [Path.MOVETO, Path.CURVE3, Path.CURVE3]
-
-                        ax.add_patch(patches.PathPatch(
-                           Path(verts, codes),
-                           facecolor='none',
-                            edgecolor='#2E7D32',
-                            linewidth=3.2,
-                            linestyle='--',
-                            alpha=0.95,
-                            zorder=9   # above boxes
-                        ))
-
-                    # curved connector
+                    # curved connector: main oval → section
                     conn_start_x = main_center[0] + (oval_width / 2 + 0.4) * np.cos(angle_rad)
                     conn_start_y = main_center[1] + (oval_height / 2 + 0.4) * np.sin(angle_rad)
-
                     mid_x = (conn_start_x + sec_x) / 2
                     mid_y = (conn_start_y + sec_y) / 2
                     dx, dy = sec_x - conn_start_x, sec_y - conn_start_y
@@ -670,23 +590,34 @@ def xml_to_image(xml_str, domain_name):
                         perp_x, perp_y = perp_x / length, perp_y / length
                     ctrl_x = mid_x + 1.5 * perp_x
                     ctrl_y = mid_y + 1.5 * perp_y
-
-                    verts = [(conn_start_x, conn_start_y),
-                             (ctrl_x, ctrl_y), (sec_x, sec_y)]
+                    verts = [(conn_start_x, conn_start_y), (ctrl_x, ctrl_y), (sec_x, sec_y)]
                     codes = [Path.MOVETO, Path.CURVE3, Path.CURVE3]
-                    path = Path(verts, codes)
                     ax.add_patch(patches.PathPatch(
-                        path, facecolor='none',
-                        edgecolor='#424242',
-                        linewidth=3.2, zorder=7))
+                        Path(verts, codes), facecolor='none',
+                        edgecolor='#424242', linewidth=3.2, zorder=7))
 
-                    # children
+                    # ── child nodes ───────────────────────────────────
                     children = node.get("children", [])
                     child_width = 5.0
                     child_height_base = 1.5
                     child_spacing = 2.0
 
                     is_structure = "structure" in section_label.lower()
+                    is_habitat   = "habitat"   in section_label.lower()
+
+                    # Child box colors: very light bg + dark text for every category
+                    CHILD_COLORS = {
+                        'structure':  ('#B2EBF2', '#00838F'),   # light cyan
+                        'habitat':    ('#FFF9C4', '#F57F17'),   # light yellow
+                        'default':    ('#FFE0B2', '#E65100'),   # light orange
+                    }
+
+                    if is_structure:
+                        child_face, child_edge = CHILD_COLORS['structure']
+                    elif is_habitat:
+                        child_face, child_edge = CHILD_COLORS['habitat']
+                    else:
+                        child_face, child_edge = CHILD_COLORS['default']
 
                     if is_structure:
                         # grow upward
@@ -695,155 +626,114 @@ def xml_to_image(xml_str, domain_name):
                             child_x = sec_x
                             child_y = sec_y + section_height / 2 + child_spacing * (child_idx + 1)
 
-                            # measure text
                             _, total_text_height = draw_wrapped_text(
-                                ax, child_x, child_y,
-                                child_label,
-                                max_width_chars=20,
-                                font_size=22,
-                                line_height=0.48,
-                                color="#000000", zorder=7,
-                                draw=False
-                            )
-                            child_height = max(child_height_base, total_text_height + 0.9)
+                                ax, child_x, child_y, child_label,
+                                max_width_chars=20, font_size=22, line_height=0.48,
+                                color='#1A1A1A', zorder=7, draw=False)
+                            ch = max(child_height_base, total_text_height + 0.9)
 
-                            child_box = patches.FancyBboxPatch(
-                                (child_x - child_width / 2, child_y - child_height / 2),
-                                child_width, child_height,
+                            ax.add_patch(patches.FancyBboxPatch(
+                                (child_x - child_width / 2, child_y - ch / 2),
+                                child_width, ch,
                                 boxstyle="round,pad=0.15",
-                                facecolor="#4FF7DE",
-                                linewidth=2.2,
-                                edgecolor="#4FF7DE", zorder=6)
-                            ax.add_patch(child_box)
+                                facecolor=child_face,
+                                linewidth=2.2, edgecolor=child_edge, zorder=6))
+                            # dark text, normal weight
                             draw_wrapped_text(
-                                ax, child_x, child_y,
-                                child_label,
-                                max_width_chars=20,
-                                font_size=22,
-                                line_height=0.48,
-                                color="#000000", zorder=7,
-                                draw=True
-                            )
+                                ax, child_x, child_y, child_label,
+                                max_width_chars=20, font_size=22, line_height=0.48,
+                                color='#1A1A1A', weight='normal', zorder=7, draw=True)
 
-                            # connector up
                             side_offset = 1.2 * np.sign(np.cos(angle_rad))
                             lane_x = sec_x + side_offset
                             verts = [
                                 (sec_x, sec_y + section_height / 2),
                                 (lane_x, sec_y + section_height / 2 + 0.3),
-                                (lane_x, child_y - child_height / 2),
-                                (child_x, child_y - child_height / 2)
+                                (lane_x, child_y - ch / 2),
+                                (child_x, child_y - ch / 2)
                             ]
                             codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO]
-                            path = Path(verts, codes)
                             ax.add_patch(patches.PathPatch(
-                                path, facecolor='none',
-                                edgecolor='#616161',
-                                linewidth=2.6, zorder=5, alpha=0.9))
-                    elif "habitat" in section_label.lower():
-                         # grow downward
+                                Path(verts, codes), facecolor='none',
+                                edgecolor='#616161', linewidth=2.6, zorder=5, alpha=0.9))
+
+                    elif is_habitat:
+                        # grow downward
                         for child_idx, child in enumerate(children):
                             child_label = child["label"]
                             child_x = sec_x
                             child_y = sec_y - section_height / 2 - child_spacing * (child_idx + 1)
 
                             _, total_text_height = draw_wrapped_text(
-                                ax, child_x, child_y,
-                                child_label,
-                                max_width_chars=17,
-                                font_size=22,
-                                line_height=0.48,
-                                color='#000000', zorder=7,
-                                draw=False
-                            )
-                            child_height = max(child_height_base, total_text_height + 0.9)
+                                ax, child_x, child_y, child_label,
+                                max_width_chars=17, font_size=22, line_height=0.48,
+                                color='#1A1A1A', zorder=7, draw=False)
+                            ch = max(child_height_base, total_text_height + 0.9)
 
-                            child_box = patches.FancyBboxPatch(
-                                (child_x - child_width / 2, child_y - child_height / 2),
-                                child_width, child_height,
+                            ax.add_patch(patches.FancyBboxPatch(
+                                (child_x - child_width / 2, child_y - ch / 2),
+                                child_width, ch,
                                 boxstyle="round,pad=0.15",
-                                facecolor="#F7EC4F",
-                                linewidth=2.2,
-                                edgecolor='#F7EC4F', zorder=6)
-                            ax.add_patch(child_box)
+                                facecolor=child_face,
+                                linewidth=2.2, edgecolor=child_edge, zorder=6))
                             draw_wrapped_text(
-                                ax, child_x, child_y,
-                                child_label,
-                                max_width_chars=17,
-                                font_size=22,
-                                line_height=0.48,
-                                color='#000000', zorder=7,
-                                draw=True
-                            )
+                                ax, child_x, child_y, child_label,
+                                max_width_chars=17, font_size=22, line_height=0.48,
+                                color='#1A1A1A', weight='normal', zorder=7, draw=True)
 
                             side_offset = 1.2 * np.sign(np.cos(angle_rad))
                             lane_x = sec_x + side_offset
                             verts = [
                                 (sec_x, sec_y - section_height / 2),
                                 (lane_x, sec_y - section_height / 2 - 0.3),
-                                (lane_x, child_y + child_height / 2),
-                                (child_x, child_y + child_height / 2)
+                                (lane_x, child_y + ch / 2),
+                                (child_x, child_y + ch / 2)
                             ]
                             codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO]
-                            path = Path(verts, codes)
                             ax.add_patch(patches.PathPatch(
-                                path, facecolor='none',
-                                edgecolor='#616161',
-                                linewidth=12.6, zorder=5, alpha=0.9))
-                        
+                                Path(verts, codes), facecolor='none',
+                                edgecolor='#616161', linewidth=2.6, zorder=5, alpha=0.9))
+
                     else:
-                        # grow downward
+                        # grow downward (Reproduction / others)
                         for child_idx, child in enumerate(children):
                             child_label = child["label"]
                             child_x = sec_x
                             repro_spacing = child_spacing * 1.6
                             child_y = sec_y - section_height / 2 - repro_spacing * (child_idx + 1)
+
                             _, total_text_height = draw_wrapped_text(
-                                ax, child_x, child_y,
-                                child_label,
-                                max_width_chars=17,
-                                font_size=28,
-                                line_height=0.48,
-                                color='#000000', zorder=7,
-                                draw=False
-                            )
-                            child_height = max(child_height_base, total_text_height + 0.9)
-                    
-                            child_box = patches.FancyBboxPatch(
-                                (child_x - child_width / 2, child_y - child_height / 2),
-                                child_width, child_height,
+                                ax, child_x, child_y, child_label,
+                                max_width_chars=17, font_size=22, line_height=0.48,
+                                color='#1A1A1A', zorder=7, draw=False)
+                            ch = max(child_height_base, total_text_height + 0.9)
+
+                            ax.add_patch(patches.FancyBboxPatch(
+                                (child_x - child_width / 2, child_y - ch / 2),
+                                child_width, ch,
                                 boxstyle="round,pad=0.15",
-                                facecolor="#F7A94F",
-                                linewidth=2.2,
-                                edgecolor='#F7A94F', zorder=7)
-                            ax.add_patch(child_box)
+                                facecolor=child_face,
+                                linewidth=2.2, edgecolor=child_edge, zorder=7))
                             draw_wrapped_text(
-                                ax, child_x, child_y,
-                                child_label,
-                                max_width_chars=17,
-                                font_size=22,
-                                line_height=0.48,
-                                color='#000000', zorder=7,
-                                draw=True
-                            )
+                                ax, child_x, child_y, child_label,
+                                max_width_chars=17, font_size=22, line_height=0.48,
+                                color='#1A1A1A', weight='normal', zorder=7, draw=True)
 
                             side_offset = 1.2 * np.sign(np.cos(angle_rad))
                             lane_x = sec_x + side_offset
                             verts = [
                                 (sec_x, sec_y - section_height / 2),
                                 (lane_x, sec_y - section_height / 2 - 0.3),
-                                (lane_x, child_y + child_height / 2),
-                                (child_x, child_y + child_height / 2)
+                                (lane_x, child_y + ch / 2),
+                                (child_x, child_y + ch / 2)
                             ]
                             codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO]
-                            path = Path(verts, codes)
                             ax.add_patch(patches.PathPatch(
-                                path, facecolor='none',
-                                edgecolor='#616161',
-                                linewidth=2.6, zorder=5, alpha=0.9))
+                                Path(verts, codes), facecolor='none',
+                                edgecolor='#616161', linewidth=2.6, zorder=5, alpha=0.9))
 
             ax.set_xlim(-16, 18)
-            ax.set_ylim(-20, 21)  # Expanded to show all content including children
+            ax.set_ylim(-20, 21)
             plt.tight_layout(pad=1.0)
             buf = BytesIO()
             plt.savefig(buf, format='svg', bbox_inches='tight',
@@ -857,6 +747,7 @@ def xml_to_image(xml_str, domain_name):
         import traceback
         traceback.print_exc()
         return None
+    
 xml_string = '''<node name="Concept Map: chlorophyll-containing organisms">
   <node name="Taxonomy">
     <node name="Kingdom Protista1111"/>

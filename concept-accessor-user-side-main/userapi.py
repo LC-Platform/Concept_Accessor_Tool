@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Body, HTTPException
+from fastapi import FastAPI, UploadFile, File, Body, HTTPException, Request
 from fastapi.responses import StreamingResponse, Response
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
@@ -6,6 +6,9 @@ import tempfile, os, hashlib
 from translator import translate_text
 from dotenv import load_dotenv
 import motor.motor_asyncio
+from typing import List, Dict, Any
+import re
+from rapidfuzz import fuzz
 from io import BytesIO
 import base64
 import time
@@ -17,10 +20,16 @@ import bcrypt
 import random
 import string
 import smtplib
+
 from email.mime.text import MIMEText
 from minio import Minio
 from xml_to_image import xml_to_image
 import datetime
+import pdfplumber
+import re
+import nltk
+from nltk.tokenize import sent_tokenize
+
 from typing import Optional
 
 
@@ -40,7 +49,7 @@ MINIO_SECURE = os.getenv("MINIO_SECURE", "False").lower() == "true"
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://10.2.8.12:3003",
+        "http://10.2.8.12:3003","https://canvas.iiit.ac.in"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -54,6 +63,8 @@ minio_client = Minio(
     secret_key=MINIO_SECRET_KEY,
     secure=MINIO_SECURE
 )
+
+nltk.download('punkt')
 
 # MongoDB setup
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGODB_URI)
@@ -75,6 +86,7 @@ users_col = db_mongo["users"]
 reset_codes_col = db_mongo["reset_codes"]
 qa_col = db_mongo["qa"]  
 reading_progress_col = db_mongo["reading_progress"]
+sentences_col = db_mongo["sentences"]
 
 
 def compute_pdf_hash(pdf_bytes: bytes) -> str:
@@ -91,6 +103,91 @@ def convert_binary_to_bytes(binary_data) -> bytes:
         return base64.b64decode(binary_data)
     else:
         raise ValueError(f"Unsupported binary data type: {type(binary_data)}")
+
+
+
+# -----------------------------
+# NORMALIZE FUNCTION
+# -----------------------------
+def normalize(s):
+    return "".join(e.lower() for e in s if e.isalnum())
+
+
+# -----------------------------
+# CLEAN PDF TEXT
+# -----------------------------
+def clean_pdf_text(text):
+    # Remove line breaks
+    text = re.sub(r'\n+', ' ', text)
+
+    # Remove multiple spaces
+    text = re.sub(r'\s+', ' ', text)
+
+    # Remove section headings like 3.1 Algae
+    text = re.sub(r'\b\d+(\.\d+)+\s+[A-Z][a-zA-Z]+\b', '', text)
+
+    # Remove standalone numbers
+    text = re.sub(r'\b\d+\b', '', text)
+
+    return text.strip()
+
+
+# -----------------------------
+# FILTER VALID SENTENCES
+# -----------------------------
+def is_valid_sentence(s):
+    s = s.strip()
+
+    if len(s) < 15:
+        return False
+
+    # Must contain verb (basic heuristic)
+    if not re.search(r'\b(is|are|was|were|has|have|had|do|does|did)\b', s):
+        return False
+
+    # Must end properly
+    if not re.search(r'[.!?]$', s):
+        return False
+
+    return True
+
+
+# -----------------------------
+# EXTRACT TEXT FROM PDF
+# -----------------------------
+def extract_text_from_pdf(pdf_path):
+    full_text = ""
+
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            text = page.extract_text()
+            if text:
+                full_text += text + "\n"
+
+    return full_text
+
+
+# -----------------------------
+# MAIN SENTENCE EXTRACTION
+# -----------------------------
+def extract_sentences_from_pdf(pdf_path):
+    raw_text = extract_text_from_pdf(pdf_path)
+
+    cleaned_text = clean_pdf_text(raw_text)
+
+    raw_sentences = sent_tokenize(cleaned_text)
+
+    sentences = []
+    for s in raw_sentences:
+        s = s.strip()
+
+        if is_valid_sentence(s):
+            sentences.append(s)
+
+    return sentences
+
+class ChapterRequest(BaseModel):
+    chapter_id: str
 
 # -----------------------------------
 # Pydantic models for user signup/login
@@ -165,6 +262,12 @@ class ResetPasswordRequest(BaseModel):
         return v
 
 
+class SimplifiedParagraphRequest(BaseModel):
+    chapter_id: str
+    original_paragraph: str
+    simplified_paragraph: str
+    sentences: List[Dict[str, Any]]  
+
 class PinPosition(BaseModel):
     page: int
     yOffset: Optional[float] = 0
@@ -200,6 +303,26 @@ def send_email(to_email, subject, body):
     except Exception as e:
         print(f"Failed to send email: {e}")
 
+
+async def store_sentences_in_db(chapter_id, sentences):
+    docs = []
+
+    for idx, sent in enumerate(sentences):
+        clean_sent = " ".join(sent.split())
+
+        doc = {
+            "chapter_id": chapter_id,
+            "sentence_index": idx,  # 🔥 IMPORTANT
+            "sentence": clean_sent,
+            "normalized_sentence": normalize(clean_sent)
+        }
+
+        docs.append(doc)
+
+    if docs:
+        await sentences_col.insert_many(docs)
+
+    return len(docs)
 
 @app.options("/{rest_of_path:path}")
 async def options_handler(rest_of_path: str):
@@ -327,7 +450,8 @@ async def get_domain_terms(chapter_id: str):
             "word_structure": d.get("word_structure", {}),
             "is_mwe": d.get("is_mwe", False),
             "mwe_type": d.get("mwe_type", ""),
-            "tokens_with_pos": d.get("tokens_with_pos", [])
+            "tokens_with_pos": d.get("tokens_with_pos", []),
+            "names": d.get("names", {}).get("ner", "")
         })
     
     if not existing_terms:
@@ -335,45 +459,6 @@ async def get_domain_terms(chapter_id: str):
     
     return {"chapter_id": chapter_id, "terms": existing_terms}
 
-# @app.get("/domain-term/{chapter_id}/{domain_id}")
-# async def get_domain_term_details(chapter_id: str, domain_id: str):
-#     """
-#     Retrieve a specific domain term with all details (definition, audio, translations, word structure, etc.)
-#     """
-#     doc = await domain_words_col.find_one({"chapter_id": chapter_id, "domain_id": domain_id})
-#     if not doc:
-#         return {"error": f"Domain term not found for domain_id: {domain_id}"}
-    
-#     audio_binary = doc.get("audio_binary")
-#     audio_b64 = base64.b64encode(audio_binary).decode("utf-8") if audio_binary else None
-    
-#     return {
-#         "chapter_id": chapter_id,
-#         "domain_id": domain_id,
-#         "name": doc.get("name"),
-#         "definition": doc.get("definition"),
-#         "audio_binary": audio_b64,
-#         "translations": doc.get("translations", {}),
-#         "word_structure": doc.get("word_structure", {}),
-#         "is_mwe": doc.get("is_mwe", False),
-#         "mwe_type": doc.get("mwe_type", ""),
-#         "tokens_with_pos": doc.get("tokens_with_pos", [])
-#     }
-
-# @app.get("/translate/full-summary/")
-# async def get_translated_full_summary(chapter_id: str, target_language: str):
-#     """
-#     Retrieve translated full summary from MongoDB.
-#     """
-#     translated_doc = await translated_full_summary_col.find_one({"chapter_id": chapter_id, "language": target_language})
-#     if not translated_doc or "translated_summary" not in translated_doc:
-#         return {"error": f"Translated summary not found for language: {target_language}. Generate via POST /translate/full-summary/ first."}
-    
-#     return {
-#         "chapter_id": chapter_id,
-#         "language": target_language,
-#         "translated_summary": translated_doc["translated_summary"]
-#     }
 
 @app.get("/translate/section-summary/")
 async def get_translated_section_summary(chapter_id: str, section_id: str, target_language: str):
@@ -421,21 +506,6 @@ async def get_translated_definition(chapter_id: str, domain_id: str, target_lang
         "translated_definition": translated_definition
     }
 
-# @app.get("/translate/chapter/")
-# async def get_translated_chapter(chapter_id: str, target_language: str):
-#     """
-#     Retrieve translated chapter from MongoDB.
-#     """
-#     translated_doc = await translated_chapter_col.find_one({"chapter_id": chapter_id, "language": target_language})
-#     if translated_doc and "translated_text" in translated_doc:
-#         return {
-#             "chapter_id": chapter_id,
-#             "language": target_language,
-#             "translated_text": translated_doc["translated_text"]
-#         }
-#     else:
-#         raise HTTPException(status_code=404, detail="Translated chapter not found")
-
 @app.get("/translate/section/")
 async def get_translated_section(chapter_id: str, section_id: str, target_language: str):
     """
@@ -452,6 +522,61 @@ async def get_translated_section(chapter_id: str, section_id: str, target_langua
     else:
         raise HTTPException(status_code=404, detail="Translated section not found")
 
+
+@app.get("/api/get-section-summary-audio")
+async def get_section_summary_audio(
+    chapter_id: str,
+    section_id: str
+):
+
+    doc = await section_summary_col.find_one(
+        {
+            "chapter_id": chapter_id,
+            "section_id": section_id
+        }
+    )
+
+    if not doc or not doc.get("audio_summary_en"):
+        return {"status": "error", "message": "Audio not found"}
+
+    audio_bytes = convert_binary_to_bytes(
+        doc["audio_summary_en"]
+    )
+
+    return StreamingResponse(
+        BytesIO(audio_bytes),
+        media_type="audio/mpeg"
+    )
+
+@app.get("/api/get-section-summary-audio-translation")
+async def get_section_summary_audio_translation(
+    chapter_id: str,
+    section_id: str,
+    language: str
+):
+
+    field_name = f"audio_summary_{language}"
+
+    doc = await translated_section_summary_col.find_one(
+        {
+            "chapter_id": chapter_id,
+            "section_id": section_id,
+            "language": language
+        }
+    )
+
+    if not doc or not doc.get(field_name):
+        return {"status": "error", "message": "Translated audio not found"}
+
+    audio_bytes = convert_binary_to_bytes(
+        doc[field_name]
+    )
+
+    return StreamingResponse(
+        BytesIO(audio_bytes),
+        media_type="audio/mpeg"
+    )
+    
 @app.get("/translate/sentence/")
 async def get_translated_sentence(chapter_id: str, sentence: str, target_language: str):
     """
@@ -551,7 +676,13 @@ async def get_taxonomy_image_on_demand(chapter_id: str, domain_id: str):
 
 @app.get("/image/{domain_id}")
 async def get_labelled_image(domain_id: str):
-    image_doc = await labeled_image_col.find_one({"domain_id": domain_id})
+    image_doc = await labeled_image_col.find_one(
+        {
+            "domain_id": domain_id,
+            "status": "approved"
+        },
+        sort=[("approved_at", -1)]
+    )
 
     if not image_doc:
         raise HTTPException(status_code=404, detail="Labelled image not found")
@@ -586,7 +717,7 @@ async def get_labelled_image(domain_id: str):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
+        
 
 @app.get("/video/{domain_id}")
 async def get_process_video(domain_id: str):
@@ -656,34 +787,102 @@ async def get_qa(chapter_id: str):
     if not doc or "qa_pairs" not in doc:
         return {"chapter_id": chapter_id, "qa_pairs": [], "message": "No QA pairs found"}
     return {"chapter_id": chapter_id, "qa_pairs": doc["qa_pairs"]}
+
+
+def serialize_mongo(doc):
+    if doc and "_id" in doc:
+        doc["_id"] = str(doc["_id"])
+    return doc
+
+
+def split_text(text: str, max_len: int = 200) -> list[str]:
+    """Split text into chunks at sentence boundaries under max_len chars."""
+    sentences = text.split(".")
+    chunks, current = [], ""
+    for s in sentences:
+        if len(current) + len(s) < max_len:
+            current += s + "."
+        else:
+            if current.strip():
+                chunks.append(current.strip())
+            current = s + "."
+    if current.strip():
+        chunks.append(current.strip())
+    return chunks
+
+
 @app.post("/translate/sentence/")
-async def translate_sentence(chapter_id: str = Body(..., embed=True), sentence: str = Body(..., embed=True), target_language: str = Body(..., embed=True)):
-    """
-    Translate a sentence and save to MongoDB.
-    """
+async def translate_sentence(
+    chapter_id: str = Body(..., embed=True),
+    sentence: str = Body(..., embed=True),
+    target_language: str = Body(..., embed=True),
+):
     doc = await chapters_col.find_one({"chapter_id": chapter_id})
     if not doc or "pdf_text" not in doc:
-        return {"error": "PDF not found. Upload via /read-pdf/ first."}
-    
-    translated = translate_text(sentence, "eng", target_language)
-    
+        return {"error": "PDF not found"}
+
+    # Normalise whitespace
+    sentence = " ".join(sentence.split())
+
+    # Return cached result if available
+    existing = await translated_sentence_col.find_one({
+        "chapter_id": chapter_id,
+        "sentence": sentence,
+        "language": target_language,
+    })
+    if existing:
+        return serialize_mongo(existing)
+
+    # Translate chunk by chunk
+    translated_parts = []
+
+    for chunk in split_text(sentence):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+
+        try:
+            result = translate_text(chunk, "eng", target_language)
+
+            # ✅ translate_text returns {"data": "...", ...} or {"error": "..."}
+            if "error" in result:
+                print(f"⚠️  Translation error for chunk: {result['error']}")
+                translated_parts.append(chunk)          # fallback: original text
+            else:
+                translated_parts.append(result["data"]) # ✅ extract the string
+
+        except Exception as e:
+            print(f"❌ Chunk failed: {e}")
+            translated_parts.append(chunk)              # fallback: original text
+
+    translated = " ".join(translated_parts)
+
+    print("INPUT :", sentence)
+    print("OUTPUT:", translated)
+
     await translated_sentence_col.update_one(
-        {"chapter_id": chapter_id, "sentence": sentence, "language": target_language},
+        {
+            "chapter_id": chapter_id,
+            "sentence": sentence,
+            "language": target_language,
+        },
         {"$set": {
             "chapter_id": chapter_id,
             "sentence": sentence,
             "language": target_language,
-            "translated_sentence": translated
+            "translated_sentence": translated,
         }},
-        upsert=True
+        upsert=True,
     )
+
     return {
         "chapter_id": chapter_id,
         "sentence": sentence,
         "language": target_language,
         "translated_sentence": translated,
-        "message": "Translated & stored"
+        "message": "Translated & stored",
     }
+    
 @app.get("/chapters/")
 async def get_all_chapters():
     """
@@ -1123,6 +1322,8 @@ async def get_section_summary_audio(
         BytesIO(audio_bytes),
         media_type="audio/mpeg"
     )
+
+
 @app.get("/api/get-section-summary-audio-translation")
 async def get_section_summary_audio_translation(
     chapter_id: str,
@@ -1202,3 +1403,993 @@ async def get_definition_audio_translation(
         BytesIO(audio_bytes),
         media_type="audio/mpeg"
     )
+    
+# @app.post("/process-pdf-sentences/")
+# async def process_pdf_sentences(chapter_id: str):
+#     # Get PDF path from DB
+#     chapter = await chapters_col.find_one({"chapter_id": chapter_id})
+
+#     if not chapter or not chapter.get("pdf_path"):
+#         raise HTTPException(status_code=404, detail="PDF not found")
+
+#     pdf_path = chapter["pdf_path"]   # local path OR downloaded path
+
+#     # 🔥 Extract sentences
+#     sentences = extract_sentences_from_pdf(pdf_path)
+
+#     # 🔥 Store in DB
+#     count = await store_sentences_in_db(chapter_id, sentences)
+
+#     return {
+#         "chapter_id": chapter_id,
+#         "total_sentences": count,
+#         "message": "Sentences extracted and stored successfully"
+#     }
+    
+# import tempfile
+
+# async def download_pdf_from_minio(pdf_path):
+#     object_name = pdf_path.split("/")[-1]
+
+#     response = minio_client.get_object(MINIO_BUCKET, object_name)
+
+#     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
+
+#     with open(temp_file.name, "wb") as f:
+#         for chunk in response.stream(32 * 1024):
+#             f.write(chunk)
+
+#     return temp_file.name
+
+# @app.post("/process-existing-pdfs/")
+# async def process_existing_pdfs():
+#     processed = 0
+
+#     async for chapter in chapters_col.find():
+#         chapter_id = chapter.get("chapter_id")
+#         pdf_path = chapter.get("pdf_path")
+
+#         if not pdf_path:
+#             continue
+
+#         # 🚨 Skip if already processed
+#         existing = await sentences_col.find_one({"chapter_id": chapter_id})
+#         if existing:
+#             continue
+
+#         try:
+#             # 1️⃣ Download PDF
+#             local_pdf = await download_pdf_from_minio(pdf_path)
+
+#             # 2️⃣ Extract sentences
+#             sentences = extract_sentences_from_pdf(local_pdf)
+
+#             # 3️⃣ Store in DB
+#             await store_sentences_in_db(chapter_id, sentences)
+
+#             # 4️⃣ Cleanup
+#             os.remove(local_pdf)
+
+#             processed += 1
+
+#         except Exception as e:
+#             print(f"Error processing {chapter_id}: {e}")
+
+#     return {
+#         "message": "Processing complete",
+#         "chapters_processed": processed
+#     }
+    
+
+# @app.post("/process-single-chapter/")
+# async def process_single_chapter(req: ChapterRequest):
+#     chapter_id = req.chapter_id
+
+#     # 🔥 FIX: fetch chapter first
+#     chapter = await chapters_col.find_one({"chapter_id": chapter_id})
+
+#     if not chapter:
+#         raise HTTPException(status_code=404, detail="Chapter not found")
+
+#     if not chapter.get("pdf_path"):
+#         raise HTTPException(status_code=404, detail="PDF not found")
+
+#     try:
+#         # 1️⃣ Download PDF from MinIO
+#         local_pdf = await download_pdf_from_minio(chapter["pdf_path"])
+
+#         # 2️⃣ Extract sentences
+#         sentences = extract_sentences_from_pdf(local_pdf)
+
+#         # 3️⃣ Store in DB
+#         count = await store_sentences_in_db(chapter_id, sentences)
+
+#         # 4️⃣ Cleanup
+#         os.remove(local_pdf)
+
+#         return {
+#             "chapter_id": chapter_id,
+#             "sentences_stored": count,
+#             "message": "Processed successfully"
+#         }
+
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/check-sentences/")
+async def check_sentences(chapter_id: str):
+    existing = await sentences_col.find_one({"chapter_id": chapter_id})
+
+    return {
+        "chapter_id": chapter_id,
+        "exists": True if existing else False
+    }  
+    
+from fastapi import Query
+
+ 
+
+class USRToGraphRequest(BaseModel):
+    usr_text: str
+
+def split_segments(usr_text: str) -> List[Dict]:
+    """Split USR text into individual segments"""
+    pattern = r'<segment_id=(.*?)>(.*?)</segment_id>'
+    matches = re.findall(pattern, usr_text, re.DOTALL)
+    
+    segments = []
+    for seg_id, content in matches:
+        # Extract English sentence
+        sentence_match = re.search(r'#(.*?)(?:\n|$)', content)
+        english_sentence = sentence_match.group(1).strip() if sentence_match else ""
+        
+        segments.append({
+            "segId": seg_id.strip(),
+            "text": content.strip(),
+            "englishSentence": english_sentence
+        })
+    
+    return segments
+
+def parse_segment(segment_text: str) -> Dict[str, Any]:
+    """Parse a single USR segment into nodes and edges"""
+    lines = segment_text.strip().split('\n')
+    
+    nodes = []
+    edges = []
+    root_id = None
+    
+    # Skip header lines until we find the # line
+    start_idx = 0
+    for i, line in enumerate(lines):
+        if line.startswith('#'):
+            start_idx = i + 1
+            break
+    
+    for line in lines[start_idx:]:
+        line = line.strip()
+        if not line or line.startswith('%'):
+            continue
+        
+        parts = line.split('\t')
+        if len(parts) < 5:
+            continue
+        
+        # Parse USR line format:
+        # pred\tidx\ttense\tneg\targs\tdiscourse\tcoref\taspect\t...
+        pred = parts[0].strip()
+        idx = parts[1].strip()
+        
+        # Extract arguments (usually in position 4)
+        args_str = parts[4].strip() if len(parts) > 4 else ""
+        
+        # Parse arguments like "2:k1", "4:rblak", etc.
+        arg_links = []
+        if args_str and args_str != '-':
+            for arg in args_str.split(','):
+                arg = arg.strip()
+                if ':' in arg:
+                    target, role = arg.split(':')
+                    arg_links.append({
+                        "target": int(target) if target.isdigit() else target,
+                        "role": role
+                    })
+        
+        # Create node
+        node = {
+            "id": idx,
+            "predicate": pred,
+            "label": pred,
+            "args": arg_links
+        }
+        nodes.append(node)
+        
+        # Create edges from arguments
+        for arg_link in arg_links:
+            target = arg_link["target"]
+            role = arg_link["role"]
+            
+            edge = {
+                "from": idx,
+                "to": str(target) if isinstance(target, int) else target,
+                "label": role
+            }
+            edges.append(edge)
+        
+        # Check if this is the root (has '0:main' argument)
+        if '0:main' in args_str:
+            root_id = idx
+    
+    # If no root found, use first node
+    if not root_id and nodes:
+        root_id = nodes[0]["id"]
+    
+    return {
+        "nodes": nodes,
+        "edges": edges,
+        "rootId": root_id,
+        "englishSentence": extract_english_sentence(segment_text)
+    }
+
+def extract_english_sentence(segment_text: str) -> str:
+    """Extract the English sentence from USR segment"""
+    match = re.search(r'#(.*?)(?:\n|$)', segment_text)
+    return match.group(1).strip() if match else ""
+
+@app.post("/usr-to-graph/")
+async def usr_to_graph(request: USRToGraphRequest):
+    """Convert USR text to graph JSON for visualization"""
+    try:
+        usr_text = request.usr_text
+        
+        if not usr_text:
+            raise HTTPException(status_code=400, detail="USR text required")
+        
+        # Split into segments
+        segments = split_segments(usr_text)
+        
+        result = []
+        for seg in segments:
+            parsed = parse_segment(seg["text"])
+            result.append({
+                "segment_id": seg["segId"],
+                "nodes": parsed["nodes"],
+                "edges": parsed["edges"],
+                "root": parsed["rootId"],
+                "sentence": parsed["englishSentence"]
+            })
+        
+        return {"graph": result, "success": True}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/get-usr/")
+async def get_usr(
+    chapter_id: str = Query(...),
+    sentence: str = Query(...)
+):
+    """Fetch USR for a selected sentence using fuzzy matching"""
+    try:
+        # Normalize input
+        normalized_input = normalize_text(sentence)
+        
+        # Find best match in database
+        best_doc = None
+        best_score = 0
+        
+        cursor = sentences_col.find({"chapter_id": chapter_id})
+        docs = await cursor.to_list(length=1000)
+        
+        for doc in docs:
+            db_sentence = doc.get("normalized_sentence", "")
+            score = fuzz.ratio(normalized_input, db_sentence)
+            
+            if score > best_score:
+                best_score = score
+                best_doc = doc
+        
+        if not best_doc or best_score < 80:
+            raise HTTPException(status_code=404, detail="USR not found")
+        
+        return {
+            "sentence": best_doc.get("sentence"),
+            "match_score": best_score,
+            "usr_segments": best_doc.get("usr_segments", [])
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+def normalize_text(text: str) -> str:
+    """Normalize text for matching"""
+    text = text.lower()
+    return re.sub(r'[^a-z0-9]', '', text)
+
+
+@app.get("/get-sentence-with-paragraph/")
+async def get_sentence_with_paragraph(
+    chapter_id: str = Query(...),
+    sentence: str = Query(...)
+):
+    """Fetch a sentence along with its full paragraph"""
+    try:
+        # Normalize the input sentence
+        normalized_input = normalize_text(sentence)
+        
+        # Find the sentence in database
+        best_doc = None
+        best_score = 0
+        
+        cursor = sentences_col.find({"chapter_id": chapter_id})
+        docs = await cursor.to_list(length=10000)
+        
+        for doc in docs:
+            db_sentence = doc.get("normalized_sentence", "")
+            score = fuzz.ratio(normalized_input, db_sentence)
+            
+            if score > best_score:
+                best_score = score
+                best_doc = doc
+        
+        if not best_doc or best_score < 80:
+            raise HTTPException(status_code=404, detail="Sentence not found")
+        
+        # IMPORTANT: Get the paragraph field from the document
+        # In your database, 'paragraph' is a string field containing the full paragraph
+        paragraph_text = best_doc.get("paragraph", "")
+        
+        # Debug logging
+        print(f"🔍 Found sentence: {best_doc.get('sentence', '')[:50]}...")
+        print(f"📄 Paragraph from DB: {paragraph_text[:100] if paragraph_text else 'EMPTY'}...")
+        
+        # If paragraph is empty or None, use the sentence itself as fallback
+        if not paragraph_text or paragraph_text == "":
+            print("⚠️ No paragraph field found, using sentence as fallback")
+            paragraph_text = best_doc.get("sentence", sentence)
+        
+        # Split paragraph into sentences
+        import re
+        # Clean up the paragraph text (remove extra newlines)
+        paragraph_text = re.sub(r'\n+', ' ', paragraph_text)
+        paragraph_text = re.sub(r'\s+', ' ', paragraph_text).strip()
+        
+        # Split on periods, question marks, exclamation marks followed by space
+        sentences_in_paragraph = [s.strip() for s in re.split(r'(?<=[.!?])\s+', paragraph_text) if s.strip()]
+        
+        # If no sentences found, use the whole paragraph as one sentence
+        if len(sentences_in_paragraph) == 0:
+            sentences_in_paragraph = [paragraph_text]
+        
+        # Format as expected by frontend
+        paragraph_data = {
+            "fullParagraph": paragraph_text,
+            "sentences": sentences_in_paragraph
+        }
+        
+        print(f"✅ Returning paragraph with {len(sentences_in_paragraph)} sentences")
+        print(f"📄 Paragraph preview: {paragraph_text[:100]}...")
+        
+        return {
+            "success": True,
+            "sentence": best_doc.get("sentence"),
+            "match_score": best_score,
+            "paragraph": paragraph_data,
+            "usr_segments": best_doc.get("usr_segments", [])
+        }
+        
+    except Exception as e:
+        print(f"❌ Error in get_sentence_with_paragraph: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+@app.post("/store-simplified-paragraph/")
+async def store_simplified_paragraph(request: SimplifiedParagraphRequest):
+    """
+    Store simplified paragraph with USR data for each sentence
+    """
+    try:
+        # Store in paraphrase collection with structured data
+        doc = {
+            "chapter_id": request.chapter_id,
+            "original_paragraph": request.original_paragraph,
+            "simplified_paragraph": request.simplified_paragraph,
+            "sentences": request.sentences,  # Each sentence with its USR
+            "created_at": datetime.datetime.utcnow(),
+            "updated_at": datetime.datetime.utcnow()
+        }
+        
+        # Upsert to avoid duplicates
+        await paraphrase_col.update_one(
+            {
+                "chapter_id": request.chapter_id,
+                "original_paragraph": request.original_paragraph
+            },
+            {"$set": doc},
+            upsert=True
+        )
+        
+        return {
+            "success": True,
+            "message": "Simplified paragraph stored successfully",
+            "chapter_id": request.chapter_id
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/get-simplified-paragraph/")
+async def get_simplified_paragraph(
+    chapter_id: str = Query(...),
+    original_sentence: str = Query(...)
+):
+    """
+    Retrieve simplified paragraph with USR data for a given original sentence
+    """
+    try:
+        # First find which paragraph contains this sentence
+        # We'll use fuzzy matching to find the right paragraph
+        
+        # Get all simplified paragraphs for this chapter
+        cursor = paraphrase_col.find({"chapter_id": chapter_id})
+        paragraphs = await cursor.to_list(length=100)
+        
+        best_match = None
+        best_score = 0
+        
+        for para_doc in paragraphs:
+            original_para = para_doc.get("original_paragraph", "")
+            if original_para:
+                # Check if the original sentence is in this paragraph
+                if original_sentence in original_para:
+                    score = fuzz.ratio(original_sentence, original_para)
+                    if score > best_score:
+                        best_score = score
+                        best_match = para_doc
+        
+        if not best_match:
+            return {
+                "success": False,
+                "error": "No simplified paragraph found for this sentence",
+                "sentences": []
+            }
+        
+        # Return the simplified paragraph with USR data
+        return {
+            "success": True,
+            "simplified_paragraph": best_match.get("simplified_paragraph", ""),
+            "sentences": best_match.get("sentences", []),
+            "original_paragraph": best_match.get("original_paragraph", "")
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/get-sentence-usr/")
+async def get_sentence_usr(
+    chapter_id: str = Query(...),
+    sentence_text: str = Query(...)
+):
+    """
+    Get USR data for a specific sentence from the simplified paragraph
+    """
+    try:
+        # Search in paraphrase collection
+        cursor = paraphrase_col.find({
+            "chapter_id": chapter_id,
+            "sentences.sentence": sentence_text
+        })
+        
+        async for doc in cursor:
+            for sentence in doc.get("sentences", []):
+                if sentence.get("sentence") == sentence_text:
+                    return {
+                        "success": True,
+                        "sentence": sentence_text,
+                        "usr_segments": sentence.get("usr_segments", []),
+                        "has_usr": len(sentence.get("usr_segments", [])) > 0
+                    }
+        
+        # If not found in simplified, try the main sentences collection
+        sentence_doc = await sentences_col.find_one({
+            "chapter_id": chapter_id,
+            "sentence": sentence_text
+        })
+        
+        if sentence_doc and sentence_doc.get("usr_segments"):
+            return {
+                "success": True,
+                "sentence": sentence_text,
+                "usr_segments": sentence_doc.get("usr_segments", []),
+                "has_usr": True
+            }
+        
+        return {
+            "success": False,
+            "error": "No USR found for this sentence",
+            "has_usr": False
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+    
+
+@app.post("/get-paragraph-with-usr-status/")
+async def get_paragraph_with_usr_status(request: Request):
+    """Fetch simplified paragraph and check USR status for each sentence"""
+    try:
+        from rapidfuzz import fuzz
+        
+        body = await request.json()
+        chapter_id = body.get("chapter_id")
+        sentence_text = body.get("sentence_text")
+        
+        if not chapter_id or not sentence_text:
+            raise HTTPException(status_code=400, detail="Missing chapter_id or sentence_text")
+        
+        print(f"\n🔍 Searching for simplified paragraph for chapter: {chapter_id}")
+        print(f"   Sentence: {sentence_text[:150]}...")
+        
+        # Initialize selected_paragraph
+        selected_paragraph = None
+        
+        # Get all simplified paragraphs for this chapter
+        cursor = paraphrase_col.find({"chapter_id": chapter_id})
+        paragraphs = await cursor.to_list(length=100)
+        
+        print(f"📊 Found {len(paragraphs)} paragraphs in database")
+        
+        if not paragraphs:
+            print("❌ No paragraphs found in database for chapter_id:", chapter_id)
+            return {
+                "success": False,
+                "error": f"No simplified paragraphs found for chapter: {chapter_id}",
+                "paragraph": "",
+                "sentences": [],
+                "hasSimplified": False
+            }
+        
+        # Try exact match first
+        for para in paragraphs:
+            original_para = para.get("original_paragraph", "")
+            if original_para and sentence_text.strip() == original_para.strip():
+                print("✅ Found exact match by original_paragraph!")
+                selected_paragraph = para
+                break
+        
+        # If not found, try partial match
+        if not selected_paragraph:
+            for para in paragraphs:
+                original_para = para.get("original_paragraph", "")
+                if original_para and sentence_text in original_para:
+                    print("✅ Found partial match by original_paragraph!")
+                    selected_paragraph = para
+                    break
+        
+        # If still not found, try keyword matching
+        if not selected_paragraph:
+            print("⚠️ No direct match, trying keyword matching...")
+            
+            # Check for Whittaker-related content
+            whittaker_keywords = ["Whittaker", "Five Kingdom", "broad classification", "living organisms"]
+            is_whittaker = any(keyword.lower() in sentence_text.lower() for keyword in whittaker_keywords)
+            
+            if is_whittaker:
+                print("✅ Matched Whittaker keywords")
+                for para in paragraphs:
+                    if "Robert H. Whittaker" in para.get("simplified_paragraph", ""):
+                        selected_paragraph = para
+                        break
+            
+            # Check for plant kingdom content
+            if not selected_paragraph:
+                plant_keywords = ["plant kingdom", "understanding", "changed over time", "cyanobacteria"]
+                is_plant = any(keyword.lower() in sentence_text.lower() for keyword in plant_keywords)
+                
+                if is_plant:
+                    print("✅ Matched Plant Kingdom keywords")
+                    for para in paragraphs:
+                        if "must emphasize that our understanding" in para.get("simplified_paragraph", ""):
+                            selected_paragraph = para
+                            break
+        
+        # Use fuzzy matching as last resort
+        if not selected_paragraph:
+            print("⚠️ No keyword match, using fuzzy matching...")
+            best_match = None
+            best_score = 0
+            
+            for para in paragraphs:
+                original = para.get("original_paragraph", "")
+                if original:
+                    score = fuzz.ratio(sentence_text.lower(), original.lower())
+                    if score > best_score:
+                        best_score = score
+                        best_match = para
+                        print(f"   Score {score:.2f} for paragraph with original: {original[:50]}...")
+            
+            if best_match and best_score > 50:
+                selected_paragraph = best_match
+                print(f"✅ Fuzzy match found with score: {best_score:.2f}")
+        
+        if not selected_paragraph:
+            print("❌ No matching paragraph found!")
+            return {
+                "success": False,
+                "error": "No simplified paragraph found for this sentence",
+                "paragraph": "",
+                "sentences": [],
+                "hasSimplified": False
+            }
+        
+        # Build the response with sentences and their USR data
+        sentences_with_usr = []
+        for sent in selected_paragraph.get("sentences", []):
+            usr_segments = sent.get("usr_segments", [])
+            has_usr = len(usr_segments) > 0
+            
+            sentences_with_usr.append({
+                "text": sent.get("sentence", ""),
+                "hasUSR": has_usr,
+                "usr_segments": usr_segments
+            })
+        
+        print(f"\n📊 Returning {len(sentences_with_usr)} sentences:")
+        for idx, sent in enumerate(sentences_with_usr, 1):
+            print(f"   {idx}. hasUSR: {sent['hasUSR']} - {sent['text'][:60]}...")
+        
+        return {
+            "success": True,
+            "paragraph": selected_paragraph.get("simplified_paragraph", ""),
+            "sentences": sentences_with_usr,
+            "original_paragraph": selected_paragraph.get("original_paragraph", ""),
+            "currentSentence": sentence_text,
+            "hasSimplified": True,
+            "from_cache": True
+        }
+        
+    except Exception as e:
+        print(f"❌ Error: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return {
+            "success": False,
+            "error": str(e),
+            "paragraph": "Error loading paragraph",
+            "sentences": [],
+            "hasSimplified": False
+        }
+
+@app.post("/get-sentence-usrs-batch/")
+async def get_sentence_usrs_batch(request: Request):
+    """Fetch USR data for all sentences in a simplified paragraph in one batch request."""
+    try:
+        from rapidfuzz import fuzz
+        import re
+        import datetime
+        
+        # Parse JSON body
+        body = await request.json()
+        chapter_id = body.get("chapter_id")
+        simplified_paragraph = body.get("simplified_paragraph")
+        original_paragraph = body.get("original_paragraph")
+        sentences = body.get("sentences", [])
+        
+        if not chapter_id or not simplified_paragraph:
+            raise HTTPException(status_code=400, detail="Missing required fields")
+        
+        print(f"\n🚀 Processing batch USR request for chapter: {chapter_id}")
+        print(f"   Number of sentences: {len(sentences)}")
+        
+        result_sentences = []
+        
+        # First, try to find if we already have this simplified paragraph stored
+        existing_doc = await paraphrase_col.find_one({
+            "chapter_id": chapter_id,
+            "simplified_paragraph": simplified_paragraph
+        })
+        
+        if existing_doc and existing_doc.get("sentences"):
+            print(f"📦 Found cached paragraph with {len(existing_doc['sentences'])} sentences")
+            
+            # Return cached data with properly formatted USRs
+            for idx, sent_data in enumerate(existing_doc.get("sentences", [])):
+                usr_segments = sent_data.get("usr_segments", [])
+                
+                # Format each USR segment with proper XML tags
+                formatted_segments = []
+                for seg_idx, seg in enumerate(usr_segments):
+                    segment_id = seg.get("segment_id", f"seg_{idx}_{seg_idx}")
+                    usr_text = seg.get("text", "")
+                    english_sentence = seg.get("english_sentence", "")
+                    
+                    # Wrap in proper XML format
+                    formatted_usr = f"""<segment_id={segment_id}>
+# {english_sentence}
+
+{usr_text}
+</segment_id>"""
+                    
+                    formatted_segments.append({
+                        "segId": segment_id,
+                        "text": formatted_usr,
+                        "englishSentence": english_sentence
+                    })
+                
+                # Parse USRs for this sentence
+                parsed_usrs = []
+                for seg in formatted_segments:
+                    parsed = parse_usr_segment(seg["text"], seg["segId"])
+                    if parsed and parsed.get("nodes"):
+                        parsed_usrs.append(parsed)
+                
+                has_usr = len(usr_segments) > 0
+                
+                result_sentences.append({
+                    "text": sent_data.get("sentence", ""),
+                    "hasUSR": has_usr,
+                    "usr_segments": formatted_segments,
+                    "parsed_usrs": parsed_usrs,
+                    "coref_resolved": len(parsed_usrs) > 0
+                })
+            
+            return {
+                "success": True,
+                "paragraph": simplified_paragraph,
+                "sentences": result_sentences,
+                "from_cache": True
+            }
+        
+        # If not cached, process each sentence
+        print(f"🆕 No cached data found, processing {len(sentences)} sentences")
+        
+        for idx, sentence_obj in enumerate(sentences):
+            sentence_text = sentence_obj.get("sentence", "")
+            
+            # Try to find USR for this sentence
+            usr_segments = []
+            
+            # Method 1: Check sentences collection
+            sentence_doc = await sentences_col.find_one({
+                "chapter_id": chapter_id,
+                "sentence": sentence_text
+            })
+            
+            if sentence_doc and sentence_doc.get("usr_segments"):
+                usr_segments = sentence_doc.get("usr_segments", [])
+                print(f"📚 Found USR in sentences_col for sentence {idx + 1}")
+            else:
+                # Method 2: Search by similarity
+                cursor = sentences_col.find({"chapter_id": chapter_id})
+                docs = await cursor.to_list(length=1000)
+                
+                best_match = None
+                best_score = 0
+                normalized_input = re.sub(r'[^a-z0-9]', '', sentence_text.lower())
+                
+                for doc in docs:
+                    db_sentence = doc.get("normalized_sentence", "")
+                    if db_sentence:
+                        score = fuzz.ratio(normalized_input, db_sentence)
+                        if score > best_score:
+                            best_score = score
+                            best_match = doc
+                
+                if best_match and best_score > 70:
+                    usr_segments = best_match.get("usr_segments", [])
+                    print(f"🔍 Found USR by similarity for sentence {idx + 1} (score: {best_score})")
+            
+            # Format each USR segment
+            formatted_segments = []
+            for seg_idx, seg in enumerate(usr_segments):
+                segment_id = seg.get("segment_id", f"seg_{idx}_{seg_idx}")
+                usr_text = seg.get("text", "")
+                english_sentence = seg.get("english_sentence", "")
+                
+                # Wrap in proper XML format
+                formatted_usr = f"""<segment_id={segment_id}>
+# {english_sentence}
+
+{usr_text}
+</segment_id>"""
+                
+                formatted_segments.append({
+                    "segId": segment_id,
+                    "text": formatted_usr,
+                    "englishSentence": english_sentence
+                })
+            
+            # Parse USRs for this sentence
+            parsed_usrs = []
+            for seg in formatted_segments:
+                parsed = parse_usr_segment(seg["text"], seg["segId"])
+                if parsed and parsed.get("nodes"):
+                    parsed_usrs.append(parsed)
+            
+            has_usr = len(usr_segments) > 0
+            
+            result_sentences.append({
+                "text": sentence_text,
+                "hasUSR": has_usr,
+                "usr_segments": formatted_segments,
+                "parsed_usrs": parsed_usrs,
+                "coref_resolved": len(parsed_usrs) > 0
+            })
+            
+            if has_usr:
+                print(f"✅ Sentence {idx + 1}: {len(parsed_usrs)} USR segments parsed")
+            else:
+                print(f"⚠️ Sentence {idx + 1}: No USR found")
+        
+        # Cache the result
+        if result_sentences:
+            await paraphrase_col.update_one(
+                {
+                    "chapter_id": chapter_id,
+                    "simplified_paragraph": simplified_paragraph
+                },
+                {
+                    "$set": {
+                        "chapter_id": chapter_id,
+                        "simplified_paragraph": simplified_paragraph,
+                        "original_paragraph": original_paragraph,
+                        "sentences": [
+                            {
+                                "sentence": s["text"],
+                                "usr_segments": s["usr_segments"]
+                            } for s in result_sentences
+                        ],
+                        "created_at": datetime.datetime.utcnow(),
+                        "updated_at": datetime.datetime.utcnow()
+                    }
+                },
+                upsert=True
+            )
+            print("💾 Cached results in database")
+        
+        return {
+            "success": True,
+            "paragraph": simplified_paragraph,
+            "sentences": result_sentences,
+            "from_cache": False
+        }
+        
+    except Exception as e:
+        print(f"❌ Error in batch USR fetch: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+     
+ 
+
+def parse_usr_segment(usr_text: str, seg_id: str) -> Dict[str, Any]:
+    """Parse a USR segment into nodes and edges for visualization while preserving original format."""
+    if not usr_text or not usr_text.strip():
+        return {
+            "segId": seg_id, 
+            "nodes": {}, 
+            "edges": [], 
+            "rootId": None, 
+            "englishSentence": "", 
+            "fullText": ""
+        }
+    
+    # Store the original formatted text EXACTLY as is
+    full_text = usr_text.strip()
+    
+    lines = usr_text.strip().split('\n')
+    
+    # Extract English sentence (starts with #)
+    english_sentence = ""
+    for line in lines:
+        line_stripped = line.strip()
+        if line_stripped.startswith('#'):
+            english_sentence = line_stripped.replace('#', '').strip()
+            break
+    
+    # Find the actual data lines (between <segment_id> and </segment_id>)
+    data_lines = []
+    in_data = False
+    for line in lines:
+        line_stripped = line.strip()
+        if line_stripped.startswith('<segment_id'):
+            in_data = True
+            continue
+        if line_stripped.startswith('</segment_id>'):
+            in_data = False
+            continue
+        if in_data and line_stripped and not line_stripped.startswith('#') and not line_stripped.startswith('%'):
+            data_lines.append(line_stripped)
+    
+    nodes = {}
+    edges = []
+    root_id = None
+    
+    # Parse each data line - PRESERVE ALL COLUMNS
+    for line in data_lines:
+        parts = line.split('\t')
+        if len(parts) < 2:
+            continue
+        
+        word = parts[0].strip()
+        index = parts[1].strip()
+        
+        # Get ALL columns for reconstruction
+        # Column indices: 0:word, 1:index, 2:tense, 3:neg, 4:args, 5:discourse, 6:coref, 7:aspect, 8:other
+        tense = parts[2].strip() if len(parts) > 2 else "-"
+        neg = parts[3].strip() if len(parts) > 3 else "-"
+        args_str = parts[4].strip() if len(parts) > 4 else ""
+        discourse = parts[5].strip() if len(parts) > 5 else "-"
+        coref = parts[6].strip() if len(parts) > 6 else "-"
+        aspect = parts[7].strip() if len(parts) > 7 else "-"
+        other = parts[8].strip() if len(parts) > 8 else "-"
+        
+        # Parse arguments like "2:k1", "0:main", etc.
+        arg_links = []
+        if args_str and args_str != '-':
+            for arg in args_str.split(','):
+                arg = arg.strip()
+                if ':' in arg:
+                    target, role = arg.split(':', 1)
+                    arg_links.append({
+                        "target": target.strip(),
+                        "role": role.strip()
+                    })
+        
+        # Store node with ALL original data
+        nodes[index] = {
+            "id": index,
+            "label": word,
+            "isRoot": False,
+            "parentRel": "",
+            "tense": tense,
+            "neg": neg,
+            "args": args_str,
+            "discourse": discourse,
+            "coref": coref,
+            "aspect": aspect,
+            "other": other,
+            "original_line": line  # Store the original line for reconstruction
+        }
+        
+        # Create edges from arguments (skip '0' as it's the root marker)
+        for arg_link in arg_links:
+            if arg_link["target"] != '0':  # Skip root marker for edges
+                edge = {
+                    "from": arg_link["target"],
+                    "to": index,
+                    "label": arg_link["role"]
+                }
+                edges.append(edge)
+            else:
+                # This is the root node
+                root_id = index
+                nodes[index]["isRoot"] = True
+        
+        # Also check for root in args
+        if '0:main' in args_str or '0:begin' in args_str:
+            root_id = index
+            nodes[index]["isRoot"] = True
+    
+    # If no root found, use first node
+    if not root_id and nodes:
+        root_id = list(nodes.keys())[0]
+        if root_id in nodes:
+            nodes[root_id]["isRoot"] = True
+    
+    print(f"📊 Parsed segment {seg_id}: {len(nodes)} nodes, {len(edges)} edges, root: {root_id}")
+    
+    return {
+        "segId": seg_id,
+        "nodes": nodes,
+        "edges": edges,
+        "rootId": root_id,
+        "englishSentence": english_sentence,
+        "fullText": full_text  # Return the EXACT original text
+    }

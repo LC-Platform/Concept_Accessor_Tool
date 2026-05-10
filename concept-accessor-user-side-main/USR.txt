@@ -1,0 +1,1562 @@
+<segment_id=biology_chapter3_plantkingdom_0001>
+#In the previous chapter, we studied the broad classification of living organisms given by Robert H. Whittaker in 1969.
+previous_1	1	-	-	2:mod	-	def	-	-
+chapter_1	2	-	-	4:k7p	-	-	-	-
+$speaker	3	anim	pl	4:k1	-	-	-	-
+study_1-ed_1	4	-	-	0:main	-	-	-	-
+broad_1	5	-	-	6:mod	-	-	-	-
+classification_1	6	-	-	4:k2	-	-	-	-
+living_1	7	-	-	8:mod	-	-	-	-
+organism_1	8	-	pl	6:r6	-	-	-	-
+give_1	9	-	-	6:rbks	-	-	-	-
+Robert	10	male	-	-	-	-	-	13:begin
+H.	11	-	-	-	-	-	-	13:inside
+Whittaker	12	-	-	-	-	-	-	13:inside
+[ne_1]	13	per	-	9:k1	-	-	-	-
+1969	14	yoc	-	9:k7t	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0002>
+#He divided all living organisms into five kingdoms: Monera, Protista, Fungi, Animalia and Plantae. 
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0001.13:coref	-	-	-
+divide_1-ed_1	2	-	-	0:main	-	-	-	-
+all_1	3	-	-	5:quant	-	-	-	-
+living_1	4	-	-	5:mod	-	-	-	-
+organism_1	5	-	pl	2:k2	-	-	-	-
+5	6	numex	-	7:card	-	-	-	-
+kingdom_1	7	-	pl	2:k7	-	-	-	-
+Monera	8	-	-	-	-	-	-	9:begin
+[ne_1]	9	ne	-	-	-	-	-	18:op1
+Protista	10	-	-	-	-	-	-	11:begin	
+[ne_2]	11	ne	-	-	-	-	-	18:op2
+Fungi	12	-	-	-	-	-	-	13:begin	
+[ne_3]	13	ne	-	-	-	-	-	18:op3
+Animalia	14	-	-	-	-	-	-	15:begin
+[ne_4]	15	ne	-	-	-	-	-	18:op4
+Plantae	16	-	-	-	-	-	-	17:begin
+[ne_5]	17	ne	-	-	-	-	-	18:op5
+[conj_1]	18	-	-	7:re	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0003>
+#In this chapter, we will study the detailed classification of Kingdom Plantae, which is commonly called the plant kingdom.
+$wyax	15	-	-	14:dem	proximal	-	-	-
+chapter_1	14	-	-	2:k7p	-	-	-	-
+$speaker	1	anim	pl	2:k1	-	-	-	-
+study_1-0_will_1	2	-	-	0:main	-	-	-	-
+detailed_1	3	-	-	4:mod	-	-	-	-
+classification_1	4	-	-	2:k2	-	-	-	-
+Kingdom	5	-	-	-	-	-	-	7:begin
+Plantae	6	-	-	-	-	-	-	7:inside
+[ne_1]	7	ne	-	4:r6	-	-	-	-
+$yax	8	-	-	10:k2	7:coref	-	-	-
+common_1	9	-	-	10:vkvn	-	-	-	-
+call_1-en_is	10	-	-	7:rcelab	-	-	-	-
+plant_1	11	-	-	-	-	-	-	13:mod
+kingdom_1	12	-	-	-	-	-	-	13:head
+[nc_1]	13	-	-	10:k2s	-	-	-	-
+%affirmative
+</segment_id>
+
+
+
+<segment_id=biology_chapter3_plantkingdom_0004a>
+#We must emphasize this.
+$speaker	1	anim	pl	3:k1	-	-	-	-
+emphasize_1-0_must_1	3	-	-	0:main	-	-	-	-
+$wyax	4	-	-	3:k2	biology_chapter3_plantkingdom_0004b.6:coref	proximal	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0004b>
+#that our understanding of the plant kingdom has changed over time. 
+$speaker	1	anim	pl	2:r6	-	-	-	-
+understanding_1	2	-	-	6:k1	-	-	-	-
+plant_1	3	-	-	-	-	-	-	5:mod
+kingdom_1	4	-	-	-	-	-	-	5:head
+[nc_1]	5	-	-	2:k7	-	-	-	-
+change_1-en_have_1	6	-	-	0:main	-	-	-	-
+time_1	7	-	-	6:rprop	-	-	-	-
+%passaffirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0005>
+#Earlier classifications placed fungi and members of Monera and Protista that have cell walls in the plant kingdom. 
+early_1	1	-	-	2:mod	-	-	-	-
+classification_1	2	-	pl	3:k1	-	-	-	-
+place_1-ed_1	3	-	-	0:main	-	-	-	-
+fungi_1	4	-	-	-	-	-	-	6:op1
+member_1	5	-	-	-	-	-	-	6:op2
+[conj_1]	6	-	-	3:k2	-	-	-	-
+Monera	7	-	-	-	-	-	-	8:begin
+[ne_1]	8	-	-	-	-	-	-	11:op1
+Protista	9	-	-	-	-	-	-	10:begin
+[ne_2]	10	-	-	-	-	-	-	11:op2
+[conj_2]	11	-	-	5:r6	-	-	-	-
+$yax	12	-	-	16:rsm	-	-	-	-
+have_1-pres	13	-	-	5:rcdelim	-	-	-	-
+cell_1	14	-	-	-	-	-	-	16:mod
+wall_1	15	-	-	-	-	-	-	16:head
+[nc_1]16	-	-	13:k2	-	-	-	-
+plant_1	17	-	-	-	-	-	-	19:mod
+kingdom_1	18	-	-	-	-	-	-	19:head
+[nc_2]	19	-	pl	3:k7p	-	-	-	-
+%affirmative
+</segment_id>
+
+
+
+
+<segment_id=biology_chapter3_plantkingdom_0006>
+#However, they are now excluded from Plantae. 
+$wyax	1	-	-	3:k2	biology_chapter3_plantkingdom_0004.6:coref	-	-	-
+now_1	2	-	-	3:k7t	-	-	-	-
+exclude_1-en_is	3	-	-	0:main	biology_chapter3_plantkingdom_0005.3:contrast	-	-	-
+Plantae	4	-	-	-	-	-	-	5:begin
+[ne_1]	5	-	-	3:k5	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0007>
+#Therefore, cyanobacteria, which are also called blue-green algae, are not considered ‘algae’ anymore.
+cyanobacteria_1	1	-	-	9:k2	-	-	-	-
+$yax	2	-	-	3:k2	1:coref	-	-	-
+call_1-en_is	3	-	-	1:rcelab	-	-	-	-
+blue_1	4	-	-	-	-	-	-	6:op1
+green_1	5	-	-	-	-	-	-	6:op2
+[nc_1]	6	-	-	-	-	-	-	12:mod
+alga_1	7	-	pl	-	-	-	-	12:head
+[nc_2]	12	-	-	3:k2s	-	-	-	-
+not_1	8	-	-	9:neg	-	-	-	-
+consider_1-en_is	9	-	-	0:main	biology_chapter3_plantkingdom_0006.3:kAryakAraNa	-	-	-
+alga_1	10	-	pl	9:k2s	-	-	-	-
+anymore_1	11	-	-	9:k7t	-	-	-	-
+%pass_negative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0008>
+# In this chapter, we will describe Algae, Bryophytes, Pteridophytes, Gymnosperms, and Angiosperms which are under Plantae.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+chapter_1	2	-	-	4:k7p	-	-	-	-
+$speaker	3	anim	pl	4:k1	-	-	-	-
+describe_1-0_will_1	4	-	-	0:main	-	-	-	-
+Algae	5	-	-	-	-	-	-	6:begin	
+[ne_1]	6	ne	-	-	-	-	-	15:op1
+Bryophytes	7	-	-	-	-	-	-	8:begin
+[ne_2]	8	ne	-	-	-	-	-	15:op2
+Pteridophytes	9	-	-	-	-	-	-	10:begin
+[ne_3]	10	ne	-	-	-	-	-	15:op3
+Gymnosperms	11	-	-	-	-	-	-	12:begin
+[ne_4]	12	ne	-	-	-	-	-	15:op4
+Angiosperms	13	-	-	-	-	-	-	14:begin
+[ne_5]	14	ne	-	-	-	-	-	15:op5
+[conj_1]	15	-	-	4:k2	-	-	-	-
+$yax	16	-	-	-	17:k1	15:coref	-	-
+be_1-pres	17	-	-	15:rcelab	-	-	-	-
+Plantae	18	-	-	-	-	-	-	19:begin
+[ne_6]	19	ne	-	17:k7p	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0009>
+#We will also look at the classification within angiosperms to understand some of the issues that influenced classification systems. 
+$speaker	1	anim	pl	2:k1	-	-	-	-
+look_1-0_will_1	2	-	-	0:main	-	additive	-	-
+classification_1	3	-	-	2:k2	-	-	-	-
+angiosperm_1	4	-	pl	3:r6	-	-	-	-
+understand_1	5	-	-	2:rt	-	-	-	-
+some_1	6	-	-	7:quant	-	-	-	-
+issue_1	7	-	pl	5:k2	-	-	-	-
+$yax	8	-	-	9:k1	7:coref	-	-	-
+influence_1-ed_1	9	-	-	7:rcdelim	-	-	-	-
+classification_1	10	-	-	-	-	-	-	12:mod
+system_1	11	-	-	-	-	-	-	12:head
+[nc_1]	12	-	pl	9:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0010>
+#The earliest classification systems used only simple external morphological features such as habit, colour, and the number and shape of leaves etc..
+early_1	1	-	superl	4:mod	-	def	-	-
+classification_1	2	-	-	-	-	-	-	4:mod
+system_1	3	-	-	-	-	-	-	4:head
+[nc_1]	4	-	pl	5:k1	-	-	-	-
+use_1-ed_1	5	-	-	0:main	-	-	-	-
+simple_1	6	-	-	9:mod	-	-	-	-
+external_1	7	-	-	9:mod	-	-	-	-
+morphological_1	8	-	-	9:mod	-	-	-	-
+feature_1	9	-	pl	5:k2	-	exclusive	-	-
+habit_1	10	-	-	-	-	-	-	15:op1
+colour_1	11	-	-	-	-	-	-	15:op2
+number_1	12	-	-	-	-	-	-	15:op3
+shape_1	13	-	-	-	-	-	-	15:op4
+leave_1	14	-	pl	13:r6	-	-	-	-
+etc_1	16	-	-	-	-	-	-	15:op5
+[conj_1] 15	-	-	9:re	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0011>
+#They were mainly based on vegetative characters or on the structure of the androecium in the system which was proposed by Linnaeus. 
+$wyax	1	-	-	3:k2	-	-	-	-
+mainly_1	2	-	-	3:vkvn	-	-	-	-
+base_1-en_is	3	-	-	0:main	-	-	-	-
+vegetative_1	4	-	-	5:mod	-	-	-	-
+character_1	5	-	pl	-	-	-	-	8:op1
+structure_1	6	-	-	-	-	-	-	8:op2
+androecium_1	7	-	-	6:r6	-	-	-	-
+[disjunct_1]	8	-	-	3:k7	-	-	-	-
+system_1	9	-	-	3:k7p	-	-	-	-
+$yax	10	-	-	11:k2	-	-	-	-
+propose_1-en_was	11	-	-	9:rcelab	-	-	-	-
+Linnaeus	12	-	-	-	-	-	-	13:begin
+[ne_1]	13	-	-	11:k1	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0012a>
+#These systems were artificial.  
+$wyax	1	-	-	2:dem	-	proximal	-	-
+system_1	2	-	pl	3:k1	-	-	-	-
+be_1-past	3	-	-	0:main	-	-	-	-
+artificial_1	4	-	-	3:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0012b>
+#because they separated closely related species by using only a few characteristics.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0012a.2:coref	-	-	-
+separate_1-ed-1	2	-	-	0:main	biology_chapter3_plantkingdom_0012a.3:kAryakAraNa	-	-	-
+closely_1	3	-	-	4:mod	-	-	-	-
+relate_1	4	-	-	5:rbks	-	-	-	-
+species_1	5	-	-	2:k2	-	-	-	-
+use_1	6	-	-	2:krvn	-	-	-	-
+a_1	7	-	-	8:quant	-	-	-	-
+few_1	8	-	-	9:quant	-	-	-	-
+characteristic_1	9	-	pl	6:k2	-	exclusive	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0013>
+#They also gave equal importance to vegetative and sexual characteristics. 
+$wyax	1	-	-	2:k1	-	-	-	-
+give_1-ed-1	2	-	-	0:main	-	additive	-	-
+equal_1	3	-	-	4:mod	-	-	-	-
+importance_1	4	-	-	2:k2	-	-	-	-
+vegetative_1	5	-	-	-	-	-	-	7:op1
+sexual_1	6	-	-	-	-	-	-	7:op2
+[conj_1]	7	-	-	8:mod	-	-	-	-
+characteristic_1	8	-	-	2:k4	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0014a>
+#This is not acceptable.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0013.2:coref	-	-	-
+be_1-pres	2	-	-	0:main	-	-	-	-
+not_1	3	-	-	2:neg	-	-	-	-	
+acceptable_1	4	-	-	2:k1s	-	-	-	-
+%negative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0014b>
+#because vegetative characters are often more easily affected by the environment. 
+vegetative_1	1	-	-	2:mod	-	-	-	-
+character_1	2	-	pl	3:k2	-	-	-	-
+affect_1-en_is	3	-	-	0:main	biology_chapter3_plantkingdom_0014a.2:kAryakAraNa	-	-	-
+often_1	4	-	-	3:freq	-	-	-	-
+more_1	5	-	-	6:mod	-	-	-	-
+easy_1	6	-	-	3:krvn	-	-	-	-
+environment_1	8	-	-	3:k1	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0015>
+#In contrast, natural classification systems were developed. 
+natural_1	1	-	-	-	-	-	-	5:mod
+classification_1	2	-	-	-	-	-	-	5:head
+system_1	3	-	-	-	-	-	-	6:head
+develop_1-en_was	4	-	-	0:main	biology_chapter3_plantkingdom_0014b.3:viroXI	-	-	-
+[nc_1]	5	-	-	-	-	-	-	6:mod
+[nc_2]	6	-	pl	4:k2	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0016a>
+#These systems were based on natural relationships among organisms. 
+$wyax	1	-	-	2:dem	-	proximal	-	-
+system_1	2	-	pl	3:k2	-	-	-	-
+base_1-en_was	3	-	-	0:main	-	-	-	-
+natural_1	4	-	-	5:mod	-	-	-	-
+relationship_1	5	-	pl	3:k7	-	-	-	-
+organism_1	6	-	pl	5:k7	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0016b>
+#These systems considered not only external features
+$wyax	1	-	-	2:dem	-	proximal	-	-
+system_1	2	-	pl	3:k1	-	-	-	-
+consider_1-ed_1	3	-	-	0:main	-	-	-	-
+external_1	4	-	-	5:mod	-	-	-	-
+feature_1	5	-	pl	3:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0016c>
+#But also they considered internal features such as ultrastructure, anatomy, embryology, and phytochemistry.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0016b.2:coref	proximal	-	-
+consider_1-ed_1	2	-	-	0:main	biology_chapter3_plantkingdom_0016b.3:samuccaya	additive	-	-
+internal_1	3	-	-	4:mod	-	-	-	-
+feature_1	4	-	pl	2:k2	-	-	-	-
+ultrastructure_1	5	-	-	-	-	-	-	9:op1
+anatomy_1	6	-	-	-	-	-	-	9:op2
+embryology_1	7	-	-	-	-	-	-	9:op3
+phytochemistry_1	8	-	-	-	-	-	-	9:op4
+[conj_1]	9	-	-	4:re	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0017>
+#Such a classification for flowering plants was given by George Bentham and Joseph Dalton Hooker.
+such_1	1	-	-	3:mod	-	-	-	-
+classification_1	3	-	-	6:k2		-	-	-	-	
+flowering_1	4	-	-	5:mod	-	-	-	-
+plant_1	5	-	pl  3:k4		-	-	-	-
+give_1-en_was	6	-	-	0:main	-	-	-	-
+George	7	-	-	-	-	-	-	9:begin
+Bentham	8	-	-	-	-	-	-	9:inside
+[ne_1]	9	-	-	-	-	-	-	14:op1
+Joseph	10	-	-	-	-	-	-	13:begin
+Dalton 	11	-	-	-	-	-	-	13:inside
+Hooker	12	-	-	-	-	-	-	13:inside
+[ne_2]	13	-	-	-	-	-	-	14:op2
+[conj_1]	14	-	-	6:k1	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0018>
+#At present phylogenetic classification systems,  which are based on evolutionary relationships between the various organisms are acceptable.
+present_1	1	-	-	13:k7t	-	-	-	-
+phylogenetic_1	2	-	-	-	-	-	-	5:mod
+classification_1	3	-	-	-	-	-	-	5:head
+system_1	4	-	-	-	-	-	-	6:head
+[nc_1]	5	-	-	-	-	-	-	6:mod
+[nc_2]	6	-	-	13:k1	-	-	-	-
+$yax	7	-	-	8:k2	6:coref	-	-	-
+base_1-en_is	8	-	-	6:rcelab	-	-	-	-
+evolutionary_1	9	-	-	10:mod	-	-	-	-
+relationship_1	10	-	pl	6:k7	-	-	-	-
+various_1	11	-	-	12:quant	-	-	-	-
+organism_1	12	-	pl	10:k7	-	-	-	-
+be_1-pres	13	-	-	0:main	-	-	-	-
+acceptable_1	14	-	-	13:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0019a>
+#This assumes this.
+$wyax	1	-	-	2:k1	-	-	-	-
+assume_1-es_1	2	-	-	0:main	-	-	-	-
+$wyax	3	-	-	2:k2	biology_chapter3_plantkingdom_0019b.5:coref	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0019b>
+#that organisms which belong to the same taxa have a common ancestor.
+organism_1	1	-	pl	5:rsm	-	-	-	-
+$yax	9	-	-	2:k1	1:coref	-	-	-
+belong_1-es_1	2	-	-	1:rcdelim	-	-	-	-
+same_1	3	-	-	4:mod	-	-	-	-
+taxon_1	4	-	pl	8:rsm	-	-	-	-
+have_1-pres	5	-	-	0:main	-	-	-	-
+a_1	6	-	-	8:quant	-	-	-	-
+common_1	7	-	-	8:mod	-	-	-	-
+ancestor_1	8	-	-	5:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0020>
+#We now also use information from many other sources to solve difficulties in classification.
+$speaker	1	anim	pl	3:k1	-	-	-	-
+now_1	2	-	-	3:k7t	-	-	-	-
+use_1-es_1	3	-	-	0:main	-	additive	-	-
+information_1	4	-	-	3:k2	-	-	-	-
+many_1	5	-	-	6:quant	-	-	-	-
+other_1	6	-	-	7:mod	-	-	-	-
+source_1	7	-	pl	3:k5	-	-	-	-
+solve_1	8	-	-	3:rt	-	-	-	-
+difficulty_1	9	-	pl	8:k2	-	-	-	-
+classification_1	10	-	-	9:r6	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0021>
+#When supporting fossil evidence is absent, these sources become more important.
+$yax	1	-	-	6:k7t		-	-	-	-
+supproting_1	2	-	-	5:mod	-	-	-	-
+fossil_1	3	-	-	-	-	-	-	5:mod
+evidence_1	4	-	-	-	-	-	-	5:head
+[nc_1]	5	-	-	6:k1	-	-	-	-
+be_1-pres	6	-	-	8:rcsamAnakAla	-	-	-	-
+absent_1	7	-	-	6:k1s	-	-	-	-
+$wyax	8	-	-	11:k7t	6:coref	proximal	-	-
+$wyax	9	-	-	10:dem	-	proximal	-	-
+source_1	10	-	pl	11:k1	-	-	-	-
+become_1-es_1	11	-	-	0:main	-	-	-	-
+more_1	12	-	-	13:mod		-	-	-	-
+important_1	13	-	-	11:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+
+
+<segment_id=biology_chapter3_plantkingdom_0022>
+#Numerical taxonomy, which can now be easily carried out using computers, is based on all observable characteristics.
+numerical_1	1	-	-	2:mod	-	-	-	-
+taxonomy_1	2	-	-	9:k2	-	-	-	-
+$yax	3	-	-	4:k2	2:coref	-	-	-
+carry+out_1-en_can_1	4	-	-	2:rcelab	-	-	-	-
+now_1	5	-	-	4:k7t	-	-	-	-
+easily_1	6	-	-	4:krvn	-	-	-	-
+computer_1	8	-	pl	4:k3	-	-	-	-
+base_1-en_is	9	-	-	0:main	-	-	-	-
+all_1	10	-	-	11:quant	-	-	-	-
+observable_1	11	-	-	12:mod	-	-	-	-
+characteristic_1 12	-	pl	9:k7	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0023a>
+#In this method, numbers and codes are assigned to all the characters. 
+$wyax	1	-	-	2:dem	-	proximal	-	-
+method_1	2	-	-	6:k7	-	-	-	-
+number_1	3	-	pl	-	-	-	-	5:op1
+code_1	4	-	-	pl	-	-	-	5:op2
+[conj_1]	5	-	-	6:k2	-	-	-	-
+assign_1-en_is	6	-	-	0:main	-	-	-	-
+all_1	7	-	-	8:quant	-	-	-	-
+character_1	8	-	pl	8:k4	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0023b>
+#and the data are then processed.
+data_1	1	-	pl	2:k2	-	-	-	-
+process_1-en_is	2	-	-	0:main	biology_chapter3_plantkingdom_0023a.6:samuccaya	-	-	-
+$wyax	3	-	-	2:k7t	-	distal	-	-
+%pass_affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0024a>
+#In this way, each character receives equal importance.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+way_1	2	-	-	5:krvn	-	-	-	-
+each_1	3	-	-	4:quant	-	-	-	-
+character_1	4	-	-	5:k4	-	-	-	-
+receive_1-es_1	5	-	-	0:main	-	-	-	-
+equal_1	6	-	-	7:mod	-	-	-	-
+importance_1	7	-	-	5:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0024b>
+#and hundreds of characters can be considered simultaneously.
+more_1	1	-	-	2:mod	-	-	-	-
+100 2		numex	-	3:card	-	-	-	-	
+character_1	3	-	pl	4:k2	-	-	-	-
+consider_1-en_can	4	-	-	0:main	biology_chapter3_plantkingdom_0024a.5:samuccaya	-	-	-
+simultaneously_1	5	-	-	4:krvn	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0025>
+#Cytotaxonomy is another method which is used by taxonomists.
+Cytotaxonomy_1	1	-	-	2:k1	-	-	-	-
+be_1-pres	2	-	-	0:main	-	-	-	-
+another_1	3	-	-	4:mod	-	-	-	-
+method_1	4	-	-	2:k1s	-	-	-	-
+$yax	5	-	-		6:k2	1:coref	-	-	-
+use_1-en_is	6	-	-	1:rcdelim	-	-	-	-
+taxonomist_1	7	-	pl	6:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_plant_kingdom_0026>
+#It is based on cytological information such as chromosome number, structure, and behaviour. 
+$wyax	1	-	-	2:k2	biology_chapter3_plantkingdom_0025.1:coref	proximal	-	-
+base-1-en_is	2	-	-	0:main	-	-	-	-
+cytological_1	3	-	-	4:mod	-	-	-	-
+information_1	4	-	-	2:k7	-	-	-	-
+chromosome_1	5	-	-	-	-	-	-	7:mod
+number_1	6	-	-	-	-	-	-	7:head
+[nc_1]	7	-	-	-	-	-	-	10:op1
+structure_1	8	-	-	-	-	-	-	10:op2
+behaviour_1	9	-	-	-	-	-	-	10:op3
+[conj_1]	10	-	-	4:re	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_plant_kingdom_0027a>
+#Chemotaxonomy is also used.
+Chemotaxonomy_1	1	-	-	2:k2	-	-	-	-
+use_1-en_is	2	-	-	0:main	-	additive	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_plant_kingdom_0027b>
+ and it studies the chemical constituents of plants to resolve confusions in classification these days.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0027a.1:coref	proximal	-	-
+study_1-es_1	2	-	-	0:main	biology_plant_kingdom_0027a.2:samuccaya	-	-	-
+chemical_1	3	-	-	4:mod	-	-	-	-
+constituent_1	4	-	pl	2:k2	-	def	-	-
+plant_1	5	-	-	4:r6	-	-	-	-
+resolve_1	6	-	-	2:rt	-	-	-	-
+confusion_1	7	-	-	6:k2	-	-	-	-
+classification_1	8	-	-	7:k7	-	-	-	-
+$wyax	9	-	-	10:dem	-	proximal	-	-
+Day_1	10	-	pl	2:k7t	-	-	-	-
+%affirmative
+</segment_id>
+
+
+
+
+
+Section 3.2
+
+
+
+<segment_id=biology_chapter3_plantkingdom_0081>
+#Bryophytes include mosses and liverworts. 
+Bryophyte_1	1	-	pl	2:k1	-	-	-	-
+include_1-es_1	2	-	-	0:main	-	-	-	-
+moss_1	3	-	pl	-	-	-	-	5:op1
+livewort_1	4	-	pl	-	-	-	-	5:op2
+[conj_1]	5	-	-	2:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+
+
+<segment_id=biology_chapter3_plantkingdom_0082>
+#They usually grow in moist and shaded places, especially in hills (Figure 3.2). 
+$wyax	1	-	-	3:k1	biology_chapter3_plantkingdom_0081.1:coref	distal	-	-
+usually_1	2	-	-	3:freq	-	-	-	-
+grow_1-es_1	3	-	-	0:main	-	-	-	-
+moist_1	4	-	-	-	-	-	-	6:op1
+shaded_1	5	-	-	-	-	-	-	6:op2
+[conj_1]	6	-	-	7:mod	-	-	-	-
+place_1	7	-	pl	3:k7p	-	-	-	-
+hill_1	8	-	pl	6:re	-	especially_1	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0083a>
+#Bryophytes are also called the amphibians of the plant kingdom. 
+Bryophyte_1	1	-	pl	2:k2	-	-	-	-
+call_1-en_was	2	-	-	0:main	-	additive	-	-
+amphibian_1	3	-	-	2:k2s	-	def	-	-
+plant_1	4	-	-	-	-	-	-	6:mod
+kingdom_1	5	-	-	-	-	-	-	6:head
+[nc_1]	6	-	-	3:r6	-	def	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0083b>
+#because these plants can live in soil. 
+$wyax	1	-	-	2:dem	-	-	-	-
+plant_1	2	-	pl	3:k1	-	-	-	-
+live_1-0_can_1	3	-	-	0:main	-	-	-	-
+soil_1	4	-	-	3:k7p	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0083c>
+#but they are dependent on water for sexual reproduction. 
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0083a.1:coref	distal	-	-
+be_1-pres	2	-	-	0:main	biology_chapter3_plantkingdom_0083a.2:kAryakAraNa/ biology_chapter3_plantkingdom_0083b.3:viroXI	-	-	-
+dependent_1	3	-	-	2:k1s	-	-	-	-
+water_1	4	-	-	3:k7p	-	-	-	-
+sexual_1	5	-	-	6:mod	-	-	-	-
+reproduction_1	6	-	-	3	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0084>
+#They grow in damp, humid, and shady areas. 
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0083a.1:coref	distal	-	-
+grow_1-es_1	2	-	-	0:main	-	-	-	-
+damp_1	3	-	-	-	-	-	-	8:op1
+humid_1	4	-	-	-	-	-	-	8:op2
+shady_1	7	-	-	-	-	-	-	8:op3
+[conj_1]	8	-	-	9:mod	-	-	-	-
+area_1	9	-	pl	2:k7p	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0085>
+#They play an important role in plant succession on bare rocks and soil.
+$wyax	1	-	-	2:k1	-	-	-	-
+play_1-es_1	2	-	-	0:main	-	-	-	-
+an_1	3	-	-	5:quant	-	-	-	-
+important_1	4	-	-	5:mod	-	-	-	-
+role_1	5	-	-	2:k2	-	-	-	-
+plant_1	6	-	-	-	-	-	-	12:mod
+succession_1	7	-	-	-	-	-	-	12:head
+bare_1	8	-	-	9:mod	-	-	-	-
+rock_1	9	-	-	-	-	-	-	11:op1
+soil_1	10	-	-	-	-	-	-	11:op2
+[conj_1]	11	-	-	2:k7p	-	-	-	-
+[nc_1]	12	-	-	2:k7	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0086>
+#The plant body of bryophytes is more differentiated than that of algae.
+plant_1	1	-	-	-	-	-	-	3:mod
+body_1	2	-	-	-	-	-	-	-	3:head
+[nc_1]	3	-	-	5:k1	-	def	-	-
+bryophyte_1	4	-	pl	3:r6	-	-	-	-
+be_1-pres	5	-	-	0:main	-	-	-	-
+differentiated_1	6	-	-	5:k1s	-	-	-	-
+alga_1	7	-	pl	4:rv	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0087a>
+It is thallus-like and prostrate or erect
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0086.3:coref	proximal	-	-
+be_1-pres	2	-	-	0:main	-	-	-	-
+thalus+like_1	3	-	-	-	-	-	-	7:op1
+prostrate_1	4	-	-	-	-	-	-	6:op1
+erect_1	5	-	-	-	-	-	-	6:op2
+[disjunct_1]	6	-	-	-	-	-	-	7:op2
+[conj_1]	7	-	-	2:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0087b>
+#and it is attached to the substratum by unicellular or multicellular rhizoids.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0086.3:coref	proximal	-	-
+be_1-pres	2	-	-	0:main	biology_chapter3_plantkingdom_0087a.2:samuccaya	-	-	-
+attached_1	3	-	-	2:k1s	-	-	-	-
+substratum_1	4	-	-	3:k1as	-	-	-	-
+unicellular_1	5	-	-	-	-	-	-	8:op1
+multicellular_1	6	-	-	-	-	-	-	8:op2
+rhizoid_1	7	-	pl	3:k3	-	-	-	-
+[disjunct_1]	8	-	-	7:mod	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0088>
+#They may possess root-like, leaf-like or stem-like structures. 
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0086.3:coref	proximal	-	-
+possess_1-0_may_1	2	-	-	0:main	-	-	-	-
+root+like_1	3	-	-	-	-	-	-	6:op1
+leaf+like_1	4	-	-	-	-	-	-	6:op2
+stem+like_1	5	-	-	-	-	-	-	6:op3
+[disjunct_1]	6	-	-	7:mod	-	-	-	-
+structure_1	7	-	-	2:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0089>
+#The main plant body of the bryophyte is haploid. 
+main_1	1	-	-	4:mod	-	def	-	-
+plant_1	2	-	-	-	-	-	-	4:mod
+body_1	3	-	-	-	-	-	-	4:head
+[nc_1]	4	-	-	6:k1	-	-	-	-
+bryophyte_1	5	-	pl	4:r6	-	def	-	-
+be_1-pres	6	-	-	0:main	-	-	-	-
+haploid_1	7	-	-	6:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0090a>
+#It produces gametes.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0086.3:coref	proximal	-	-
+produce_1-es_1	2	-	-	0:main	-	-	-	-
+gamete_1	3	-	pl	2:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0090b>
+#Hence, this is called a gametophyte. 
+$wyax	1	-	-	2:k2	biology_chapter3_plantkingdom_0086.3:coref	proximal	-	-
+call_1-en_is	2	-	-	0:main	biology_chapter3_plantkingdom_0090a.2:kAryakAraNa	-	-	-
+a_1	3	-	-	4:quant	-	-	-	-
+gametophyte_1	4	-	-	2:k2s	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0091>
+#The sex organs in bryophytes are multicellular.
+sex_1	1	-	-	-	-	-	-	3:mod
+organ_1	2	-	-	-	-	-	-	3:head
+[nc_1]	3	-	pl	-	-	def	-	5:part
+bryophyte_1	4	-	pl	-	-	-	-	5:whole
+[spatial_1]	5	-	-	6:k1	-	-	-	-	
+be_1-pres	6	-	-	0:main	-	-	-	-
+multicellular_1	7	-	-	6:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0092>
+#The male sex organ is called antheridium. 
+male_1	1	-	-	4:mod	-	-	-	-
+sex_1	2	-	-	-	-	-	-	4:mod
+organ_1	3	-	-	-	-	-	-	4:head
+[nc_1]	4	-	-	5:k2	-	def	-	-
+call_1-en_is	5	-	-	0:main	-	-	-	-
+antheridium_1	6	-	-	5:k2s	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0093>
+#They produce biflagellate antherozoids. 
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0092.4:coref	distal	-	-
+produce_1-es_1	2	-	-	0:main	-	-	-	-
+biflagellate_1	3	-	-	4:mod	-	-	-	-
+antherozoid_1	4	-	pl	2:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0094a>
+#The female sex organ called archegonium 
+female_1	1	-	-	4:mod	-	-	-	-
+sex_1	2	-	-	-	-	-	-	4:mod
+organ_1	3	-	-	-	-	-	-	4:head
+[nc_1]	4	-	-	5:k2	-	def	-	-
+call_1-en_is	5	-	-	0:main	-	-	-	-
+archegonium_1	6	-	-	5:k2s	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0094b>
+#which is flask-shaped
+$yax	1	-	-	2:k1	biology_chapter3_plantkingdom_0094a.4:coref	-	-	-
+be_1-pres	2	-	-	biology_chapter3_plantkingdom_0094a.4:rcelab	-	-	-	-
+flask_1	3	-	-	-	-	-	-	5:mod
+shaped_1	4	-	-	-	-	-	-	5:head
+[compound_1]	5	-	-	2:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0094c>
+#and which produces a single egg.
+$yax	1	-	-	2:k1	biology_chapter3_plantkingdom_0094a.4:coref	-	-	-
+produce_1-es_1	2	-	-	biology_chapter3_plantkingdom_0094a.4:rcelab/ biology_chapter3_plantkingdom_0094b.2:samuccaya	-	-	-	-
+a_1	3	-	-	5:quant	-	-	-	-
+single_1	4	-	-	5:mod	-	-	-	-
+egg_1	5	-	-	2:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0095>
+#The antherozoids are released into water where they come in contact with archegonium. 
+anterozoid_1	1	-	pl	2:k2	-	def	-	-
+release_1-en_is	2	-	-	0:main	-	-	-	-
+water_1	3	-	-	2:k2p	-	-	-	-
+$yax	4	-	-	6:k7p	3:coref	-	-	-
+$wyax	5	-	-	6:k1	1:coref	distal	-	-
+come_1-es_1	6	-	-	6:rcloc	-	-	-	-
+contact_1	7	-	-	6:k7	-	-	-	-
+archegonium_1	8	-	-	6:k2	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0096>
+#An antherozoid fuses with the egg to produce the zygote. 
+an_1	1	-	-	2:quant	-	-	-	-
+antherozoid_1	2	-	-	3:k1	-	-	-	-
+fuse_1-es_1	3	-	-	0:main	-	-	-	-	
+egg_1	4	-	-	3:k1as	-	def	-	-
+produce_1	5	-	-	3:rt	-	-	-	-
+zygote_1	6	-	-	5:k2	-	def	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0097>
+#Zygotes do not undergo reduction division immediately.
+zygote_1	1	-	pl	2:k4a	-	-	-	-
+undergo_1-es_1	2	-	-	0:main	-	-	-	-
+not_1	3	-	-	2:neg	-	-	-	-
+reduction_1	4	-	-	-	-	-	-	6:mod
+division_1	5	-	-	-	-	-	-	6:head
+[nc_1]	6	-	-	2:k1	-	-	-	-
+immediately_1	7	-	-	2:k7t	-	-	-	-
+%negative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0097>
+#They produce a multicellular body which is called a sporophyte.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0097.1:coref	distal	-	-
+produce_1-es_1	2	-	-	0:main	-	-	-	-
+a_1	3	-	-	5:quant	-	-	-	-
+multicellular_1	4	-	-	5:mod	-	-	-	-
+body_1	5	-	-	2:k2	-	-	-	-
+$yax	6	-	-	7:k2	5:coref	-	-	-
+call_1-en_is	7	-	-	5:rcelab	-	-	-	-
+a_1	8	-	-	9:quant	-	-	-	-
+sporophyte_1	9	-	-	7:k2s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0098a>
+#The sporophyte is not free-living 
+sporophyte_1	1	-	-	2:k1	-	def	-	-
+be_1-pres	2	-	-	0:main	-	-	-	-
+not_1	3	-	-	2:neg	-	-	-	-
+free+living_1	4	-	-	2:k1s	-	-	-	-
+%negative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0098b>
+#but it is attached to the photosynthetic gametophyte 
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0098a.1:coref	proximal	-	-
+be_1-pres	2	-	-	0:main	biology_chapter3_plantkingdom_0098a.2:viroXI	-	-	-
+attached_1	3	-	-	2:k1s	-	-	-	-
+photosynthetic_1	4	-	-	5:mod	-	-	-	-
+gametophyte_1	5	-	-	3:k1as	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0098c>
+#and it derives nourishment from it. 
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0098a.1:coref	proximal	-	-
+derive_1-es_1	2	-	-	0:main	biology_chapter3_plantkingdom_0098b.2:samuccaya	-	-	-
+nourishment_1	3	-	-	2:k2	-	-	-	-
+$wyax	4	-	-	2:k5	biology_chapter3_plantkingdom_0098b.5:coref	proximal	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0099>
+#Some cells of the sporophyte undergo reduction division (meiosis) to produce haploid spores. 
+some_1	1	-	-	2:quant	-	-	-	-
+cell_1	2	-	pl	4:k4a	-	-	-	-
+sporophyte_1	3	-	-	2:r6	-	def	-	-
+undergo_1-es_1	4	-	-	0:main	-	-	-	-
+reduction_1	5	-	-	-	-	-	-	7:mod
+division_1	6	-	-	-	-	-	-	7:head
+[nc_1]	7	-	-	4:k1	-	-	-	-
+meiosis_1	8	-	-	7:rs	-	-	-	-
+produce_1	9	-	-	4:rt	-	-	-	-
+haploid_1	10	-	-	-	-	-	-	12:mod
+spore_1	11	-	-	-	-	-	-	12:head
+[nc_2]	12	-	pl	9:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0100>
+ #These spores germinate to produce gametophyte.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+spore_1	2	-	pl	3:k1	-	-	-	-
+germinate_1-es_1	3	-	-	0:main	-	-	-	-
+produce_1	4	-	-	3:rt	-	-	-	-
+gametophyte_1	5	-	-	4:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0101>
+#Bryophytes generally do not have much economic importance. 
+bryophyte_1	1	-	pl	3:rsm	-	-	-	-
+generally_1	2	-	-	3:vkvn	-	-	-	-
+have_1-pres	3	-	-	0:main	-	-	-	-
+not_1	4	-	-	3:neg	-	-	-	-
+much_1	5	-	-	7:quant	-	-	-	-
+economic_1	6	-	-	7:mod	-	-	-	-
+importance_1	7	-	-	3:k1	-	-	-	-
+%negative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0102>
+#However, some mosses are eaten by herbaceous mammals, birds, and other animals. 
+some_1	1	-	-	2:quant	-	-	-	-
+moss_1	2	-	pl	3:k2	-	-	-	-
+eat_1-is_en	3	-	-	0:main	biology_chapter3_plantkingdom_0101.3:contrast	-	-	-
+herbaceous_1	4	-	-	5:mod	-	-	-	-
+mammal_1	5	-	pl	-	-	-	-	9:op1
+bird_1	6	-	pl	-	-	-	-	9:op2	
+other_1	7	-	-	8:mod	-	-	-	-
+animal_1	8	-	pl	-	-	-	-	9:op3
+[conj_1]	9	-	-	3:k1	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0103>
+#Species of Sphagnum, a moss, provide peat that have long been used as
+fuel,  and as packing material for trans-shipment of living material because
+of their capacity to hold water. 
+species_1	1	-	-	6:k1	-	-	-	-
+Sphagnum	2	-	-	-	-	-	-	3:begin
+[ne_1]	3	-	-	1:r6	-	-	-	-
+a_1	4	-	-	5:quant	-	-	-	
+moss_1	5	-	-	3:rs	-	-	-	-
+provide_1-es_1	6	-	-	0:main	-	-	-	-
+peat_1	7	-	-	6:k2	-	-	-	-
+$yax	8	-	-	9:k2	7:coref	-	-	-
+use_1-en_have_been_1	9	-	-	7:rcdelim	-	-	-	-
+fuel_1	10	-	-	-	-	-	-	14:op1
+packing_1	11	-	-	-	-	-	-	13:mod
+material_1	12	-	-	-	-	-	-	13:head
+[nc_1]	13	-	-	-	-	-	-	14:op2
+[conj_1]	14	-	-		-	-	-	-
+trans+shipment_1	15	-	-	9:rt	-	-	-	-
+living_1	16	-	-	17:mod	-	-	-	-
+material_1	17	-	-	15:k2	-	-	-	-
+$wyax	18	-	-	19:r6	7:coref	-	-	-
+capacity_1	19	-	-	9:rh	-	-	-	-
+hold_1	20	-	-	19:k2	-	-	-	-
+water_1	21	-	-	20:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+
+
+<segment_id=biology_chapter3_plantkingdom_0104>
+#Mosses, along with lichens, are the first organisms to grow on rocks
+moss_1	1	-	pl	-	-	-	-	3:op1
+lichen_1	2	-	pl	-	-	-	-	2:op2
+[conj_1]	3	-	-	4:k1	-	-	-	-
+be_1-pres	4	-	-	0:main	-	-	-	-
+first_1	5	-	-	6:ord	-	-	-	-	
+organism_1	6	-	pl	4:k1s	-	def	-	-
+grow_1	7	-	-	6:mod	-	-	-	-
+rock_1	8	-	pl	7:k7p	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0105>
+#They are ecologically important.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0104.3:coref	distal	-	-
+be_1-pres	2	-	-	0:main	-	-	-	-
+ecologically_1	3	-	-	4:mod	-	-	-	-
+important_1	4	-	-	2:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0106a>
+#They break down rocks 
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0104.3:coref	distal	-	-	
+break+down_1-es_1	2	-	-	0:main	-	-	-	-
+rock_1	3	-	pl	2:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0106b>
+#and they make the surface suitable for the growth of higher plants. 
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0104.3:coref	distal	-	-
+make_1-es_1	2	-	-	0:main	biology_chapter3_plantkingdom_0106a.2:samuccaya	-	-	-
+surface_1	3	-	-	2:k2	-	def	-	-
+suitable_1	4	-	-	2:k2s	-	-	-	-
+growth_1	5	-	-	2:rt	-	def	-	-
+high_1	6	-	comparmore	7:mod	-	-	-	-
+plant_1	7	-	pl	5:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0107a>
+Since mosses grow in thick layers on the soil.
+moss_1	1	-	pl		2:k1	-	-	-	-
+grow_1-es_1	2	-	-	0:main	-	-	-	-
+thick_1	3	-	-	4:mod	-	-	-	-
+layer_1	4	-	pl	2:krvn	-	-	-	-
+soil_1	5	-	-	2:k7p	-	def	-	-	
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0107b>
+they reduce the impact of falling rain 
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0107a.1:coref	distal	-	-
+reduce_1-es_1	2	-	-	0:main	-	-	-	-
+impact_1	3	-	-	2:k2	-	def	-	-
+falling_1	4	-	-	5:mod	-	-	-	-
+rain_1	5	-	-	3:r6	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0107c>
+#and they prevent soil erosion.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0107a.1:coref	distal	-	-
+prevent_1-es_12	-	-	0:main	biology_chapter3_plantkingdom_0107b.2:samuccaya/ biology_chapter3_plantkingdom_0107a.2:kAryakAraNa	-	-	-
+soil_1	3	-	-	-	-	-	-	5:mod
+erosion_1	4	-	-	-	-	-	-	5:head
+[nc_1]	5	-	-	2:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0108>
+Bryophytes are divided into two groups: liverworts and mosses.
+Bryophyte_1	1	-	pl	2:k1	-	-	-	-
+be_1-pres	2	-	-	0:main	-	-	-	-
+divided_1	3	-	-	2:k1s	-	-	-	-
+2	4	numex	-	5:card	-	-	-	-
+group_1	5	-	pl	3:k7	-	-	-	-
+livewort_1	6	-	pl	-	-	-	-	8:op1
+moss_1	7	-	pl	-	-	-	-	8:op2
+[conj_1]	8	-	-	5:re	-	-	-	-
+%affirmative
+</segment_id>
+
+
+
+
+<segment_id=biology_chapter3_plantkingdom_0109>
+Liverworts usually grow in moist and shady places such as the banks of streams, marshy areas, damp soil, the bark of trees, and deep forests. 
+livewort_1	1	-	pl		-	-	-	-
+usually_1	2	-	-		-	-	-	-
+grow_1-es_1	3	-	-	0:main	-	-	-	-
+moist_1	4	-	-	-	-	-	-	6:op1
+shady_1	5	-	-	-	-	-	-	6:op2
+[conj_1]	6	-	-	7:mod	-	-	-	-
+place_1	7	-	pl	3:k7p	-	-	-	-
+bank_1	8	-	-	-	-	def	-	18:op1
+stream_1	9	-	pl	8:r6	-	-	-	-
+marshy_1	10	-	-	11:mod	-	-	-	-
+area_1	11	-	pl	-	-	-	-	18:op2
+damp_1	12	-	-	13:mod	-	-	-	-
+soil_1	13	-	-	-	-	-	-	18:op3
+bark_1	14	-	-	-	-	def	-	18:op4
+tree_1	15	-	pl	14:r6	-	-	-	-
+deep_1	16	-	-	17:mod	-	-	-	-
+forest_1	17	-	pl	-	-	-	-	18:op5
+[conj_2]	18	-	-	7:re	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0110>
+#The plant body of a liverwort is thalloid, for example, Marchantia. 
+plant_1	1	-	-	-	-	-	-	3:mod
+body_1	2	-	-	-	-	-	-	3:head
+[nc_1]	3	-	-	6:k1	-	def	-	-
+a_1	4	-	-	5:quant	-	-	-	-
+livewort_1	5	-	-	3:r6	-	-	-	-
+be_1-pres	6	-	-	0:main	-	-	-	-
+thalloid_1	7	-	-	6:k1s	-	-	-	-
+Marchantia	8	-	-	-	-	-	-	9:begin
+[ne_1]	9	-	-	7:re	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0111a>
+#The thallus is a dorsiventral
+thallus_1	1	-	-	2:k1	-	def	-	-
+be_1-pres	2	-	-	0:main	-	-	-	-
+dorsiventral_1	3	-	-	2:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0111b>
+#and it is closely attached to the substrate.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0111a.1:coref	distal	-	-
+be_1-pres	2	-	-	0:main	biology_chapter3_plantkingdom_0111a.2:samuccaya	-	-	-
+closely_1	3	-	-	4:mod	-	-	-	-
+appressed_1	4	-	-	2:k1s	-	-	-	-
+substrate_1	5	-	-	4:k1as	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0112>
+#Leafy liverworts have small leaf-like structures arranged in two rows on stem-like parts.
+leafy_1	1	-	-	2:mod	-	-	-	-
+livewort_1	2	-	pl	6:rsm	-	-	-	-
+have_1-pres	3	-	-	0:main	-	-	-	-
+small	4	-	-	5:mod	-	-	-	-
+leaf+like_1	5	-	-	6:mod	-	-	-	-
+structure_1	6	-	pl	3:k1	-	-	-	-
+$yax	7	-	-	8:k2	6:coref	-	-	-
+arrange_1-en_is	8	-	-	6:rcelab	-	-	-	-
+2	9		numex	 -		10:card	-	-	-	-
+row_1	10	-	pl	8:krvn	-	-	-	-
+stem+like_1	11	-	-	12:mod	-	-	-	-
+part_1	12	-	pl	8:k7p	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0113a>
+#Asexual reproduction in liverworts occurs by the breaking of the thallus.
+asexual_1	1	-	-	2:mod		-	-	-	-
+reproduction_1	2	-	-	4:k1	-	-	-	-
+livewort_1	3	-	pl	2:k7	-	-	-	-
+occur_1-es_1	4	-	-	0:main	-	-	-	-
+break_1	5	-	-	4:rh	-	-	-	-
+thallus_1	6	-	-	5:k2	-	-	-	-
+
+<segment_id=biology_chapter3_plantkingdom_0113b>
+#This is called fragmentation.
+$wyax	1	-	-	2:k2	biology_chapter3_plantkingdom_0113a.5:coref	proximal	-	-
+call_1-en_is	2	-	-	0:main	-	-	-	-
+fragmentation_1	3	-	-	2:k2s	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0113c>
+#or this occurs by the formation of special structures which are called gemmae (singular: gemma).
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0113a.2:coref	proximal	-	-
+occur_1-es_1	2	-	-	0:main	-	-	-	-	
+formation_1	3	-	-	2:rh	-	def	-	-
+special_1	4	-	-	5:mod	-	-	-	-
+structure_1	5	-	pl	3:k2	-	-	-	-
+$yax	6	-	-	7:k2	5:coref	-	-	-
+call_1-en_is	7	-	-	5:rcdelim		-	-	-	-
+gemma_1	8	-	pl	7:k2s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0114>
+ #Gemmae are green, multicellular, asexual buds. 
+gemma_1	1	-	pl	2:k1	-	-	-	-
+be_1-pres	2	-	-	0:main	-	-	-	-
+green_1	3	-	-	-	-	-	-	7:op1
+multicellular_1	4	-	-	-	-	-	-	7:op2
+asexual_1	5	-	-	-	-	-	-	7:op3
+bud_1	6	-	pl	2:k1s	-	-	-	-
+[conj_1]	7	-	-	6:mod	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0115>
+#They develop in small cup-like structures which are called gemma cups, which are present on the thallus.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0114.1:coref	distal	-	-
+develop_1-es_1	2	-	-	0:main	-	-	-	-
+small_1	3	-	-	5:mod	-	-	-	-
+cup+like_1	4	-	-	5:mod	-	-	-	-
+structure_1	5	-	pl	2:k7p	-	-	-	-
+$yax	6	-	-	7:k2	5:coref	-	-	-
+call_1-en_is	7	-	-	5:rcdelim	-	-	-	-
+gemma_1	8	-	-	-	-	-	-	10:mod
+cup_1	9	-	pl	-	-	-	-	10:head
+[nc_1]	10	-	-	7:k2s	-	-	-	-
+$yax	11	-	-	12:k1	10:coref	-	-	-
+be_1-pres	12	-	-	10:rcdelim	-	-	-	-
+present_1	13	-	-	12:k1s	-	-	-	-
+thallus_1	14	-	-	13:k7p	-	def	-	-
+%affirmative
+</segment_id>
+
+ 
+<segment_id=biology_chapter3_plantkingdom_0116a>
+#The gemmae separate from the parent plant 
+gemma_1	1	-	pl	2:k1	-	def	-	-
+separate_1-es_1	2	-	-	0:main	-	-	-	-
+parent_1	3	-	-	-	-	-	-	5:mod
+plant_1	4	-	-	-	-	-	-	5:head
+[nc_1]	5	-	-	2:k5	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0116b>
+#and they grow to form new individuals.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0116a.1:coref	distal	-	-
+grow_1-es_1	2	-	-	0:main	biology_chapter3_plantkingdom_0116a.2:samuccaya	-	-	-
+form_1	3	-	-	2:rt	-	-	-	-
+new_1	4	-	-	5:mod	-	-	-	-
+individual_1	5	-	pl	3:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+
+<segment_id=biology_chapter3_plantkingdom_0117>
+#During sexual reproduction, male and female sex organs are produced either on the same thallus or on different thalli.
+sexual_1	1	-	-	2:mod	-	-	-	-
+reproduction_1	2	-	-	15:k1	-	-	-	-
+be_1-pres	15	-	-	9:rblsk	-	-	-	-
+male_1	3	-	-	-	-	-	-	5:op1
+female_1	4	-	-	-	-	-	-	5:op2
+[conj_1]	5	-	-	8:mod	-	-	-	-
+sex_1	6	-	-	-	-	-	-	8:mod
+organ_1	7	-	pl	-	-	-	-	8:head
+[nc_1]	8	-	-	9:k2	-	-	-	-
+produce_1-en_is	9	-	-	0:main	-	-	-	-
+same_1	10	-	-	11:mod	-	-	-	-
+thallus_1	11	-	-	-	-	-	-	14:op1
+different_1	12	-	-	13:mod	-	-	-	-
+thali_1	13	-	-	-	-	-	-	14:op2
+[disjunct_1]	14	-	-	9:k7p	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0118>
+#The sporophyte has three parts: foot, seta, and capsule. 
+sporophyte_1	1	-	-	4:rsm	-	def	-	-
+have_1-pres	2	-	-	0:main	-	-	-	-
+3	3	numex	-	4:card	-	-	-	-
+part_1	4	-	pl	2:k1	-	-	-	-
+foot_1	5	-	-	-	-	-	-	8:op1
+seta_1	6	-	-	-	-	-	-	8:op2
+capsule_1	7	-	-	-	-	-	-	8:op3
+[conj_1]	8	-	-	4:re	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0119>
+#After meiosis, spores are formed inside the capsule. 
+meiosis_1	1	-	-	2:k1	-	-	-	-
+be_1-pres	2	-	-	4:rblak	-	-	-	-
+spore_1	3	-	pl	4:k2	-	-	-	-
+form_1-en_is	4	-	-	0:main	-	-	-	-
+capsule_1	5	-	-	4:k7p	-	def	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0120a>
+#These spores germinate. 
+$wyax	1	-	-	2:dem	-	proximal	-	-
+spore_1	2	-	pl	3:k1	-	-	-	-
+germinate_1-es_1	3	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0120b>
+#and they develop into free-living gametophytes.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0120a.2:coref	distal	-	-
+develop_1-es_1	2	-	-	0:main	biology_chapter3_plantkingdom_0120a.3:samuccaya	-	-	-
+free_living_1	3	-	-	4:mod	-	-	-	-
+gametophyte_1	4	-	pl	2:k7	-	-	-	-
+%affirmative
+</segment_id>
+
+
+
+
+<segment_id=biology_chapter3_plantkingdom_0121H>
+moss_1	1	-	pl	0:main	-	-	-	-
+%heading
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0122>
+#The main stage of the life cycle of a moss is the gametophyte. 
+main_1	1	-	-	2:mod	-	def	-	-
+stage_1	2	-	-	8:k1	-	-	-	-
+life_1	3	-	-	-	-	-	-	5:mod
+cycle_1	4	-	-	-	-	-	-	5:head
+[nc_1]	5	-	-	2:r6	-	def	-	-
+a_1	6	-	-	6:quant	-	-	-	-
+moss_1	7	-	-	5:r6	-	-	-	-	
+be_1-pres	8	-	-	0:main	-	-	-	-
+gametophyte_1	9	-	-	8:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0123>
+#It has two stages. 
+$wyax	1	-	-	4:rsm	biology_chapter3_plantkingdom_0122.9:coref	proximal	-	-
+have_1-pres	2	-	-	0:main	-	-	-	-
+2	3	numex	-	4:card	-	-	-	-
+stage_1	4	-	pl	2:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0124>
+#The first stage is the protonema stage, which develops directly from a spore. 
+first_1	1	-	-	2:ord	-	-	-	-
+stage_1	2	-	-	3:k1	-	def	-	-
+be_1-pres	3	-	-	0:main	-	-	-	-
+protonema_1	4	-	-	-	-	-	-	6:mod
+stage_1	5	-	-	-	-	-	-	6:head
+[nc_1]	6	-	-	3:k1s	-	def	-	-
+$yax	7	-	-	8:k1	6:coref	-	-	-	
+develop_1-es_1	8	-	-	6:rcelab	-	-	-	-
+directly_1	9	-	-	8:krvn	-	-	-	-
+a_1	10	-	-	11:quant	-	-	-	-
+spore_1	11	-	-	8:k5	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0125>
+#It is a creeping, green, branched, and often filament-like stage.
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0124.6:coref	proximal	-	-
+be_1-pres	2	-	-	0:main	-	-	-	-
+a_1	3	-	-	9:quant	-	-	-	-
+creeping_1	4	-	-	-	-	-	-	10:op1	
+green_1	5	-	-	-	-	-	-	10:op2
+branched_1	6	-	-	-	-	-	-	10:op3
+often_1	7	-	-	8:freq	-	-	-	-
+filament+like_1	8	-	-	-	-	-	-	10:op4
+stage_1	9	-	-	2:k1s	-	-	-	-
+[conj_1]	10	-	-	9:mod	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0126>
+#The second stage is the leafy stage, which develops from the secondary protonema as a lateral bud.
+second_1	1	-	-	2:ord	-	-	-	-
+stage_1	2	-	-	3:k1	-	-	def	-
+be_1-pres	3	-	-	0:main	-	-	-	-
+leafy_1	4	-	-	5:mod	-	-	-	-
+stage_1	5	-	-	3:k1s	-	-	-	-
+$yax	6	-	-	7:k1	5:coref	-	-	-
+develop_1-es_1	7	-	-	5:rcelab	-	-	-	-
+secondary_1	8	-	-	9:mod	-	-	-	-
+protonema_1	9	-	-	7:k5	-	-	-	-
+a_1	10	-	-	12:quant	-	-	-	-
+lateral_1	11	-	-	12:mod	-	-	-	-
+bud_1	12	-	-	6:ru	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0127>
+#This stage consists of upright, slender stems with leaves which are arranged in a spiral. 
+$wyax	1	-	-	2:dem	-	proximal	-	-
+stage_1	2	-	-	6:rsm	-	-	-	-
+consist_1-es_1	3	-	-	0:main	-	-	-	-
+upright_1	4	-	-	-	-	-	-	12:op1	
+slender_1	5	-	-	-	-	-	-	12:op2
+stem_1	6	-	pl	-	-	-	-	13:op1
+leaf_1	7	-	pl	-	-	-	-	13:op2
+$yax	8	-	-	9:k2	13:coref	-	-	-
+arrange_1-en_is	9	-	-	13:rcelab	-	-	-	-
+a_1	10	-	-	11:quant	-	-	-	-
+spiral_1	11	-	-	9:krvn	-	-	-	-
+[conj_1]	12	-	-	6:mod	-	-	-	-
+[conj_2]	13	-	-	3:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0128>
+#These are attached to the soil by multicellular and branched rhizoids. 
+$wyax	1	-	-	2:k1	biology_chapter3_plantkingdom_0127.13:coref	proximal	-	-
+be_1-pres	2	-	-	0:main	-	-	-	-
+attached_1	3	-	-	2:k1s	-	-	-	-
+soil_1	4	-	-	3:k1as	-	-	-	-
+multicellular_1	5	-	-	-	-	-	-	8:op1
+branched_1	6	-	-	-	-	-	-	8:op2
+rhizoid_1	7	-	pl	3:k3	-	-	-	-
+[conj_1]	8	-	-	7:mod	-	-	-	-
+%affirmative
+</segment_id>
+
+
+
+<segment_id=biology_chapter3_plantkingdom_0129>
+#This stage produces the sex organs.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+stage_1	2	-	-	3:k1	-	-	-	-
+produce_1-es_1	3	-	-	0:main	-	-	-	-	
+sex_1	4	-	-	-	-	-	-	6:mod
+organ_1	5	-	-	-	-	-	-	6:head
+[nc_1]	6	-	pl	3:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0131>
+#In sexual reproduction, the sex organs, called antheridia and archegonia, are formed at the tips of the leafy shoots. 
+sexual_1	1	-	-	2:mod	-	-	-	-
+reproduction_1	2	-	-	11:k7	-	-	-	-
+sex_1	3	-	-	-	-	-	-	5:mod
+organ_1	4	-	pl	-	-	-	-	5:head
+[nc_1]	5	-	-	11:k2	-	-	-	-
+$yax	6	-	-	7:k2	5:coref	-	-	-
+call_1-en_is	7	-	-	5:rcelab	-	-	-	-
+antherdia_1	8	-	-	-	-	-	-	10:op1
+archegonia_1	9	-	-	-	-	-	-	10:op2
+[conj_1]	10	-	-	7:k2s	-	-	-	-
+form_1-en_is	11	-	-	0:main	-	-	-	-
+tip_1	12	-	pl	11:k7p	-	-	-	-
+leafy_1	13	-	-	14:mod	-	-	-	-
+shoot_1	14	-	pl	12:rdl	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0131>
+#After fertilisation, the zygote develops into a sporophyte, which has three parts: foot, seta, and capsule. 
+fertilisation_1	1	-	-	2:k1	-	-	-	-
+be_1-pres	2	-	-	2:rblak	-	-	-	-
+zygote_1	3	-	-	4:k1	-	def	-	-
+develop_1-es_1	4	-	-	0:main	-	-	-	-
+a_1	5	-	-	6:quant	-	-	-	-
+sporophyte_1	6	-	-	4:k2	-	-	-	-
+$yax	7	-	-	10:rsm	6:coref	-	-	-
+have_1-pres	8	-	-	6:rcdelim	-	-	-	-
+3	9	numex	-	10:card	-	-	-	-
+part_1	10	-	pl	8:k1	-	-	-	-
+foot_1	11	-	-	-	-	-	-	14:op1
+seta_1	12	-	-	-	-	-	-	14:op2
+capsule_1	13	-	-	-	-	-	-	14:op3
+[conj_1]	14	-	-	10:re	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0132>
+#The sporophyte in mosses is more complex than in liverworts. 
+sporophyte_1	1	-	-	3:k1	-	def	-	-
+moss_1	2	-	pl	3:k7p	-	-	-	-	
+be_1-pres	3	-	-	0:main	-	-	-	-
+complex_1	4	-	comparmore	3:k1s	-	-	-	-
+livewort_1	5	-	pl	2:rv	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0133>
+#The capsule contains spores, which are formed after meiosis. 
+capsule_1	1	-	-	2:k1	-	def	-	-
+contain_1-es_1	2	-	-	0:main	-	-	-	-
+spore_1	3	-	pl	2:k2	-	-	-	-	
+$yax	4	-	-	5:k2	3:coref	-	-	-
+form_1-en_is	5	-	-	2:rcelab	-	-	-	-
+meiosis_1	6	-	-	7:k1	-	-	-	-
+be_1	7	-	-	5:rblak	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0134>
+#Mosses have a well-developed method for dispersing spores. 
+मॉस में बीजाणुओं को फैलाने की एक सुविकसित विधि होती है।
+
+moss_1	1	-	pl	5:rsm	-	-	-	-
+have_1-pres	2	-	-	0:main	-	-	-	-
+a_1	3	-	-	5:quant	-	-	-	-	
+well+developed_1	4	-	-	5:mod	-	-	-	-
+method_1	5	-	-	2:k1	-	-	-	-
+dispersing_1	6	-	-	2:rt	-	-	-	-
+spore_1	7	-	pl		6:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0135>
+#Common examples of mosses are Funaria, Polytrichum, and Sphagnum.
+common_1	1	-	-	2:mod	-	-	-	-
+example_1	2	-	pl	4:k1	-	-	-	-
+moss_1	3	-	pl	2:r6	-	-	-	-
+be_1-pres	4	-	-	0:main	-	-	-	-
+Funaria	5	-	-	-	-	-	-	6:begin
+[ne_1]	6	ne	-	-	-	-	-	11:op1
+Polytrichum	7	-	-	-	-	-	-	8:begin
+[ne_2]	8	ne	-	-	-	-	-	11:op2
+Sphagnum	9	-	-	-	-	-	-	10:begin
+[ne_3]	10	ne	-	-	-	-	-	11:op3
+[conj_1]	11	-	-	4:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+
+
+
+3.3 PTERIDOPHYTES
+
+
+<segment_id=biology_chapter3_plantkingdom_0136H>
+Pteridophyte	1	-	pl	0:main 	-	-	-	-
+%heading
+</segment_id>
+
+
+
+<segment_id=biology_chapter3_plantkingdom_0137>
+#The Pteridophytes include horsetails and ferns. 
+Pteridophyte_1	1	-	pl	2:k1	-	def	-	-
+include_1-es_1	2	-	-	0:main	-	-	-	-
+horsetail_1	3	-	pl	-	-	-	-	5:op1
+fern_1	4	-	pl	-	-	-	-	5:op2
+[conj_1]	5	-	-	2:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0138a>
+Pteridophytes are used for medicinal purposes.
+Pteridophyte_1	1	-	pl	2:k2	-	def	-	-
+use_1-en_is	2	-	-	0:main	-	-	-	-
+medicinal_1	3	-	-	4:mod	-	-	-	-
+purpose_1	4	-	pl	2:rt	-	-	-	-
+%pass_affirmative
+</segment_id>	
+
+<segment_id=biology_chapter3_plantkingdom_0138b>
+# and Pteridophytes are used as soil-binders.
+Pteridophyte_1	1	-	pl	2:k2	-	def	-	-
+use_1-en_is	2	-	-		0:main	-	-	-	-	
+soil+binder_1	3	-	pl	2:krvn	biology_chapter3_plantkingdom_0138a.2:samuccaya	-	-	-
+%pass_affirmative
+</segment_id>	
+
+<segment_id=biology_chapter3_plantkingdom_0139>
+#They are also frequently grown as ornamental plants. 
+$wyax	1	-	-	2:k2	biology_chapter3_plantkingdom_0137a.1:coref	distal	-	-
+grow_1-en_is	2	-	-		0:main	-	additive	-	-
+frequently_1	3	-	-	2:freq	-	-	-	-
+ornamental_1	4	-	-	5:mod	-	-	-	-
+plant_1	5	-	pl	1:ru	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0140>
+#In evolution, they are the first terrestrial plants to possess vascular tissues – xylem and phloem. 
+evolution_1	1	-	-	3:k7	-	-	-	-
+$wyax	2	-	-	3:k2	biology_chapter3_plantkingdom_0138a.1:coref	distal	-	-
+be_1-pres	3	-	-	0:main	-	-	-	-
+first_1	4	-	-	6:ord	-	-	-	-
+terrestrial_1	5	-	-	6:mod	-	-	-	-
+plant_1	6	-	pl	3:k1s	-	-	-	-
+posess_1	7	-	-	3:rt	-	-	-	-
+vascular_1	8	-	-	8:mod	-	-	-	-
+tissue_1	9	-	pl	7:k2	-	-	-	-
+xylem_1	10	-	-	-	-	-	-	12:op1
+phloem_1	11	-	-		-	-	-	-	12:op2
+[conj_1]	12	-	-	9:re	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0141>
+#You shall study more about these tissues in Chapter 6. 
+$addressee	1	anim	pl	2:k1	-	-	-	-	
+study_1-0_shall_1	2	-	-	0:main	-	-	-	-
+more_1	3	-	-	2:krvn	-	-	-	-
+$wyax	4	-	-	5:dem	-	proximal	-	-
+tissue_1	5	-	pl	2:k7	-	-	-	-
+Chapter	6	-	-	-	-	-	-	8:begin
+6	7	numex	-	-	-	-	-	8:inside
+[ne_1]	8	-	-	2:k7p	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0142a>
+The pteridophytes are found in cool, damp,shady places 
+Pteridophyte_1	1	-	pl	2:k2	-	def	-	-
+find_1-en_is	2	-	-	0:main	-	-	-	-
+cool_1	3	-	-	-	-	-	-	7:op1
+damp_1	4	-	-	-	-	-	-	7:op2
+shady_1	5	-	-	-	-	-	-	7:op3
+place_1	6	-	pl	2:k7p	-	-	-	-
+[conj_1]	7	-	-	6:mod	-	-	-	-
+%pass_affirmative
+</segment_id>
+
+<segment_id=biology_chapter3_plantkingdom_0142b>
+#Though some may flourish well in sandy-soil conditions.
+some_1	1	-	-	2:k1	-	-	-	-
+flourish_1-0_may_1	2	-	-	0:main	-	-	-	-
+well_1	3	-	-	2:krvn	-	-	-	-
+sandy+soil_1	4	-	-	5:mod	-	-	-	-
+condition_1	5	-	pl	2:k7p	biology_chapter3_plantkingdom_0142a.2:vyABicAra	-	-	-
+%affirmative
+</segment_id>
+
+
+
+

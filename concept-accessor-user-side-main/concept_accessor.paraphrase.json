@@ -1,0 +1,125 @@
+[{
+  "_id": {
+    "$oid": "69e064ba2fa5630572462f6e"
+  },
+  "chapter_id": "biology_chapter_3_plant_kingdom",
+  "original_paragraph": "In the previous chapter, we looked at the broad classification of living organisms under the system proposed by Whittaker (1969) wherein he suggested the Five Kingdom classification viz. Monera, Protista, Fungi, Animalia and Plantae. In this chapter, we will deal in detail with further classification within Kingdom Plantae popularly known as the 'plant kingdom'.",
+  "simplified_paragraph": "In the previous chapter, we studied the broad classification of living organisms given by Robert H. Whittaker in 1969. He divided all living organisms into five kingdoms: Monera, Protista, Fungi, Animalia and Plantae. In this chapter, we will study the detailed classification of Kingdom Plantae, which is commonly called the plant kingdom.",
+  "sentences": [
+    {
+      "sentence": "In the previous chapter, we studied the broad classification of living organisms given by Robert H. Whittaker in 1969.",
+      "usr_segments": [
+        {
+          "segment_id": "biology_chapter3_plantkingdom_0001",
+          "text": "#In the previous chapter, we studied the broad classification of living organisms given by Robert H. Whittaker in 1969.\nprevious_1\t1\t-\t-\t2:mod\t-\tdef\t-\t-\nchapter_1\t2\t-\t-\t4:k7p\t-\t-\t-\t-\n$speaker\t3\tanim\tpl\t4:k1\t-\t-\t-\t-\nstudy_1-ed_1\t4\t-\t-\t0:main\t-\t-\t-\t-\nbroad_1\t5\t-\t-\t6:mod\t-\t-\t-\t-\nclassification_1\t6\t-\t-\t4:k2\t-\t-\t-\t-\nliving_1\t7\t-\t-\t8:mod\t-\t-\t-\t-\norganism_1\t8\t-\tpl\t6:r6\t-\t-\t-\t-\ngive_1\t9\t-\t-\t6:rbks\t-\t-\t-\t-\nRobert\t10\tmale\t-\t-\t-\t-\t-\t13:begin\nH.\t11\t-\t-\t-\t-\t-\t-\t13:inside\nWhittaker\t12\t-\t-\t-\t-\t-\t-\t13:inside\n[ne_1]\t13\tper\t-\t9:k1\t-\t-\t-\t-\n1969\t14\tyoc\t-\t9:k7t\t-\t-\t-\t-\n%affirmative",
+          "english_sentence": "In the previous chapter, we studied the broad classification of living organisms given by Robert H. Whittaker in 1969."
+        }
+      ],
+      "has_usr": true
+    },
+    {
+      "sentence": "He divided all living organisms into five kingdoms: Monera, Protista, Fungi, Animalia and Plantae.",
+      "usr_segments": [
+        {
+          "segment_id": "biology_chapter3_plantkingdom_0002",
+          "text": "#He divided all living organisms into five kingdoms: Monera, Protista, Fungi, Animalia and Plantae. \n$wyax\t1\t-\t-\t2:k1\tbiology_chapter3_plantkingdom_0001.13:coref\t-\t-\t-\ndivide_1-ed_1\t2\t-\t-\t0:main\t-\t-\t-\t-\nall_1\t3\t-\t-\t5:quant\t-\t-\t-\t-\nliving_1\t4\t-\t-\t5:mod\t-\t-\t-\t-\norganism_1\t5\t-\tpl\t2:k2\t-\t-\t-\t-\n5\t6\tnumex\t-\t7:card\t-\t-\t-\t-\nkingdom_1\t7\t-\tpl\t2:k7\t-\t-\t-\t-\nMonera\t8\t-\t-\t-\t-\t-\t-\t9:begin\n[ne_1]\t9\tne\t-\t-\t-\t-\t-\t18:op1\nProtista\t10\t-\t-\t-\t-\t-\t-\t11:begin\t\n[ne_2]\t11\tne\t-\t-\t-\t-\t-\t18:op2\nFungi\t12\t-\t-\t-\t-\t-\t-\t13:begin\t\n[ne_3]\t13\tne\t-\t-\t-\t-\t-\t18:op3\nAnimalia\t14\t-\t-\t-\t-\t-\t-\t15:begin\n[ne_4]\t15\tne\t-\t-\t-\t-\t-\t18:op4\nPlantae\t16\t-\t-\t-\t-\t-\t-\t17:begin\n[ne_5]\t17\tne\t-\t-\t-\t-\t-\t18:op5\n[conj_1]\t18\t-\t-\t7:re\t-\t-\t-\t-\n%affirmative",
+          "english_sentence": "He divided all living organisms into five kingdoms: Monera, Protista, Fungi, Animalia and Plantae."
+        }
+      ],
+      "has_usr": true
+    },
+    {
+      "sentence": "In this chapter, we will study the detailed classification of Kingdom Plantae, which is commonly called the plant kingdom.",
+      "usr_segments": [
+        {
+          "segment_id": "biology_chapter3_plantkingdom_0003",
+          "text": "#In this chapter, we will study the detailed classification of Kingdom Plantae, which is commonly called the plant kingdom.\n$wyax\t15\t-\t-\t14:dem\tproximal\t-\t-\t-\nchapter_1\t14\t-\t-\t2:k7p\t-\t-\t-\t-\n$speaker\t1\tanim\tpl\t2:k1\t-\t-\t-\t-\nstudy_1-0_will_1\t2\t-\t-\t0:main\t-\t-\t-\t-\ndetailed_1\t3\t-\t-\t4:mod\t-\t-\t-\t-\nclassification_1\t4\t-\t-\t2:k2\t-\t-\t-\t-\nKingdom\t5\t-\t-\t-\t-\t-\t-\t7:begin\nPlantae\t6\t-\t-\t-\t-\t-\t-\t7:inside\n[ne_1]\t7\tne\t-\t4:r6\t-\t-\t-\t-\n$yax\t8\t-\t-\t10:k2\t7:coref\t-\t-\t-\ncommon_1\t9\t-\t-\t10:vkvn\t-\t-\t-\t-\ncall_1-en_is\t10\t-\t-\t7:rcelab\t-\t-\t-\t-\nplant_1\t11\t-\t-\t-\t-\t-\t-\t13:mod\nkingdom_1\t12\t-\t-\t-\t-\t-\t-\t13:head\n[nc_1]\t13\t-\t-\t10:k2s\t-\t-\t-\t-\n%affirmative",
+          "english_sentence": "In this chapter, we will study the detailed classification of Kingdom Plantae, which is commonly called the plant kingdom."
+        }
+      ],
+      "has_usr": true
+    }
+  ],
+  "created_at": {
+    "$date": "2026-04-16T04:25:30.110Z"
+  },
+  "updated_at": {
+    "$date": "2026-04-16T04:25:30.110Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69e064ba2fa5630572462f6f"
+  },
+  "chapter_id": "biology_chapter_3_plant_kingdom",
+  "original_paragraph": "We must stress here that our understanding of the plant kingdom has changed over time. Fungi, and members of the Monera and Protista having cell walls have now been excluded from Plantae though earlier classifications placed them in the same kingdom. So, the cyanobacteria that are also referred to as blue green algae are not 'algae' any more. In this chapter, we will describe Algae, Bryophytes, Pteridophytes, Gymnosperms and Angiosperms under Plantae.",
+  "simplified_paragraph": "We must emphasize that our understanding of the plant kingdom has changed over time. Earlier classifications placed fungi and members of Monera and Protista that have cell walls in the plant kingdom. However, they are now excluded from Plantae. Therefore, cyanobacteria, which are also called blue-green algae, are not considered 'algae' anymore. In this chapter, we will describe Algae, Bryophytes, Pteridophytes, Gymnosperms, and Angiosperms which are under Plantae.",
+  "sentences": [
+    {
+      "sentence": "We must emphasize that our understanding of the plant kingdom has changed over time.",
+      "usr_segments": [
+        {
+          "segment_id": "biology_chapter3_plantkingdom_0004a",
+          "text": "#We must emphasize this.\n$speaker\t1\tanim\tpl\t3:k1\t-\t-\t-\t-\nemphasize_1-0_must_1\t3\t-\t-\t0:main\t-\t-\t-\t-\n$wyax\t4\t-\t-\t3:k2\tbiology_chapter3_plantkingdom_0004b.6:coref\tproximal\t–\t-\n%affirmative",
+          "english_sentence": "We must emphasize this."
+        },
+        {
+          "segment_id": "biology_chapter3_plantkingdom_0004b",
+          "text": "#that our understanding of the plant kingdom has changed over time. \n$speaker\t1\tanim\tpl\t2:r6\t-\t-\t-\t-\nunderstanding_1\t2\t-\t-\t6:k1\t-\t-\t-\t-\nplant_1\t3\t-\t-\t-\t-\t-\t-\t5:mod\nkingdom_1\t4\t-\t-\t-\t-\t-\t-\t5:head\n[nc_1]\t5\t-\t-\t2:k7\t-\t-\t-\t-\nchange_1-en_have_1\t6\t-\t-\t0:main\t-\t-\t-\t-\ntime_1\t7\t-\t-\t6:rprop\t-\t-\t-\t-\n%passaffirmative",
+          "english_sentence": "that our understanding of the plant kingdom has changed over time."
+        }
+      ],
+      "has_usr": true
+    },
+    {
+      "sentence": "Earlier classifications placed fungi and members of Monera and Protista that have cell walls in the plant kingdom.",
+      "usr_segments": [
+        {
+          "segment_id": "biology_chapter3_plantkingdom_0005",
+          "text": "#Earlier classifications placed fungi and members of Monera and Protista that have cell walls in the plant kingdom. \nearly_1\t1\t-\t-\t2:mod\t-\t-\t-\t-\nclassification_1\t2\t-\tpl\t3:k1\t-\t-\t-\t-\nplace_1-ed_1\t3\t-\t-\t0:main\t-\t-\t-\t-\nfungi_1\t4\t-\t-\t-\t-\t-\t-\t6:op1\nmember_1\t5\t-\t-\t-\t-\t-\t-\t6:op2\n[conj_1]\t6\t-\t-\t3:k2\t-\t-\t-\t-\nMonera\t7\t-\t-\t-\t-\t-\t-\t8:begin\n[ne_1]\t8\t-\t-\t-\t-\t-\t-\t11:op1\nProtista\t9\t-\t-\t-\t-\t-\t-\t10:begin\n[ne_2]\t10\t-\t-\t-\t-\t-\t-\t11:op2\n[conj_2]\t11\t-\t-\t5:r6\t-\t-\t-\t-\n$yax\t12\t-\t-\t16:rsm\t-\t-\t-\t-\nhave_1-pres\t13\t-\t-\t5:rcdelim\t-\t-\t-\t-\ncell_1\t14\t-\t-\t-\t-\t-\t-\t16:mod\nwall_1\t15\t-\t-\t-\t-\t-\t-\t16:head\n[nc_1]16\t-\t-\t13:k2\t-\t-\t-\t-\nplant_1\t17\t-\t-\t-\t-\t-\t-\t19:mod\nkingdom_1\t18\t-\t-\t-\t-\t-\t-\t19:head\n[nc_2]\t19\t-\tpl\t3:k7p\t-\t-\t-\t-\n%affirmative",
+          "english_sentence": "Earlier classifications placed fungi and members of Monera and Protista that have cell walls in the plant kingdom."
+        }
+      ],
+      "has_usr": true
+    },
+    {
+      "sentence": "However, they are now excluded from Plantae.",
+      "usr_segments": [
+        {
+          "segment_id": "biology_chapter3_plantkingdom_0006",
+          "text": "#However, they are now excluded from Plantae. \n$wyax\t1\t-\t-\t3:k2\tbiology_chapter3_plantkingdom_0004.6:coref\t-\t-\t-\nnow_1\t2\t-\t-\t3:k7t\t-\t-\t-\t-\nexclude_1-en_is\t3\t-\t-\t0:main\tbiology_chapter3_plantkingdom_0005.3:contrast\t-\t-\t-\nPlantae\t4\t-\t-\t-\t-\t-\t-\t5:begin\n[ne_1]\t5\t-\t-\t3:k5\t-\t-\t-\t-\n%pass_affirmative",
+          "english_sentence": "However, they are now excluded from Plantae."
+        }
+      ],
+      "has_usr": true
+    },
+    {
+      "sentence": "Therefore, cyanobacteria, which are also called blue-green algae, are not considered 'algae' anymore.",
+      "usr_segments": [
+        {
+          "segment_id": "biology_chapter3_plantkingdom_0007",
+          "text": "#Therefore, cyanobacteria, which are also called blue-green algae, are not considered 'algae' anymore.\ncyanobacteria_1\t1\t-\t-\t9:k2\t-\t-\t-\t-\n$yax\t2\t-\t-\t3:k2\t1:coref\t-\t-\t-\ncall_1-en_is\t3\t-\t-\t1:rcelab\t-\t-\t-\t-\nblue_1\t4\t-\t-\t-\t-\t-\t-\t6:op1\ngreen_1\t5\t-\t-\t-\t-\t-\t-\t6:op2\n[nc_1]\t6\t-\t-\t-\t-\t-\t-\t12:mod\nalga_1\t7\t-\tpl\t-\t-\t-\t-\t12:head\n[nc_2]\t12\t-\t-\t3:k2s\t-\t-\t-\t-\nnot_1\t8\t-\t-\t9:neg\t-\t-\t-\t-\nconsider_1-en_is\t9\t-\t-\t0:main\tbiology_chapter3_plantkingdom_0006.3:kAryakAraNa\t-\t-\t-\nalga_1\t10\t-\tpl\t9:k2s\t-\t-\t-\t-\nanymore_1\t11\t-\t-\t9:k7t\t-\t-\t-\t-\n%pass_negative",
+          "english_sentence": "Therefore, cyanobacteria, which are also called blue-green algae, are not considered 'algae' anymore."
+        }
+      ],
+      "has_usr": true
+    },
+    {
+      "sentence": "In this chapter, we will describe Algae, Bryophytes, Pteridophytes, Gymnosperms, and Angiosperms which are under Plantae.",
+      "usr_segments": [
+        {
+          "segment_id": "biology_chapter3_plantkingdom_0008",
+          "text": "# In this chapter, we will describe Algae, Bryophytes, Pteridophytes, Gymnosperms, and Angiosperms which are under Plantae.\n$wyax\t1\t-\t-\t2:dem\t-\tproximal\t-\t-\nchapter_1\t2\t-\t-\t4:k7p\t-\t-\t-\t-\n$speaker\t3\tanim\tpl\t4:k1\t-\t-\t-\t-\ndescribe_1-0_will_1\t4\t-\t-\t0:main\t-\t-\t-\t-\nAlgae\t5\t-\t-\t-\t-\t-\t-\t6:begin\t\n[ne_1]\t6\tne\t-\t-\t-\t-\t-\t15:op1\nBryophytes\t7\t-\t-\t-\t-\t-\t-\t8:begin\n[ne_2]\t8\tne\t-\t-\t-\t-\t-\t15:op2\nPteridophytes\t9\t-\t-\t-\t-\t-\t-\t10:begin\n[ne_3]\t10\tne\t-\t-\t-\t-\t-\t15:op3\nGymnosperms\t11\t-\t-\t-\t-\t-\t-\t12:begin\n[ne_4]\t12\tne\t-\t-\t-\t-\t-\t15:op4\nAngiosperms\t13\t-\t-\t-\t-\t-\t-\t14:begin\n[ne_5]\t14\tne\t-\t-\t-\t-\t-\t15:op5\n[conj_1]\t15\t-\t-\t4:k2\t-\t-\t-\t-\n$yax\t16\t-\t-\t-\t17:k1\t15:coref\t-\t-\nbe_1-pres\t17\t-\t-\t15:rcelab\t-\t-\t-\t-\nPlantae\t18\t-\t-\t-\t-\t-\t-\t19:begin\n[ne_6]\t19\tne\t-\t17:k7p\t-\t-\t-\t-\n%affirmative",
+          "english_sentence": "In this chapter, we will describe Algae, Bryophytes, Pteridophytes, Gymnosperms, and Angiosperms which are under Plantae."
+        }
+      ],
+      "has_usr": true
+    }
+  ],
+  "created_at": {
+    "$date": "2026-04-16T04:25:30.110Z"
+  },
+  "updated_at": {
+    "$date": "2026-04-16T04:25:30.110Z"
+  }
+}]

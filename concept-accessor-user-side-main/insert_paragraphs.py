@@ -1,0 +1,315 @@
+import re
+from pymongo import MongoClient
+
+# ============================================================
+# MONGODB CONNECTION
+# ============================================================
+
+MONGODB_URI = "mongodb://localhost:27017"
+DATABASE_NAME = "concept_accessor"
+COLLECTION_NAME = "sentences"
+
+# Connect to MongoDB
+client = MongoClient(MONGODB_URI)
+db = client[DATABASE_NAME]
+collection = db[COLLECTION_NAME]
+
+
+# ============================================================
+# PARAGRAPH DATABASE (from Chapter 3 of the PDF)
+# ============================================================
+
+CHAPTER_3_PARAGRAPHS = [
+    # Paragraph 1
+    "In the previous chapter, we looked at the broad classification of living organisms under the system proposed by Whittaker (1969) wherein he suggested the Five Kingdom classification viz. Monera, Protista, Fungi, Animalia and Plantae. In this chapter, we will deal in detail with further classification within Kingdom Plantae popularly known as the 'plant kingdom'.",
+
+    # Paragraph 2
+    "We must stress here that our understanding of the plant kingdom has changed over time. Fungi, and members of the Monera and Protista having cell walls have now been excluded from Plantae though earlier classifications placed them in the same kingdom. So, the cyanobacteria that are also referred to as blue green algae are not 'algae' any more. In this chapter, we will describe Plantae under Algae, Bryophytes, Pteridophytes, Gymnosperms and Angiosperms.",
+
+    # Paragraph 3
+    "Let us also look at classification within angiosperms to understand some of the concerns that influenced the classification systems. The earliest systems of classification used only gross superficial morphological characters such as habit, colour, number and shape of leaves, etc. They were based mainly on vegetative characters or on the androecium structure (system given by Linnaeus). Such systems were artificial; they separated the closely related species since they were based on a few characteristics. Also, the artificial systems gave equal weightage to vegetative and sexual characteristics; this is not acceptable since we know that often the vegetative characters are more easily affected by environment. As against this, natural classification systems developed, which were based on natural affinities among the organisms and consider, not only the external features, but also internal features, like ultrastructure, anatomy, embryology and phytochemistry. Such a classification for flowering plants was given by George Bentham and Joseph Dalton Hooker.",
+
+    # Paragraph 4
+    "At present phylogenetic classification systems based on evolutionary relationships between the various organisms are acceptable. This assumes that organisms belonging to the same taxa have a common ancestor. We now use information from many other sources too to help resolve difficulties in classification. These become more important when there is no supporting fossil evidence. Numerical Taxonomy which is now easily carried out using computers is based on all observable characteristics. Number and codes are assigned to all the characters and the data are then processed. In this way each character is given equal importance and at the same time hundreds of characters can be considered. Cytotaxonomy that is based on cytological information like chromosome number, structure, behaviour and chemotaxonomy that uses the chemical constituents of the plant to resolve confusions, are also used by taxonomists these days.",
+
+    # Paragraph 5 - Algae introduction
+    "Algae are chlorophyll- bearing, simple, thalloid, autotrophic and largely aquatic (both fresh water and marine) organisms. They occur in a variety of other habitats: moist stones, soils and wood. Some of them also occur in association with fungi (lichen) and animals (e.g., on sloth bear).",
+
+    # Paragraph 6 - Algae size/form
+    "The form and size of algae is highly variable (Figure 3.1). The size ranges from the microscopic unicellular forms like Chlamydomonas, to colonial forms like Voltox and to the filamentous forms like Ulothrix and Spirogyra. A few of the marine forms such as kelps, form massive plant bodies.",
+
+    # Paragraph 7 - Algae reproduction
+    "The algae reproduce by vegetative, asexual and sexual methods. Vegetative reproduction is by fragmentation. Each fragment develops into a thallus. Asexual reproduction is by the production of different types of spores, the most common being the zoospores. They are flagellated (motile) and on germination gives rise to new plants. Sexual reproduction takes place through fusion of two gametes. These gametes can be flagellated and similar in size (as in Chlamydomonas) or non- flagellated (non- motile) but similar in size (as in Spirogyra). Such reproduction is called isogamous. Fusion of two gametes dissimilar in size, as in some species of Chlamydomonas is termed as anisogamous. Fusion between one large, non- motile (static) female gamete and a smaller, motile male gamete is termed oogamous, e.g., Volvox, Fucus.",
+
+    # Paragraph 8 - Algae usefulness
+    "Algae are useful to man in a variety of ways. At least a half of the total carbon dioxide fixation on earth is carried out by algae through photosynthesis. Being photosynthetic they increase the level of dissolved oxygen in their immediate environment. They are of paramount importance as primary producers of energy- rich compounds which form the basis of the food cycles of all aquatic animals. Many species of Porphyra, Laminaria and Sargassum are among the 70 species of marine algae used as food. Certain marine brown and red algae produce large amounts of hydrocolloids (water holding substances), e.g., algin (brown algae) and carrageen (red algae) which are used commercially. Agar, one of the commercial products obtained from Gelidium and Gracilaria are used to grow microbes and in preparations of ice- creams and jellies. Chlorella a unicellular alga, rich in proteins is used as food supplement even by space travellers. The algae are divided into three main classes: Chlorophyceae, Phaeophyceae and Rhodophyceae.",
+
+    # Paragraph 9 - Chlorophyceae part 1
+    "The members of chlorophyceae are commonly called green algae. The plant body may be unicellular, colonial or filamentous. They are usually grass green due to the dominance of pigments chlorophyll a and b . The pigments are localised in definite chloroplasts. The chloroplasts may be discoid, plate- like, reticulate, cup- shaped, spiral or ribbon- shaped in different species. Most of the members have one or more storage bodies called pyrenoids located in the chloroplasts. Pyrenoids contain protein besides starch. Some algae may store food in the form of oil droplets. Green algae usually have a rigid cell wall made of an inner layer of cellulose and an outer layer of pectose.",
+
+    # Paragraph 10 - Chlorophyceae part 2
+    "Vegetative reproduction usually takes place by fragmentation or by formation of different types of spores. Asexual reproduction is by flagellated zoospores produced in zoosporangia. The sexual reproduction shows considerable variation in the type and formation of sex cells and it may be isogamous, anisogamous or oogamous. Some commonly found green algae are: Chlamydomonas, Volvox, Ulothrix, Spirogyra and Chara (Figure 3.1a).",
+
+    # Paragraph 11 - Phaeophyceae part 1
+    "The members of phaeophyceae or brown algae are found primarily in marine habitats. They show great variation in size and form. They range from simple branched, filamentous forms (Ectocarpus) to profusely branched forms as represented by kelps, which may reach a height of 100 metres. They possess chlorophyll a, c, carotenoids and xanthophylls. They vary in colour from olive green to various shades of brown depending upon the amount of the xanthophyll pigment, fucoxanthin present in them. Food is stored as complex carbohydrates, which may be in the form of laminarin or mannitol. The vegetative cells have a cellulosic wall usually covered on the outside by a gelatinous coating of algin. The protoplast contains, in addition to plastids, a centrally located vacuole and nucleus. The plant body is usually attached to the substratum by a holdfast, and has a stalk, the stipe and leaf like photosynthetic organ - the frond. Vegetative reproduction takes place by fragmentation. Asexual reproduction in most brown algae is by biflagellate zoospores that are pear- shaped and have two unequal laterally attached flagella.",
+
+    # Paragraph 12 - Phaeophyceae part 2
+    "Sexual reproduction may be isogamous, anisogamous or oogamous. Union of gametes may take place in water or within the oogonium (oogamous species). The gametes are pyriform (pear- shaped) and bear two laterally attached flagella. The common forms are Ectocarpus, Dictyota, Laminaria, Sargassum and Fucus (Figure 3.1b).",
+
+    # Paragraph 13 - Rhodophyceae part 1
+    "The members of rhodophyceae are commonly called red algae because of the predominance of the red pigment, r- phycoerythrin in their body. Majority of the red algae are marine with greater concentrations found in the warmer areas. They occur in both well- lighted regions close to the surface of water and also at great depths in oceans where relatively little light penetrates.",
+
+    # Paragraph 14 - Rhodophyceae part 2
+    "The red thalli of most of the red algae are multicellular. Some of them have complex body organisation. The food is stored as floridean starch which is very similar to amylopectin and glycogen in structure.",
+
+    # Paragraph 15 - Rhodophyceae part 3
+    "The red algae usually reproduce vegetatively by fragmentation. They reproduce asexually by non- motile spores and sexually by non- motile gametes.",
+
+    # Paragraph 16 - Bryophytes intro
+    "Bryophytes include the various mosses and liverworts that are found commonly growing in moist shaded areas in the hills (Figure 3.2).",
+
+    # Paragraph 17 - Bryophytes characteristics
+    "Bryophytes are also called amphibians of the plant kingdom because these plants can live in soil but are dependent on water for sexual reproduction. They usually occur in damp, humid and shaded localities. They play an important role in plant succession on bare rocks/soil.",
+
+    # Paragraph 18 - Bryophytes plant body
+    "The plant body of bryophytes is more differentiated than that of algae. It is thallus- like and prostrate or erect, and attached to the substratum by unicellular or multicellular rhizoids. They lack true roots, stem or leaves. They may possess root- like, leaf- like or stem- like structures. The main plant body of the bryophyte is haploid. It produces gametes, hence is called a gametophyte. The sex organs in bryophytes are multicellular. The male sex organ is called antheridium. They produce biflagellate antherozoids. The female sex organ called archegonium is flask- shaped and produces a single egg. The antherozoids are released into water where they come in contact with archegonium. An antherozoid fuses with the egg to produce the zygote. Zygotes do not undergo reduction division immediately. They produce a multicellular body called a sporophyte. The sporophyte is not free- living but attached to the photosynthetic gametophyte and derives nourishment from it. Some cells of the sporophyte undergo reduction division (meiosis) to produce haploid spores. These spores germinate to produce gametophyte.",
+
+    # Paragraph 19 - Bryophytes economic importance
+    "Bryophytes in general are of little economic importance but some mosses provide food for herbaceous mammals, birds and other animals. Species of Sphagnum, a moss, provide peat that have long been used as fuel, and as packing material for trans- shipment of living material because of their capacity to hold water. Mosses along with lichens are the first organisms to colonise rocks and hence, are of great ecological importance. They decompose rocks making the substrate suitable for the growth of higher plants. Since mosses form dense mats on the soil, they reduce the impact of falling rain and prevent soil erosion. The bryophytes are divided into liverworts and mosses.",
+
+    # Paragraph 20 - Liverworts
+    "The liverworts grow usually in moist, shady habitats such as banks of streams, marshy ground, damp soil, bark of trees and deep in the woods. The plant body of a liverwort is thalloid, e.g., Marchantia. The thallus is dorsiventral and closely appressed to the substrate. The leafy members have tiny leaf- like appendages in two rows on the stem- like structures.",
+
+    # Paragraph 21 - Liverworts reproduction
+    "Asexual reproduction in liverworts takes place by fragmentation of thalli, or by the formation of specialised structures called gemmae (sing. gemma). Gemmae are green, multicellular, asexual buds, which develop in small receptacles called gemma cups located on the thalli. The gemmae become detached from the parent body and germinate to form new individuals. During sexual reproduction, male and female sex organs are produced on the same or different thalli.",
+
+    # Paragraph 22 - Mosses part 1
+    "The predominant stage of the life cycle of a moss is the gametophyte which consists of two stages. The first stage is the protonea stage, which develops directly from a spore. It is a creeping, green, branched and frequently filamentous stage. The second stage is the leafy stage, which develops from the secondary protonea as a lateral bud. They consist of upright, slender axes bearing spirally arranged leaves. They are attached to the soil through multicellular and branched rhizoids. This stage bears the sex organs.",
+
+    # Paragraph 23 - Mosses part 2
+    "Vegetative reproduction in mosses is by fragmentation and budding in the secondary protonea. In sexual reproduction, the sex organs antheridia and archegonia are produced at the apex of the leafy shoots. After fertilisation, the zygote develops into a sporophyte, consisting of a foot, seta and capsule. The sporophyte in mosses is more elaborate than that in liverworts. The capsule contains spores. Spores are formed after meiosis. The mosses have an elaborate mechanism of spore dispersal. Common examples of mosses are Funaria, Polytrichum and Sphagnum (Figure 3.2).",
+
+    # Paragraph 24 - Pteridophytes intro
+    "The Pteridophytes include horsetails and ferns. Pteridophytes are used for medicinal purposes and as soil- binders. They are also frequently grown as ornamentals. Evolutionarily, they are the first terrestrial plants to possess vascular tissues - xylem and phloem. You shall study more about these tissues in Chapter 6. The pteridophytes are found in cool, damp, shady places though some may flourish well in sandy- soil conditions.",
+
+    # Paragraph 25 - Pteridophytes main
+    "You may recall that in bryophytes the dominant phase in the life cycle is the gametophyte plant body. However, in pteridophytes, the main plant body is a sporophyte which is differentiated into true root, stem and leaves (Figure 3.3). These organs possess well- differentiated vascular tissues. The leaves in pteridophyta are small (microphylls) as in Selaginella or large (macrophylls) as in ferns. The sporophytes bear sporangia that are subtended by leaf- like appendages called sporophylls. In some cases sporophylls may form distinct compact structures called strobili or cones (Selaginella, Equisetum). The sporangia produce spores by meiosis in spore mother cells. The spores germinate to give rise to inconspicuous, small but multicellular, free- living, mostly photosynthetic thalloid gametophytes called prothallus. These gametophytes require cool, damp, shady places to grow. Because of this specific restricted requirement and the need for water for fertilisation, the spread of living pteridophytes is limited and restricted to narrow geographical regions. The gametophytes bear male and female sex organs called antheridia and archegonia, respectively. Water is required for transfer of antherozoids - the male gametes released from the antheridia, to the mouth of archegonium. Fusion of male gamete with the egg present in the archegonium result in the formation of zygote. Zygote thereafter produces a multicellular well- differentiated sporophyte which is the dominant phase of the pteridophytes. In majority of the pteridophytes all the spores are of similar kinds; such plants are called homosporous. Genera like Selaginella and Salvinia which produce two kinds of spores, macro (large) and micro (small) spores, are known as heterosporous. The megaspores and microspores germinate and give rise to female and male gametophytes, respectively. The female gametophytes in these plants are retained on the parent sporophytes for variable periods. The development of the zygotes into young embryos take place within the female gametophytes. This event is a precursor to the seed habit considered an important step in evolution.",
+
+    # Paragraph 26 - Pteridophytes classification
+    "The pteridophytes are further classified into four classes: Psilopsida (Psilotum); Lycopsidea (Selaginella, Lycopodium), Sphenopsida (Equisetum) and Pteropsida (Dryopteris, Pteris, Adiantum).",
+
+    # Paragraph 27 - Gymnosperms intro
+    "The gymnosperms (gymnos : naked, sperma : seeds) are plants in which the ovules are not enclosed by any ovary wall and remain exposed, both before and after fertilisation. The seeds that develop post- fertilisation, are not covered, i.e., are naked. Gymnosperms include medium- sized trees or tall trees and shrubs (Figure 3.4). One of the gymnosperms, the giant redwood tree Sequoia is one of the tallest tree species. The roots are generally tap roots. Roots in some genera have fungal association in the form of mycorrhiza (Pinus), while in some others (Cycas) small specialised roots called coralloid roots are associated with N2 - fixing cyanobacteria. The stems are unbranched (Cycas) or branched (Pinus, Cedrus). The leaves may be simple or compound. In Cycas the pinnate leaves persist for a few years. The leaves in gymnosperms are well- adapted to withstand extremes of temperature, humidity and wind. In conifers, the needle- like leaves reduce the surface area. Their thick cuticle and sunken stomata also help to reduce water loss.",
+
+    # Paragraph 28 - Gymnosperms heterosporous
+    "The gymnosperms are heterosporous; they produce haploid microspores and megaspores. The two kinds of spores are produced within sporangia that are borne on sporophylls which are arranged spirally along an axis to form lax or compact strobili or cones. The strobili bearing microsporophylls and microsporangia are called microsporangiate or male strobili. The microspores develop into a male gametophytic generation which is highly reduced and is confined to only a limited number of cells. This reduced gametophyte is called a pollen grain. The development of pollen grains take place within the microsporangia. The cones bearing megasporophylls with ovules or megasporangia are called macrosporangiate or female strobili. The male or female cones or strobili may be borne on the same tree (Pinus). However, in cycas male cones and megasporophylls are borne on different trees. The megaspore mother cell is differentiated from one of the cells of the nucleus. The nucleus is protected by envelopes and the composite structure is called an ovule. The ovules are borne on megasporophylls which may be clustered to form the female cones. The megaspore mother cell divides meiotically to form four megaspores. One of the megaspores enclosed within the megasporangium develops into a multicellular female gametophyte that bears two or more archegonia or female sex organs. The multicellular female gametophyte is also retained within megasporangium.",
+
+    # Paragraph 29 - Gymnosperms gametophytes
+    "Unlike bryophytes and pteridophytes, in gymnosperms the male and the female gametophytes do not have an independent free- living existence. They remain within the sporangia retained on the sporophytes. The pollen grain is released from the microsporangium. They are carried in air currents and come in contact with the opening of the ovules borne on megasporophylls. The pollen tube carrying the male gametes grows towards archegonia in the ovules and discharge their contents near the mouth of the archegonia. Following fertilisation, zygote develops into an embryo and the ovules into seeds. These seeds are not covered.",
+
+    # Paragraph 30 - Angiosperms intro
+    "Unlike the gymnosperms where the ovules are naked, in the angiosperms or flowering plants, the pollen grains and ovules are developed in specialised structures called flowers. In angiosperms, the seeds are enclosed by fruits. The angiosperms are an exceptionally large group of plants occurring in wide range of habitats. They range in size from tiny, almost microscopic Wolfia to tall trees of Eucalyptus (over 100 metres). They provide us with food, fodder, fuel, medicines and several other commercially important products. They are divided into two classes: the dicotyledons and the monocotyledons (Figure 3.5). The dicotyledons are characterised by having two cotyledons in their seeds while the monocotyledons have only one. The male sex organ in a flower is the stamen. Each stamen consists of a slender filament with an anther at the tip. The anthers, following meiosis, produce pollen grains. The female sex organ in a flower is the pistil or the carpel. Pistil consists of an ovary enclosing one to many ovules. Within ovules are present highly reduced female gametophytes termed embryosacs. The embryo- sac formation is preceded by meiosis. Hence, each of the cells of an embryo- sac is haploid. Each embryo- sac has a three- celled egg apparatus - one egg cell and two synergids, three antipodal cells and two polar nuclei. The polar nuclei eventually fuse to produce a diploid secondary nucleus. Pollen grain, after dispersal from the anthers, are carried by wind or various other agencies to the stigma of a pistil. This is termed as pollination.",
+
+    # Paragraph 31 - Life cycles intro
+    "In plants, both haploid and diploid cells can divide by mitosis. This ability leads to the formation of different plant bodies - haploid and diploid. The haploid plant body produces gametes by mitosis. This plant body represents a gametophyte. Following fertilisation the zygote also divides by mitosis to produce a diploid sporophytic plant body. Haploid spores are produced by this plant body by meiosis. These in turn, divide by mitosis to form a haploid plant body once again. Thus, during the life cycle of any sexually reproducing plant, there is an alternation of generations between gamete producing haploid gametophyte and spore producing diploid sporophyte.",
+
+    # Paragraph 32 - Life cycle patterns intro
+    "However, different plant groups, as well as individuals representing them, differ in the following patterns:",
+
+    # Paragraph 33 - Haplontic
+    "1. Sporophytic generation is represented only by the one-celled zygote. There are no free-living sporophytes. Meiosis in the zygote results in the formation of haploid spores. The haploid spores divide mitotically and form the gametophyte. The dominant, photosynthetic phase in such plants is the free-living gametophyte. This kind of life cycle is termed as haplontic. Many algae such as Volvox, Spirogyra and some species of Chlamydomonas represent this pattern (Figure 3.7 a).",
+
+    # Paragraph 34 - Diplontic
+    "2. On the other extreme, is the type wherein the diploid sporophyte is the dominant, photosynthetic, independent phase of the plant. The gametophytic phase is represented by the single to few-celled haploid gametophyte. This kind of life cycle is termed as diplontic. An alga, Fucus sp., represents this pattern (Fig. 3.7b). In addition, all seed bearing plants i.e., gymnosperms and angiosperms, follow this pattern with some variations, wherein, the gametophytic phase is few to multi-celled.",
+
+    # Paragraph 35 - Haplo-diplontic intro
+    "3. Bryophytes and pteridophytes, interestingly, exhibit an intermediate condition (Haplo-diplontic); both phases are multicellular. However, they differ in their dominant phases.",
+
+    # Paragraph 36 - Bryophytes pattern
+    "A dominant, independent, photosynthetic, thalioid or erect phase is represented by a haploid gametophyte and it alternates with the short- lived multicellular sporophyte totally or partially dependent on the gametophyte for its anchorage and nutrition. All bryophytes represent this pattern.",
+
+    # Paragraph 37 - Pteridophytes pattern
+    "The diploid sporophyte is represented by a dominant, independent, photosynthetic, vascular plant body. It alternates with multicellular, saprophytic/autotrophic, independent but short- lived haploid gametophyte. Such a pattern is known as haploid- diplontic life cycle. All pteridophytes exhibit this pattern (Figure 3.7 c).",
+
+    # Paragraph 38 - Algae patterns summary
+    "Interestingly, while most algal genera are haplontic, some of them such as Ectocarpus, Polysiphonia, kelps are haploid- diplontic. Fucus, an alga is diplontic."
+]
+
+
+# ============================================================
+# HELPER FUNCTIONS
+# ============================================================
+
+def normalize_text(text):
+    """Remove extra whitespace, lowercase, and strip punctuation for matching."""
+    if not text:
+        return ""
+    text = re.sub(r'\s+', ' ', str(text))
+    text = text.strip().lower()
+    text = re.sub(r'[^\w\s]', '', text)
+    return text
+
+
+def find_paragraph_for_sentence(sentence_text, chapter_id):
+    """
+    Find which paragraph contains the given sentence.
+    Returns the paragraph text or None if not found.
+    """
+    # Only process Chapter 3 sentences
+    if "e36b81d0" not in str(chapter_id):
+        return None
+    
+    normalized_sentence = normalize_text(sentence_text)
+    
+    # Skip very short fragments
+    if len(normalized_sentence) < 5:
+        return None
+    
+    # Try exact substring match first
+    for para in CHAPTER_3_PARAGRAPHS:
+        normalized_para = normalize_text(para)
+        if normalized_sentence in normalized_para:
+            return para
+    
+    # Try word overlap for partial matches
+    sentence_words = set(normalized_sentence.split())
+    if not sentence_words:
+        return None
+        
+    best_match = None
+    best_score = 0
+    
+    for para in CHAPTER_3_PARAGRAPHS:
+        normalized_para = normalize_text(para)
+        para_words = set(normalized_para.split())
+        
+        if sentence_words:
+            overlap = len(sentence_words.intersection(para_words)) / len(sentence_words)
+            if overlap > best_score and overlap > 0.5:
+                best_score = overlap
+                best_match = para
+    
+    return best_match
+
+
+# ============================================================
+# UPDATE MONGODB COLLECTION
+# ============================================================
+
+def add_paragraphs_to_collection():
+    """
+    Iterate through all documents in the collection,
+    add a 'paragraph' field for Chapter 3 sentences.
+    """
+    
+    # First, let's check how many documents exist
+    total_docs = collection.count_documents({})
+    print(f"Total documents in collection: {total_docs}")
+    
+    # Find Chapter 3 documents
+    chapter_3_docs = collection.find({'chapter_id': {'$regex': 'e36b81d0'}})
+    chapter_3_count = collection.count_documents({'chapter_id': {'$regex': 'e36b81d0'}})
+    print(f"Chapter 3 documents found: {chapter_3_count}")
+    
+    if chapter_3_count == 0:
+        print("\n⚠️ WARNING: No Chapter 3 documents found!")
+        print("Checking a sample of chapter_id values in the database...")
+        sample_docs = collection.find().limit(5)
+        for doc in sample_docs:
+            print(f"  - chapter_id: {doc.get('chapter_id', 'MISSING')}")
+        return
+    
+    updated_count = 0
+    skipped_count = 0
+    error_count = 0
+    
+    for doc in chapter_3_docs:
+        try:
+            doc_id = doc['_id']
+            chapter_id = doc.get('chapter_id', '')
+            sentence = doc.get('sentence', '')
+            
+            # Find the paragraph for this sentence
+            paragraph = find_paragraph_for_sentence(sentence, chapter_id)
+            
+            if paragraph:
+                # Update the document with the paragraph field
+                result = collection.update_one(
+                    {'_id': doc_id},
+                    {'$set': {'paragraph': paragraph}}
+                )
+                if result.modified_count > 0:
+                    updated_count += 1
+                    if updated_count <= 10:  # Print first 10 updates
+                        print(f"✓ Updated: {sentence[:60]}...")
+            else:
+                skipped_count += 1
+                
+        except Exception as e:
+            error_count += 1
+            print(f"✗ Error: {e}")
+    
+    print("\n" + "="*50)
+    print(f"UPDATE COMPLETE!")
+    print(f"  - Updated: {updated_count} documents")
+    print(f"  - Skipped: {skipped_count} documents (fragments or no match)")
+    print(f"  - Errors: {error_count}")
+    print("="*50)
+
+
+# ============================================================
+# VERIFICATION FUNCTION
+# ============================================================
+
+def verify_updates():
+    """Check a few documents to verify the paragraph was added."""
+    print("\n" + "="*50)
+    print("VERIFICATION: Sample documents with paragraph field")
+    print("="*50)
+    
+    sample = collection.find({'paragraph': {'$exists': True}}).limit(5)
+    found = False
+    
+    for doc in sample:
+        found = True
+        print(f"\n📄 ID: {doc['_id']}")
+        print(f"   Sentence: {doc['sentence'][:80]}...")
+        print(f"   Paragraph: {doc['paragraph'][:100]}...")
+        print("-"*40)
+    
+    if not found:
+        print("No documents with 'paragraph' field found.")
+
+
+# ============================================================
+# MAIN
+# ============================================================
+
+if __name__ == "__main__":
+    print("="*50)
+    print("ADDING PARAGRAPHS TO MONGODB COLLECTION")
+    print("="*50)
+    print(f"Connected to: {MONGODB_URI}")
+    print(f"Database: {DATABASE_NAME}")
+    print(f"Collection: {COLLECTION_NAME}")
+    print("="*50 + "\n")
+    
+    # Test connection
+    try:
+        client.admin.command('ping')
+        print("✓ MongoDB connection successful\n")
+    except Exception as e:
+        print(f"✗ MongoDB connection failed: {e}")
+        exit(1)
+    
+    # Confirm before proceeding
+    confirm = input("This will add a 'paragraph' field to all Chapter 3 sentences. Continue? (y/n): ")
+    
+    if confirm.lower() == 'y':
+        add_paragraphs_to_collection()
+        verify_updates()
+    else:
+        print("Operation cancelled.")
+    
+    # Close MongoDB connection
+    client.close()
