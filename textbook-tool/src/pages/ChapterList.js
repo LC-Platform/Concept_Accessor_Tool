@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import AppNavbar from "../components/AppNavbar";
 import "../styles/ChapterList.css";
 
-const BASE_URL = "http://10.2.8.12:8500";
+const BASE_URL = "https://canvas.iiit.ac.in/bioereaderbe";
 
 export default function ChapterListPage() {
   const navigate = useNavigate();
