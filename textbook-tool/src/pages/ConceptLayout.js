@@ -7,7 +7,7 @@ import AnalysisPanel from "./AnalysisPanel";
 import { useParams } from "react-router-dom";
 import "../styles/ModernLayout.css";
 
-const BASE_URL = "https://canvas.iiit.ac.in/bioereaderbe";
+const BASE_URL = "http://10.2.8.12:8500";
 
 /* ===== Helpers ===== */
 function normalizeStringForMatch(s = "") {

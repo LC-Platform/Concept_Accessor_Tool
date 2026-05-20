@@ -12,6 +12,7 @@ from rapidfuzz import fuzz
 from io import BytesIO
 import base64
 import time
+from pymongo import UpdateOne
 import io
 import motor.motor_asyncio
 import os
@@ -49,7 +50,7 @@ MINIO_SECURE = os.getenv("MINIO_SECURE", "False").lower() == "true"
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://10.2.8.12:3003","https://canvas.iiit.ac.in"
+        "http://10.2.8.12:3003","http://localhost:3000", "http://localhost:3003"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -593,6 +594,49 @@ async def get_translated_sentence(chapter_id: str, sentence: str, target_languag
     else:
         raise HTTPException(status_code=404, detail="Translated sentence not found")
 
+
+@app.post("/add-ner-tags/")
+async def add_ner_tags(
+    chapter_id: str = Body(...),
+    domain_ids: list[str] = Body(...)
+):
+    try:
+        # normalize domain_ids
+        normalized_ids = [d.strip().lower() for d in domain_ids]
+
+        # prepare bulk operations
+        operations = []
+
+        for domain_id in normalized_ids:
+            operations.append(
+                UpdateOne(
+                    {
+                        "chapter_id": chapter_id,
+                        "domain_id": domain_id
+                    },
+                    {
+                        "$set": {"names.ner": "yes"}
+                    }
+                )
+            )
+
+        # execute bulk update
+        if operations:
+            result = await domain_words_col.bulk_write(operations)
+            modified = result.modified_count
+        else:
+            modified = 0
+
+        return {
+            "status": "success",
+            "chapter_id": chapter_id,
+            "input_count": len(domain_ids),
+            "updated_count": modified
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
 @app.get("/taxonomy-image/{chapter_id}/{domain_id}")
 async def get_taxonomy_image_on_demand(chapter_id: str, domain_id: str):
     """

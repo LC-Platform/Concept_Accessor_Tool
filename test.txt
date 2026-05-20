@@ -1,0 +1,2493 @@
+<segment_id=Geo_ncert_6stnd_2ch_0001a>
+#पिछले अध्याय में आप यह पढ चुके हैं।
+#piCale aXyAya meM Apa yaha paDa cuke hEM.
+#In the previous chapter, you have read that our planet earth is not a sphere.
+piCalA_8(previous_3)	1	-	-	2:mod	-	-	-	-
+aXyAya_1(chapter_1)	2	-	-	5:k7p	-	-	-	-
+$addressee	3	anim	pl	5:k1	-	respect	-	-
+$wyax	4	-	-	5:k2	Geo_ncert_6stnd_2ch_0001b.5:coref	proximal	-	-
+paDa_1(read_7)-0_cukA_hE_1(have_en)	5	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0001b>
+#कि हमारी पृथ्वी गोलाकार नहीं है।
+#ki hamArI pqWvI golAkAra nahIM hE.
+#In the previous chapter, you have read that our planet earth is not a sphere.
+$speaker	1	anim	pl	2:r6	-	-	-	-
+pqWvI_1(earth_9)	2	-	-	5:k1	-	-	-	-
+golAkAra_4(spherical_3)	3	-	-	5:k1s	-	-	-	-
+nahIM_1(not_1)	4	-	-	5:neg	-	-	-	-
+hE_1-(state_copula_1)-pres	5	-	-	0:main	-	-	-	-
+%negative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0002a>
+#यह उत्तर एवं दक्षिण ध्रुवों पर थोडी चपटी हुई है।
+#yaha uwwara evaM xakRiNa XruvoM para WodI capatI huI hE.
+#It is slightly flattened at the North and the South Poles.
+$wyax	1	-	-	0:k1	-	proximal	-	-
+uwwara_3(north_1)	2	-	-	-	-	-	-	12:begin
+xakRiNa_2(south_2)	3	-	-	-	-	-	-	13:inside
+Xruva_1(pole_2)	4	-	pl	8:quant	-	-	-	-
+WodA_2(slight_36)	5	-	-	-	-	-	-	14:op1
+capaTA_1	6	-	kqw	-	-	-	-	14:op2
+[conj_1]	7	-	-	0:k7p	-	-	-	-
+hE_1(state_copula_1)-pres(pres)	8	-	-	-	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0002b>
+#तथा यह मध्य में थोडी उभरी हुई है।
+#waWA yaha maXya meM WodI uBarI huI hE.
+#And it is bulge in the middle.
+$wyax	1	-	-	5:k1	-	proximal	-	-
+maXya_1(middle_2)	2	-	-	5:k7p	-	-	-	-
+WodA_2(slight_36)	4	-	-	5:krvn	-	-	-	-
+uBara_10(bulge_6)-yA_ho_hE_1	5	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0003a>
+#क्या आप यह कल्पना  कर सकते हैं?
+#kyA Apa yaha kalpanA  kara sakawe hEM?
+#Can you imagine how it looks?
+$addressee	2	anim	-	9:k1	-	respect	-	-
+$wyax	3	-	-	9:k2	Geo_ncert_6stnd_2ch_0003b.3:coref	proximal	-	-
+kalpanA_1(imagination_3)	4	-	-	-	-	-	-	9:kriyAmUla
+kara_1-0_sakawA_hE_1	5	-	-	-	-	-	-	9:verbalizer
+[cp_1]	9	-	-	0:main	-	-	-	-
+%interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0003b>
+#कि यह कैसी दिखती है?
+#ki yaha kEsI xiKawI hE?
+#Can you imagine how it looks?
+$wyax	1	-	-	3:k1	Geo_ncert_6stnd_2ch_0001b.2:coref	proximal	-	-
+$kim	2	-	-	3:krvn	-	-	-	-
+xiKa_1-wA_hE_1	3	-	-	0:main	-	-	-	-
+%interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0004>
+#इस संबंध में जानकारी प्राप्त करने के लिए आप अपनी कक्षा में सावधानीपूर्वक ग्लोब को देखिए।
+#isa saMbaMXa meM jAnakArI prApwa karane ke lie Apa apanI kakRA meM sAvaXAnIpUrvaka globa ko xeKie.
+#You may look at a globe carefully in your classroom to get an idea.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+saMbaMXa_1	2	-	-	18:k7	-	-	-	-
+jAnakArI_5	4	-	-	18:k2	-	-	-	-
+prApwa_1	5	-	-	-	-	-	-	18:kriyAmUla
+kara_1	6	-	-	-	-	-	-	18:verbalizer
+$addressee	9	anim	pl	16:k1	-	respect	-	-
+apanA_1	10	-	-	11:r6	-	-	-	-
+kakRA_1	11	-	-	16:k7p	-	-	-	-
+sAvaXAnIpUrvaka_1	13	-	-	14:mod	-	-	-	-
+globa_1	14	-	-	16:k2	-	-	-	-
+xeKa_1-o_1	16	-	-	0:main	-	-	-	-
+[cp_1]	18	-	-	16:rt	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0005>
+#ग्लोब पृथ्वी का लघु रूप में एक वास्तविक प्रतिरूप है।
+#globa pqWvI kA laGu rUpa meM eka vAswavika prawirUpa hE.
+#Globe is a true model (miniature form) of the earth.
+globa_1	1	-	-	10:k1	-	-	-	-
+pqWvI	2	-	-	9:r6	-	def	-	-
+laGu_1	4	-	-	5:mod	-	-	-	-
+rUpa_1	5	-	-	10:krvn	-	-	-	-
+eka_2	7	-	-	8:quant	-	-	-	-
+vAswavika_1	8	-	-	9:mod	-	-	-	-
+prawirUpa_1	9	-	-	10:k1s	-	-	-	-
+hE_1-pres	10	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0006a>
+#ग्लोब विभिन्न आकार एवं प्रकार के हो सकते हैं- बडे ग्लोब, जो आसानी से एक स्थान से दूसरे स्थान नहीं ले जाए जा सकते पॉकेट में रखने योग्य छोटे ग्लोब तथा गुब्बारे जैसे ग्लोब, जिनमें हवा भरी जा सकती है ।
+#globa viBinna AkAra evaM prakAra ke ho sakawe hEM- bade globa, jo AsAnI se eka sWAna se xUsare sWAna nahIM le jAe jA sakawe poYketa meM raKane yogya Cote globa waWA gubbAre jEse globa, jinameM havA BarI jA sakawI hE .
+#Globes may be of varying size and type – big ones,  which cannot be carried easily, small pocket globes, and globe-like balloons, which can be inflated and are handy and carried with ease.
+globa_1	1	-	-	7:k1	-	-	-	-
+viBinna_1	2	-	-	3:mod	-	-	-	-
+AkAra_1	3	-	-	-	-	-	-	45:op1
+prakAra_1	5	-	-	-	-	-	-	45:op2
+ho_1-0_sakawA_hE_1	7	-	-	0:main	-	-	-	-
+badA_1	11	-	pl	12:mod	-	-	-	-
+globa_1	12	-	-	-	-	-	-	46:op1
+$yax	14	-	-	23:k1	1:coref	-	-	-
+AsAnI_1	15	-	-	23:krvn	-	-	-	-
+eka_1	17	numex	-	18:card	-	-	-	-
+sWAna_1	18	-	-	23:k5	-	-	-	-
+xUsarA_1	20	-	pl	21:ord	-	-	-	-
+sWAna_1	21	-	-	23:k2p	-	-	-	-
+nahIM_1	22	-	-	23:neg	-	-	-	-
+le_1-jA_sakawA_hE_1	23	-	-	1:rcelab	-	[shade:jA_1]	-	-
+^pOYketa_1	27	-	-	29:k7p	-	-	-	-
+raKa_1	29	-	-	-	-	-	-	47:op1
+yogya_1	30	-	-	-	-	-	-	47:op2
+CotA_1	31	-	pl	32:mod	-	-	-	-
+globa_1	32	-	-	-	-	-	-	46:op2
+gubbArA_1	34	-	pl	36:ru	-	-	-	-
+globa_1	36	-	-	-	-	-	-	46:op3
+$yax	38	-	pl	40:k7p	1:coref	-	-	-
+havA_1	39	-	-	40:k2	-	-	-	-
+Bara_1-yA_jA_sakawA_hE_1	40	-	-	1:rcelab	-	-	-	-
+[conj_1]	45	-	-	7:k1s	-	-	-	-
+[conj_2]	46	-	-	1:re	-	-	-	-
+[compound_1]	47	-	-	32:mod	-	-	-	-
+%negative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0006b>
+#एवं जो आसानी से एक स्थान से दूसरे स्थान ले जाए जा सकते हैं।
+#evaM jo AsAnI se eka sWAna se xUsare sWAna le jAe jA sakawe hEM.
+#Globes may be of varying size and type – big ones,  which cannot be carried easily, small pocket globes, and globe-like balloons, which can be inflated and are handy and carried with ease.
+$yax	1	-	-	9:k1	Geo_ncert_6stnd_2ch_0006a.1:coref	-	-	-
+AsAnI_1	2	-	-	9:krvn	-	-	-	-
+eka_1	4	numex	-	5:card	-	-	-	-
+sWAna_1	5	-	-	9:k5	-	-	-	-
+xUsarA_1	7	-	-	8:ord	-	-	-	-
+sWAna_1	8	-	-	9:k2p	-	-	-	-
+le_1-jA_sakawA_hE_1	9	-	-	0:main	Geo_ncert_6stnd_2ch_0006a.7:samuccaya	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0007>
+#ग्लोब स्थिर नहीं होते हैं।
+#globa sWira nahIM howe hEM.
+#The globe is not fixed.
+globa_1	1	-	-	4:k1	-	-	-	-
+sWira_1	2	-	-	4:k1s	-	-	-	-
+nahIM_1	3	-	-	4:neg	-	-	-	-
+ho_1-wA_hE_1	4	-	-	0:main	-	-	-	-
+%negative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0008>
+#इसे उसी प्रकार घुमाया जा सकता है, जैसे कुम्हार का पहिया या लट्टू घूमता है।
+#ise usI prakAra GumAyA jA sakawA hE, jEse kumhAra kA pahiyA yA lattU GUmawA hE.
+#it can be rotated the same way as a top spin or a potter’s wheel is rotated.
+$wyax	1	-	-	4:k2	Geo_ncert_6stnd_2ch_0007.1:coref	proximal	-	-
+$wyax	2	-	-	3:dem	-	-	-	-
+prakAra_1	3	-	-	4:krvn	-	-	-	-
+GumA_1-yA_jA_sakawA_hE_1	4	-	-	0:main	-	-	-	-
+kumhAra_1	10	anim	-	18:r6	-	-	-	-
+pahiyA_1	12	-	-	-	-	-	-	18:op1
+lattU_1	14	-	-	-	-	-	-	18:op2
+GUma_1-wA_hE_1	15	-	-	2:rcdelim	-	-	-	-
+[disjunct_1]	18	-	-	15:k1	-	-	-	-
+$yax	19	-	-	20:dem	-	-	-	-
+prakAra_1	20	-	-	15:krvn	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0009>
+#ग्लोब पर देशों, महाद्वीपों तथा महासागरों को उनके सही आकार में दिखाया जाता है।
+#globa para xeSoM, mahAxvIpoM waWA mahAsAgaroM ko unake sahI AkAra meM xiKAyA jAwA hE.
+#On the globe, countries, continents and oceans are shown in their correct size.
+globa_1	1	-	-	13:k7p	-	def	-	-
+xeSa_1	3	-	pl	-	-	-	-	17:op1
+mahAxvIpa_1	5	-	pl	-	-	-	-	17:op2
+mahAsAgara_1	7	-	pl	-	-	-	-	17:op3
+$wyax	9	-	-	11:r6	17:coref	distal	-	-
+sahI_1	10	-	-	11:mod	-	-	-	-
+AkAra_1	11	-	-	13:krvn	-	-	-	-
+xiKA_1-yA_jA_wA_hE_1	13	-	-	0:main	-	-	-	-
+[conj_1]	17	-	-	13:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0010>
+#पृथ्वी के समान किसी गोले पर किसी बिंदु की स्थिति का वर्णन करना कठिन है।
+#pqWvI ke samAna kisI gole para kisI biMxu kI sWiwi kA varNana karanA kaTina hE.
+#It is difficult to describe the location of a point on a sphere like the earth.
+pqWvI	1	-	-	5:ru	-	def	-	-
+koI_1	4	-	-	5:quant	-	-	-	-
+golA_1	5	-	-	13:k7p	-	-	-	-
+koI_1	7	-	-	8:quant	-	-	-	-
+biMxu_1	8	-	-	10:r6	-	-	-	-
+sWiwi_1	10	-	-	17:k2	-	def	-	-
+varNana_1	12	-	-	-	-	-	-	17:kriyAmUla
+kara_1	13	-	-	-	-	-	-	17:verbalizer
+kaTina_1	14	-	-	15:k1s	-	-	-	-
+hE_1-pres	15	-	-	0:main	-	-	-	-
+[cp_1]	17	-	-	15:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0011a>
+#अब प्रश्न यह उठता है।
+#aba praSna yaha uTawA hE.
+#Now the question arises as to how to locate a place on it?
+aba_1(now_3)	1	-	-	4:k7t	-	-	-	-
+praSna_1(question_3)	2	-	-	4:k1	-	-	-	-
+$wyax	3	-	-	4:k2	Geo_ncert_6stnd_2ch_0011b.8:coref	proximal	-	-
+uTa_3(rise_17)-wA_hE_1(0)	4	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0011b>
+#कि इस पर किसी स्थान की स्थिति कैसे बताई जा सकती है?
+#ki isa para kisI sWAna kI sWiwi kEse bawAI jA sakawI hE?
+#Now the question arises as to how to locate a place on it?
+$wyax	1	-	-	8:k7	Geo_ncert_6stnd_2ch_0010.5:coref	proximal	-	-
+koI_1(any_1)	3	-	-	4:mod	-	-	-	-
+sWAna_1(place_14)	4	-	-	6:r6	-	-	-	-
+sWiwi_3(location_3)	6	-	-	8:k2	-	-	-	-
+$kim	7	-	-	8:krvn	-	-	-	-
+bawA_1(indicate_1)-yA_jA_sakawA_hE_1	8	-	-	0:main	-	-	-	-
+%interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0012>
+#इसके लिए हमें कुछ बिंदुओं एवं रेखाओं के संदर्भ की आवश्यकता होती है।
+#isake lie hameM kuCa biMxuoM evaM reKAoM ke saMxarBa kI AvaSyakawA howI hE.
+#We need certain points of reference and lines to find out the location of places.
+$wyax	1	-	-	12:rt	Geo_ncert_6stnd_2ch_0010.5:coref	proximal	-	-
+$speaker	3	anim	pl	12:k4a	-	-	-	-
+kuCa_11(certain_6)	4	-	-	16:quant	-	-	-	-
+biMxu_1(point_7)	5	-	pl	-	-	-	-	16:op1
+reKA_1(line_12)	7	-	pl	-	-	-	-	16:op2
+saMxarBa_1(reference_4)	9	-	-	11:r6	-	-	-	-
+AvaSyakawA_1(necessity_1)	11	-	-	12:k1	-	-	-	-
+ho_6(be_4)-wA_hE_1(es_1)	12	-	-	0:main	-	-	-	-
+[conj_1]	16	-	-	9:r6	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0013a>
+#आप यह देखेंगे।
+#Apa yaha xeKeMge.
+#You will notice that a needle is fixed through the globe in a tilted manner, which is called its axis.
+$addressee	1	anim	-	3:k1	-	respect	-	-
+$wyax	2	-	-	3:k2	-	proximal	-	-
+xeKa_1-gA_1	3	-	-	0:main	Geo_ncert_6stnd_2ch_0013b.10:coref	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0013b>
+#कि एक सुई ग्लोब में झुकी हुई अवस्था में स्थित होती है, जिसे अक्ष कहा जाता है।
+#ki eka suI globa meM JukI huI avasWA meM sWiwa howI hE, jise akRa kahA jAwA hE.
+#You will notice that a needle is fixed through the globe in a tilted manner, which is called its axis.
+eka_2(a_1)	1	-	-	2:quant	-	-	-	-
+suI_1(needle_3)	2	-	-	10:k1	-	-	-	-
+^globa_1(globe_3)	3	-	-	10:k7p	-	def	-	-
+Juka_1	5	-	kqw	7:rvks	-	-	-	-
+avasWA_1	7	-	-	10:krvn	-	-	-	-
+sWiwa_1	9	-	-	10:k1s	-	-	-	-
+ho_6(be_4)-wA_hE_1(es_1)	10	-	-	0:main	-	-	-	-
+$yax	13	-	-	15:k2	2:coref	-	-	-
+akRa_1(axis_1)	14	-	-	15:k2s	-	-	-	-
+kaha_1(call_20)-yA_jA_wA_hE_1(en_is)	15	-	-	2:rcelab	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0014>
+#ग्लोब पर वे दो बिंदु जिनसे होकर सुई गुजरती है, उत्तर तथा दक्षिण ध्रुव हैं।
+#globa para ve xo biMxu jinase hokara suI gujarawI hE, uwwara waWA xakRiNa Xruva hEM.
+#Two points on the globe through which the needle passes are two poles – North Pole and South Pole.
+globa_1	1	-	-	9:k7p	-	def	-	-
+$wyax	3	-	-	5:dem	-	distal	-	-
+2	4	numex	-	5:card	-	-	-	-
+biMxu_1	5	-	-	16:k1	-	-	-	-
+$yax	6	-	-	7:rp	19:coref	-	-	-
+ho_1	7	-	-	9:rpk	-	-	-	-
+suI_1	8	-	-	9:k1	-	def	-	-
+gujara_1-wA_hE_1	9	-	-	0:main	-	-	-	-
+uwwara	12	-	-	-	-	-	-	20:begin
+xakRiNa	14	-	-	-	-	-	-	18:begin
+Xruva	15	-	-	16:k1s	-	-	-	18:inside
+hE_1-pres	16	-	-	0:main	-	-	-	-
+[ne_2]	18	-	-	-	-	-	-	19:op2
+[conj_1]	19	-	-	15:mod	-	-	-	-
+[ne_1]	20	-	-	-	-	-	-	19:op1
+Xruva	21	-	-	-	-	-	-	20:inside
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0015>
+#ग्लोब को इस सुई के चारों ओर पृथ्वी की भाँति पश्चिम से पूर्व की ओर घुमाया जा सकता है।
+#globa ko isa suI ke cAroM ora pqWvI kI BAzwi paScima se pUrva kI ora GumAyA jA sakawA hE.
+#The globe can be moved around this needle from west to east just as the earth moves.
+globa_1	1	-	-	16:k2	-	-	-	-
+$wyax	3	-	-	4:dem	-	proximal	-	-
+suI_1	4	-	-	17:r6	-	-	-	-
+pqWvI_1	8	-	-	1:ru	-	-	-	-
+paScima_1	11	-	-	16:k5	-	-	-	-
+pUrva_1	13	-	-	11:rd	-	-	-	-
+GumA_1-yA_jA_sakawA_hE_1	16	-	-	0:main	-	-	-	-
+cAra	17	-	-	16:rp	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0016a>
+#लेकिन आप यह याद रखें ।
+#lekina Apa yaha yAxa raKeM .
+#But, remember there is a major difference.
+$addressee	1	anim	-	4:k1	-	respect	-	-
+$wyax	2	-	-	4:k2	Geo_ncert_6stnd_2ch_0016b.6:coref	proximal	-	-
+yAxa_1	3	-	-	-	-	-	-	6:kriyAmUla
+raKa_1-o_1	4	-	-	-	-	-	-	6:verbalizer
+[cp_1]	6	-	-	0:main	Geo_ncert_6stnd_2ch_0015.16:viroXI	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0016b>
+#कि इन दोनों में एक अंतर है।
+#ki ina xonoM meM eka aMwara hE.
+#But, remember there is a major difference.
+$wyax	1	-	-	2:dem	Geo_ncert_6stnd_2ch_0015.13:coref	proximal	-	-
+xonoM_1	2	-	-	6:k7	-	-	-	-
+1	4	numex	-	5:card	-	-	-	-
+aMwara_1	5	-	-	6:k1	-	-	-	-
+hE_1-pres	6	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0017>
+#पृथ्वी पर वास्तव में ऐसी कोई सुई नहीं होती है।
+#pqWvI para vAswava meM EsI koI suI nahIM howI hE.
+#The real earth has no such needle.
+pqWvI_1	1	-	-	9:k7p	-	-	-	-
+vAswava_1	3	-	-	9:vkvn	-	-	-	-
+$wyax	5	-	-	13:dem	-	-	-	-
+koI_1	6	-	-	7:quant	-	-	-	-
+suI_1	7	-	-	9:k1	-	-	-	-
+nahIM_1	8	-	-	9:neg	-	-	-	-
+ho_1-wA_hE_1	9	-	-	0:main	-	-	-	-
+prakAra_1	13	-	-	6:r6	-	-	-	-
+%negative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0018>
+#यह अपने अक्ष पर चारों ओर घूमती है, जो एक काल्पनिक रेखा है।
+#yaha apane akRa para cAroM ora GUmawI hE, jo eka kAlpanika reKA hE.
+#It moves around its axis, which is an imaginary line.
+$wyax	1	-	-	7:k1	Geo_ncert_6stnd_2ch_0017.1:coref	proximal	-	-
+apanA	2	-	pl	3:r6	1:coref	-	-	-
+akRa_1	3	-	-	7:k7p	-	-	-	-
+cAra	5	numex	pl	7:rp	-	-	-	-
+GUma_1-wA_hE_1	7	-	-	0:main	-	-	-	-
+$yax	10	-	-	14:k1	-	-	-	-
+eka_2	11	-	-	13:quant	-	-	-	-
+kAlpanika_1	12	-	-	13:mod	-	-	-	-
+reKA_1	13	-	-	14:k1s	-	-	-	-
+hE_1-pres	14	-	-	1:rcelab	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0019>
+#एक अन्य काल्पनिक रेखा भी ग्लोब को दो बराबर भागों में बाँटती है।
+#eka anya kAlpanika reKA BI globa ko xo barAbara BAgoM meM bAztawI hE.
+#Another imaginary line running on the globe divides it into two equal parts.
+eka_2(a_1)	1	-	-	4:quant	-	-	-	-
+anya_1(other_1)	2	-	-	4:mod	-	-	-	-
+kAlpanika_1(imaginary_3)	3	-	-	4:mod	-	-	-	-
+reKA_1(line_12)	4	-	-	12:k1	-	BI_1	-	-
+^globa_1(globe_3)	6	-	-	12:k2	-	def	-	-
+2	8	numex	-	10:card	-	-	-	-
+barAbara_1(equal_2)	9	-	-	10:mod	-	-	-	-
+BAga_2(part_9)	10	-	pl	12:krvn	-	-	-	-
+bAzta_8(divide_1)-wA_hE_1(es_1)	12	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0020>
+#इसे विषुवत् वृत्त कहा जाता है।
+#ise viRuvaw vqwwa kahA jAwA hE.
+#This line is known as the equator.
+$wyax	1	-	-	4:k2	Geo_ncert_6stnd_2ch_0019.4:coref	proximal	-	-
+viRuvaw_1	2	-	-	3:mod	-	-	-	-
+vqwwa_1	3	-	-	4:k2s	-	-	-	-
+kaha_1-yA_jA_wA_hE_1	4	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0021a>
+#पृथ्वी के उत्तर में स्थित आधे भाग को उत्तरी गोलार्ध कहा जाता है।
+#pqWvI ke uwwara meM sWiwa AXe BAga ko uwwarI golArXa kahA jAwA hE.
+#The northern half of the earth is known as the Northern Hemisphere.
+pqWvI_1(earth_9)	1	-	-	3:r6	-	-	-	-
+uwwara_3(north_1)	3	-	-	5:k7p	-	-	-	-
+sWiwa_2(located_2)	5	-	-	7:mod	-	-	-	-
+AXA_1(half_1)	6	-	-	7:quant	-	-	-	-
+BAga_2(part_9)	7	-	-	19:k2	-	-	-	-
+uwwarI_1(northern_2)	9	-	-	10:mod	-	-	-	-
+golArXa_1(hemisphere_1)	10	-	-	19:k2s	-	-	-	-
+kaha_1(call_20)-yA_jA_wA_hE_1	19	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0021b>
+#तथा दक्षिण वाले आधे भाग को दक्षिणी गोलार्ध कहा जाता है।
+#wawA xakRiNa vAle Axe BAga ko xakRiNI golArXa kahA jAwA hE.
+#and southern half of the earth is known as the southern hemisphere.
+kaha_1(call_20)-yA_jA_wA_hE_1	1	-	-	0:main	Geo_ncert_6stnd_2ch_0021a.19:samuccaya	-	-	-
+xakRiNa_2(south_2)	2	-	mawup	5:mod	-	-	-	-
+golArXa_1(hemisphere_1)	3	-	-	1:k2s	-	-	-	-
+xakRiNI_1(southern_1)	4	-	-	3:mod	-	-	-	-
+BAga_2(part_9)	5	-	-	1:k2	-	-	-	-
+AXA_1(half_1)	6	-	-	5:quant	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0022>
+#ये दोनों बराबर के आधे भाग होते हैं।
+#ye xonoM barAbara ke AXe BAga howe hEM.
+#They are both equal halves.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+xono_1(both_3)	2	-	-	7:k1	-	-	-	-
+barAbara_1(equal_2)	3	-	-	6:r6	-	-	-	-
+AXA_1(half_1)	5	-	-	6:quant	-	-	-	-
+BAga_2(part_9)	6	-	-	7:k1s	-	-	-	-
+ho_6(be_4)-wA_hE_1(0)	7	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0023a>
+#इस प्रकार, विषुवत् वृत्त पृथ्वी पर एक काल्पनिक वृत्त बनाती है ।
+#isa prakAra, viRuvaw vqwwa pqWvI para eka kAlpanika vqwwa banAwI hE .
+#Therefore, the equator is an imaginary circular line and is a very important reference point to locate places on the earth.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+prakAra_5(way_8)	2	-	-	11:krvn	-	-	-	-
+viRuvaw_1(equatorial_1)	4	-	-	5:mod	-	-	-	-
+vqwwa_1(circle_9)	5	-	-	11:k1	-	-	-	-
+pqWvI_1(earth_9)	6	-	-	11:k7p	-	-	-	-
+eka_2(a_1)	8	-	-	10:quant	-	-	-	-
+kAlpanika_1(imaginary_3)	9	-	-	10:mod	-	-	-	-
+vqwwa_1(circle_9)	10	-	-	11:k2	-	-	-	-
+banA_1(make_1)-wA_hE_1(0)	11	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0023b>
+#एवं यह पृथ्वी पर विभिन्न स्थानों की स्थिति बताने का सबसे महत्त्वपूर्ण संदर्भ बिंदु है।
+#evaM yaha pqWvI para viBinna sWAnoM kI sWiwi bawAne kA sabase mahawwvapUrNa saMxarBa biMxu hE.
+#Therefore, the equator is an imaginary circular line and is a very important reference point to locate places on the earth.
+$wyax	1	-	-	14:k1	-	proximal	-	-
+pqWvI_1(earth_9)	2	-	-	14:k7p	-	-	-	-
+viBinna_1(different_13)	4	-	-	5:mod	-	-	-	-
+sWAna_1(place_14)	5	-	pl	7:r6	-	-	-	-
+sWiwi_7(condition_11)	7	-	-	8:k2	-	-	-	-
+bawA_1(indicate_1)	8	-	-	17:r6	-	-	-	-
+mahawwvapUrNa_1(important_4)	11	-	superl	17:mod	-	-	-	-
+saMxarBa_1(reference_4)	12	-	-	-	-	-	-	17:mod
+biMxu_1(point_7)	13	-	-	-	-	-	-	17:head
+hE_1(state_copula_1)	14	-	-	0:main	Geo_ncert_6stnd_2ch_0023a.11:samuccaya	-	-	-
+[nc_1]	17	-	-	14:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0024>
+#विषुवत् वृत्त से ध्रुवों तक स्थित सभी समानांतर वृत्तों को अक्षांश (समानांतर) रेखाएँ कहा जाता है।
+#viRuvaw vqwwa se XruvoM waka sWiwa saBI samAnAMwara vqwwoM ko akRAMSa (samAnAMwara) reKAez kahA jAwA hE.
+#All parallel circles from the equator up to the poles are called parallels of latitudes.
+viRuvaw_1(equatorial_1)	1	-	-	2:mod	-	-	-	-
+vqwwa(circle_9)	2	-	-	-	-	-	-	17:start
+Xruva_1(pole_2)	4	-	pl	-	-	-	-	17:end
+sWiwa_2(located_2)	6	-	-	9:mod	-	-	-	-
+saBI_1(all_1)	7	-	-	9:quant	-	-	-	-
+samAnAMwara_1(parallel_2)	8	-	-	9:mod	-	-	-	-
+vqwwa_1(circle_9)	9	-	pl	16:k2	-	-	-	-
+akRAMSa_1(latitude_4)	11	-	-	15:mod	-	-	-	-
+samAnAMwara_1(parallel_2)	13	-	-	11:rs	-	-	-	-
+reKA_1(line_12)	15	-	pl	16:k2s	-	-	-	-
+kaha_1(call_20)-yA_jA_wA_hE_1	16	-	-	0:main	-	-	-	-
+[span_1]	17	-	-	6:k7p	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0025>
+#अक्षांशों को अंश में मापा जाता है।
+#akRAMSoM ko aMSa meM mApA jAwA hE.
+#Latitudes are measured in degrees.
+akRAMSa_1(latitude_4)	1	-	pl	5:k2	-	-	-	-
+aMSa_7(degree_1)	3	-	-	5:k7	-	-	-	-
+mApa_2(measure_7)-yA_jA_wA_hE_1	5	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0026>
+#विषुवत् वृत्त शून्य अंश अक्षांश को दर्शाती है।
+#viRuvaw vqwwa SUnya aMSa akRAMSa ko xarSAwI hE.
+#The equator represents the zero degree latitude.
+viRuvaw_1(equatorial_1)	1	-	-	2:mod	-	-	-	-
+vqwwa_1(circle_9)	2	-	-	7:k1	-	-	-	-
+0	3	numex	-	-	-	-	-	5:count
+aMSa_7(degree_1)	4	-	-	-	-	-	-	5:unit
+[degree_meas_1]	5	-	-	6:rmeas	-	-	-	-
+akRAMSa_1(latitude_4)	6	-	-	7:k2	-	-	-	-
+xarSA_1(show_5)-wA_hE_1(0)	7	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0027a>
+#चूँकि, विषुवत् वृत्त से दोनों तरफ ध्रुवों के बीच की दूरी पृथ्वी के चारों ओर के वृत्त का एक चैथाई है।
+#cUzki, viRuvaw vqwwa se xonoM waraPa XruvoM ke bIca kI xUrI pqWvI ke cAroM ora ke vqwwa kA eka cEWAI hE.
+#Since the distance from the equator to either of the poles is one-fourth of a circle round the earth, it will measure ¼ th of 360 degrees, i.e. 90°.
+viRuvaw_1(equatorial_1)	1	-	-	2:mod	-	-	-	-
+vqwwa_1(circle_9)	2	-	-	-	-	-	-	23:start
+xono_1(both_3)	3	-	-	5:quant	-	-	-	-
+waraPa_1(side_29)	4	-	-	6:r6	-	-	-	-
+Xruva_1(pole_2)	5	-	pl	8:rdl	-	-	-	-
+bIca_11(between_1)	6	-	-	-	-	-	-	23:end
+[span_1]	7	-	-	10:r6	-	-	-	-
+xUrI_1(distance_2)	8	-	-	20:k1	-	-	-	-
+pqWvI_1(earth_9)	9	-	-	14:r6	-	-	-	-
+cAroM_1	10	-	-	14:quant	-	-	-	-
+ora_1(side_1)	11	-	-	16:r6	-	-	-	-
+vqwwa_1(circle_9)	12	-	-	21:r6	-	-	-	-
+4	13	numex	-	19:card	-	-	-	-
+BAga_2(part_9)	14	-	-	21:rn	-	-	-	-
+1	15	numex	-	21:card	-	-	-	-
+BAga_2(part_9)	16	-	-	20:k1s	-	-	-	-
+hE_1-pres	17	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0027b>
+#अतः इसका माप होगा 360 अंश का 1/4, यानी 90 अंश।
+#awaH isakA mApa hogA 360 aMSa kA 1/4, yAnI 90 aMSa.
+#Since the distance from the equator to either of the poles is one-fourth of a circle round the earth, it will measure ¼ th of 360 degrees, i.e. 90°.
+$wyax	1	-	-	2:r6	-	proximal	-	-
+mApa_1(measurement_4)	2	-	-	3:k1	-	-	-	-
+ho_1-gA_1	3	-	-	0:main	Geo_ncert_6stnd_2ch_0027a.20:pariNAma	-	-	-
+360	4	numex	-	5:card	-	-	-	-
+aMSa_7(degree_1)	5	-	-	15:r6	-	-	-	-
+4	7	numex	-	14:card	-	-	-	-
+1	9	numex	-	15:card	-	-	-	-
+90	12	numex	-	13:card	-	-	-	-
+aMSa_7(degree_1)	13	-	-	15:rs	-	-	-	-
+BAga_2(part_9)	14	-	-	15:rn	-	-	-	-
+BAga_14(degree_3)	15	-	-	3:rmeas	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0028a>
+#इस प्रकार 90 अंश उत्तरी अक्षांश उत्तर ध्रुव को दर्शाता है ।
+#isa prakAra 90 aMSa uwwarI akRAMSa uwwara Xruva ko xarSAwA hE.
+#Thus, 90 degrees north latitude marks the North Pole.
+90	3	numex	-	4:card	-	-	-	-
+aMSa_7(degree_1)	4	-	-	6:rmeas	-	-	-	-
+uwwarI_1(northern_2)	5	-	-	6:mod	-	-	-	-
+akRAMSa_1(latitude_4)	6	-	-	18:k1	-	-	-	-
+uwwara_3(north_1)	7	-	-	-	-	-	-	23:mod
+Xruva_1(pole_2)	8	-	-	-	-	-	-	23:head
+xarSA_1-wA_hE_1	18	-	-	0:main	-	-	-	-
+[nc_1]	23	place	-	18:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0028b>
+#तथा 90 अंश दक्षिणी अक्षांश दक्षिण ध्रुव को दर्शाता है ।
+#waWA 90 aMSa xakRiNa akRAMSa  xakRiNa Xruva ko xarSAwA hE.
+#and 90 degree south latitude marks the South Pole.
+90	1	numex	-	2:card	-	-	-	-
+aMSa_7(degree_1)	2	-	-	4:rmeas	-	-	-	-
+xakRiNI_1(southern_1)	3	-	-	4:mod	-	-	-	-
+akRAMSa_1(latitude_4)	4	-	-	7:k1	-	-	-	-
+xakRiNa_2(south_2)	5	-	-	-	-	-	-	8:mod
+Xruva_1(pole_2)	6	-	-	-	-	-	-	8:head
+xarSA_1-wA_hE_1	7	-	-	0:main	Geo_ncert_6stnd_2ch_0028a.18:samuccaya	-	-	-
+[nc_1]	8	-	-	7:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0029a>
+#इस प्रकार विषुवत् वृत्त के उत्तर की सभी समानांतर रेखाओं को उत्तरी अक्षांश कहा जाता है ।
+#isa prakAra viRuvaw vqwwa ke uwwara kI saBI samAnAMwara reKAoM ko uwwarI akRAMSa kahA jAwA hE .
+#As such, all parallels north of the Latitude equator are called ‘north latitudes’ and similarly all parallels south of the equator are called ‘south latitudes'.
+viRuvaw_1(equatorial_1)	3	-	-	4:mod	-	-	-	-
+vqwwa_1(circle_9)	4	-	-	6:r6	-	-	-	-
+uwwara_3(north_1)	6	-	-	10:r6	-	-	-	-
+saBI_1(all_1)	8	-	-	10:quant	-	-	-	-
+samAnAMwara_1(parallel_2)	9	-	-	10:mod	-	-	-	-
+reKA_1(line_12)	10	-	pl	14:k2	-	-	-	-
+uwwarI_1(northern_2)	12	-	-	13:mod	-	-	-	-
+akRAMSa_1(latitude_4)	13	-	-	14:k2s	-	-	-	-
+kaha_1-yA_jA_wA_hE_1	14	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0029b>
+#तथा विषुवत् वृत्त के दक्षिण स्थित सभी समानांतर रेखाओं को दक्षिणी अक्षांश कहा जाता है।
+#waWA viRuvaw vqwwa ke xakRiNa sWiwa saBI samAnAMwara reKAoM ko xakRiNI akRAMSa kahA jAwA hE.
+#As such, all parallels north of the Latitude equator are called ‘north latitudes’ and similarly all parallels south of the equator are called ‘south latitudes'.
+viRuvaw_1(equatorial_1)	1	-	-	2:mod	-	-	-	-
+vqwwa_1(circle_9)	2	-	-	4:r6	-	-	-	-
+xakRiNa_2(south_2)	4	-	-	5:k7p	-	-	-	-
+sWiwa_2(located_2)	5	-	-	8:mod	-	-	-	-
+saBI_1(all_1)	6	-	-	8:quant	-	-	-	-
+samAnAMwara_1(parallel_2)	7	-	-	8:mod	-	-	-	-
+reKA_1(line_12)	8	-	pl	12:k2	-	-	-	-
+xakRiNI_1(southern_1)	10	-	-	11:mod	-	-	-	-
+akRAMSa_1(latitude_4)	11	-	-	12:k2s	-	-	-	-
+kaha_1-yA_jA_wA_hE_1	12	-	-	0:main	Geo_ncert_6stnd_2ch_0029a.14:samuccaya	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0031>
+#इसलिए प्रत्येक अक्षांश के मान के साथ उसकी दिशा यानी उत्तर या दक्षिण को भी लिखा जाता है।
+#isalie prawyeka akRAMSa ke mAna ke sAWa usakI xiSA yAnI uwwara yA xakRiNa ko BI liKA jAwA hE.
+#Generally, this is indicated by the letter ‘N’ or ‘S’.
+prawyeka_1(each_1)	1	-	-	2:quant	-	-	-	-
+akRAMSa_1(latitude_4)	2	-	-	4:r6	-	-	-	-
+mAna_6(measure_6)	4	-	-	15:k2as	-	-	-	-
+$wyax	7	-	-	8:r6	Geo_ncert_6stnd_2ch_0031.2:coref	distal	-	-
+xiSA_1(direction_6)	8	-	-	15:k2	-	-	-	-
+uwwara_3(north_1)	10	-	-	-	-	-	-	16:op1
+xakRiNa_2(south_2)	12	-	-	-	-	-	-	16:op2
+liKa_14-yA_jA_wA_hE_1	15	-	-	0:main	Geo_ncert_6stnd_2ch_0029a.14:pariNAma	-	-	-
+[disjunct_1]	16	-	-	8:rs	-	BI_1	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0032>
+#उदाहरण के लिए, महाराष्ट्र में चंद्ररूप एवं ब्राजील (दक्षिण अमेरिका) में बेलो होरिजोंटे दोनों एक ही अक्षांश 20 अंश पर स्थित हैं।
+#uxAharaNa ke lie, mahArARtra meM caMxrarUpa evaM brAjIla (xakRiNa amerikA) meM belo horijoMte xonoM eka hI akRAMSa 20 aMSa para sWiwa hEM.
+#For example, both Chandrapur in Maharashtra (India) and Belo Horizonte in Brazil (South America) are located on parallels of about 20° latitude.
+mahArARtra	5	-	-	-	-	-	-	29:begin
+caMxrarUpa	7	-	-	-	-	-	-	30:begin
+brAjIla	9	-	-	-	-	-	-	31:begin
+xakRiNa	11	-	-	-	-	-	-	27:begin
+amerikA	12	-	-	-	-	-	-	27:inside
+bela	15	-	-	-	-	-	-	32:begin
+horijoMte	16	-	-	-	-	-	-	32:inside
+xono_1	17	-	-	28:rs	-	-	-	-
+eka+hI_1	18	-	-	20:quant	-	-	-	-
+akRAMSa_1	20	-	-	25:k7p	-	-	-	-
+20	21	numex	-	22:card	-	-	-	-
+aMSa_1	22	-	-	20:rs	-	-	-	-
+sWiwa_1	24	-	-	25:k1s	-	-	-	-
+hE_1(state_copula_1)	25	-	-	0:main	-	-	-	-
+[ne_4]	27	place	-	31:rs	-	-	-	-
+[conj_1]	28	-	-	25:k1	-	-	-	-
+[ne_1]	29	place	-	-	-	-	-	33:whole
+[ne_2]	30	place	-	-	-	-	-	33:part
+[ne_3]	31	place	-	-	-	-	-	34:whole
+[ne_5]	32	place	-	-	-	-	-	34:part
+[spatial_1]	33	-	-	-	-	-	-	28:op1
+[spatial_2]	34	-	-	-	-	-	-	28:op2
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0033a>
+#लेकिन चन्द्रपुर विषुवत् वृत्त के 20 अंश उत्तर में स्थित है।
+#lekina canxrapura viRuvaw vqwwa ke 20 aMSa uwwara meM sWiwa hE.
+#But the former is 20° north of the equator.
+canxrapura	1	-	-	-	-	-	-	27:begin
+viRuvaw_1(equatorial_1)	2	-	-	3:mod	-	-	-	-
+vqwwa_1(circle_9)	3	-	-	6:r6	-	-	-	-
+20	5	numex	-	6:card	-	-	-	-
+aMSa_7(degree_1)	6	-	-	7:r6	-	-	-	-
+uwwara(north_1)	7	-	-	20:k7p	-	-	-	-
+sWiwa_2(located_2)	19	-	-	20:k1s	-	-	-	-
+hE_1-pres	20	-	-	0:main	Geo_ncert_6stnd_2ch_0032.25:viroXI	-	-	-
+[ne_1]	27	place	-	20:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0033b>
+#एवं बेलो होरिज़ोंटे विषुवत् वृत्त के 20 अंश दक्षिण में स्थित है।
+#evaM belo horijoMte viRuvaw vqwwa ke 20 aMSa xakRiNa meM sWiwa hE.
+#and the latter is 20° south of it.
+-	-	-	-	-	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0034a>
+#इसलिए हम यह कहते हैं।
+#isalie hama yaha kahawe hEM.
+#We, therefore, say that Chandrapur is situated at 20° N latitude and Belo Horizonte is situated at 20° S latitude.
+$speaker	1	anim	pl	3:k1	-	-	-	-
+$wyax	2	-	-	3:k2	Geo_ncert_6stnd_2ch_034b.16:coref	proximal	-	-
+kaha_1-wA_hE_1	3	-	-	0:main	Geo_ncert_6stnd_2ch_0033a.20:pariNAma	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0034b>
+#कि चंद्रपुर 20 ° उ. अक्षांश पर स्थित है।
+#ki caMxrapura 20  u. akRAMSa para waWA belo horijoMte 20  xa. akRAMSa para sWiwa hE.
+#We, therefore, say that Chandrapur is situated at 20° N latitude and Belo Horizonte is situated at 20° S latitude.
+caMxrapura	1	-	-	16:k1	-	-	-	22:begin
+20	2	numex	-	3:card	-	-	-	-
+digri+uwwara_1	3	-	-	-	-	-	-	-
+akRAMSa_1(latitude_4)	5	-	-	16:k7p	-	-	-	-
+hE_1-pres	16	-	-	0:main	-	-	-	-
+sWiwa_2(located_2)	21	-	-	16:k1s	-	-	-	-
+[ne_1]	22	place	-	-	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0034c>
+#तथा बेलो होरिज़ोंटे 20 ° द. अक्षांश पर स्थित है।
+#waWA
+#and
+-	-	-	-	-	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0035a>
+#चित्र 2.2 से  यह स्पष्ट  है।
+#ciwra 2.2 se  yaha spaRta  hE.
+#We see in Figure 2.2 that as we move away from the equator, the size of the parallels of latitude decreases.
+ciwra_4(figure_3)	1	-	-	6:rh	-	-	-	-
+2.2	2	numex	-	1:card	-	-	-	-
+$wyax	4	-	-	6:k1	Geo_ncert_6stnd_2ch_0035b.12:coref	proximal	-	-
+spaRta_1(clear_11)	5	-	-	6:k1s	-	-	-	-
+hE_1-pres	6	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0035b>
+#कि जैसे-जैसे हम विषुवत् वृत्त से दूर जाते हैं अक्षांशों का आकार घटता जाता है।
+#ki jEse-jEse hama viRuvaw vqwwa se xUra jAwe hEM akRAMSoM kA AkAra GatawA jAwA hE.
+#We see in Figure 2.2 that as we move away from the equator, the size of the parallels of latitude decreases.
+$yax	1	-	xviwva	7:krvn	-	-	-	-
+$speaker	2	anim	pl	7:k1	-	-	-	-
+viRuvaw_1(equatorial_1)	3	-	-	4:mod	-	-	-	-
+vqwwa_1(circle_9)	4	-	-	7:k5	-	-	-	-
+xUra_2(distant_1)	6	-	-	7:k2p	-	-	-	-
+jA_1-wA_hE_1	7	-	-	13:rcprop	-	-	-	-
+akRAMSa_1(latitude_4)	9	-	pl	11:r6	-	-	-	-
+AkAra_3(size_1)	11	-	-	12:k1	-	-	-	-
+Gata_1-wA_jAwA_hE_1	12	-	-	0:main	-	-	-	-
+$wyax	13	-	xviwva	12:krvn	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0036>
+#कर्क रेखा एवं मकर रेखा के बीच के सभी अक्षांशों पर सूर्य वर्ष में एक बार दोपहर में सिर के ठीक ऊपर होता है।
+#karka reKA evaM makara reKA ke bIca ke saBI akRAMSoM para sUrya varRa meM eka bAra xopahara meM sira ke TIka Upara howA hE.
+#The mid-day sun is exactly overhead at least once a year on all latitudes in between the Tropic of Cancer and the Tropic of Capricorn.
+karka_2	1	-	-	-	-	-	-	31:mod
+reKA_14	2	-	-	-	-	-	-	31:head
+makara_7	4	-	-	-	-	-	-	27:mod
+reKA_1	5	-	-	-	-	-	-	27:head
+bIca_11(between_1)	7	-	-	10:r6	-	-	-	-
+saBI_1(all_1)	9	-	-	10:quant	-	-	-	-
+akRAMSa_1(latitude_4)	10	-	pl	23:k7	-	-	-	-
+sUrya(sun_5)	12	-	-	23:k1	-	-	-	-
+varRa_1(year_4)	13	-	-	17:rn	-	-	-	-
+1	15	numex	-	16:card	-	-	-	-
+bAra_15(time_42)	16	-	-	17:freq	-	-	-	-
+xopahara_3(mid-day_2)	17	-	-	23:k7t	-	-	-	-
+sira_1(head_11)	19	-	-	22:rdl	-	-	-	-
+Upara_3(above_2)	22	-	-	23:k7p	-	TIka_1	-	-
+ho_1-wA_hE_1	23	-	-	0:main	-	-	-	-
+[nc_2]	27	-	-	-	-	-	-	30:op2
+[conj_1]	30	-	-	7:rdl	-	-	-	-
+[nc_1]	31	-	-	-	-	-	-	30:op1
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0037a>
+#इसलिए इस क्षेत्र में सबसे अधिक उष्मा प्राप्त होती है ।
+#isalie isa kRewra meM sabase aXika uRmA prApwa howI hE .
+#This area, therefore, receives the maximum heat and is called the Torrid Zone.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+kRewra_5(area_2)	2	-	-	8:k7p	-	-	-	-
+aXika_1(more_1)	5	-	superl	6:quant	-	-	-	-
+uRmA_2(heat_47)	6	-	-	8:k1	-	-	-	-
+prApwa_5(received_1)	7	-	-	8:k1s	-	-	-	-
+ho_1-wA_hE_1	8	-	-	0:main	Geo_ncert_6stnd_2ch_0036.23:pariNAma	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0037b>
+#तथा इसे उष्ण कटिबंध कहा जाता है।
+#waWA ise uRNa katibaMXa kahA jAwA hE.
+#This area, therefore, receives the maximum heat and is called the Torrid Zone.
+$wyax	1	-	-	4:k2	Geo_ncert_6stnd_2ch_0037a.2:coref	proximal	-	-
+uRNa_9	2	-	-	-	-	-	-	8:mod
+katibaMXa_3(zone_6)	3	-	-	-	-	-	-	8:head
+kaha_1-yA_jA_wA_hE_1	4	-	-	0:main	Geo_ncert_6stnd_2ch_0037a.8:samuccaya	-	-	-
+[nc_1]	8	-	-	4:k2s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0038>
+#कर्क रेखा तथा मकर रेखा के बाद किसी भी अक्षांश पर दोपहर का सूर्य कभी भी सिर के ऊपर नहीं होता है।
+#karka reKA waWA makara reKA ke bAxa kisI BI akRAMSa para xopahara kA sUrya kaBI BI sira ke Upara nahIM howA hE.
+#The mid-day sun never shines overhead on any latitude beyond the Tropic of Cancer and the Tropic of Capricorn.
+karka_1	1	-	-	-	-	-	-	24:mod
+reKA_1	2	-	-	-	-	-	-	24:head
+makara_1	4	-	-	-	-	-	-	25:mod
+reKA_1	5	-	-	-	-	-	-	25:head
+koI_1(any_1)	8	-	-	10:quant	-	BI_1	-	-
+akRAMSa_1(latitude_4)	10	-	-	-	-	-	-	28:op2
+xopahara_3(mid-day_2)	12	-	-	14:r6	-	-	-	-
+sUrya_1(sun_5)	14	-	-	21:k1	-	-	-	-
+kaBI_2(ever_2)	15	-	-	21:k7t	-	BI_1	-	-
+sira_1(head_11)	17	-	-	19:rdl	-	-	-	-
+Upara_3(above_2)	19	-	-	21:k7p	-	-	-	-
+nahIM_1(not_1)	20	-	-	21:neg	-	-	-	-
+ho_1-wA_hE_1	21	-	-	0:main	-	-	-	-
+[nc_1]	24	-	-	-	-	-	-	27:op1
+[nc_2]	25	-	-	-	-	-	-	27:op2
+[conj_1]	27	-	-	-	-	bAxa_1	-	28:op1
+[conj_2]	28	-	-	21:k7	-	-	-	-
+%negative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0039>
+#ध्रुव की तरफ सूर्य की किरणें तिरछी होती जाती हैं।
+#Xruva kI waraPa sUrya kI kiraNeM wiraCI howI jAwI hEM.
+#The angle of the sun’s rays goes on decreasing towards the poles.
+Xruva(pole_2)	1	-	-	8:rd	-	-	-	-
+sUrya_1(sun_5)	4	-	-	6:r6	-	-	-	-
+kiraNa_1(ray_4)	6	-	pl	8:k1	-	-	-	-
+wiraCA_1(slanting_3)	7	-	-	8:k1s	-	-	-	-
+ho_1-wA_jAwA_hE_1	8	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0040>
+#इस प्रकार, उत्तरी गोलार्ध में कर्क रेखा एवं उत्तर ध्रुव वृत्त तथा दक्षिणी गोलार्ध में मकर रेखा एवं दक्षिण ध्रुव वृत्त के बीच वाले क्षेत्र का तापमान मध्यम रहता है।
+#isa prakAra, uwwarI golArXa meM karka reKA evaM uwwara Xruva vqwwa waWA xakRiNI golArXa meM makara reKA evaM xakRiNa Xruva vqwwa ke bIca vAle kRewra kA wApamAna maXyama rahawA hE.
+#As such, the areas bounded by the Tropic of Cancer and the Arctic Circle in the Northern Hemisphere, and the Tropic of Capricorn and the Antarctic Circle in the Southern Hemisphere, have moderate temperatures.
+uwwarI_1(northern_2)	4	-	-	5:mod	-	-	-	-
+golArXa_1(hemisphere_1)	5	-	-	-	-	-	-	44:whole
+karka_1	7	-	-	-	-	-	-	35:mod
+reKA_1	8	-	-	-	-	-	-	35:head
+uwwara_3(north_1)	10	-	-	-	-	-	-	49:mod
+Xruva_1(pole_2)	11	-	-	-	-	-	-	49:head
+vqwwa_1(circle_9)	12	-	-	-	-	-	-	46:op2
+xakRiNI_1(southern_1)	14	-	-	15:mod	-	-	-	-
+golArXa_1(hemisphere_1)	15	-	-	-	-	-	-	45:whole
+makara_1	17	-	-	-	-	-	-	38:mod
+reKA_1	18	-	-	-	-	-	-	38:head
+xakRiNa_2(south_2)	20	-	-	-	-	-	-	48:mod
+Xruva_1(pole_2)	21	-	-	-	-	-	-	48:head
+vqwwa_1(circle_9)	22	-	-	-	-	-	-	47:op2
+bIca_11(between_1)	24	-	mawup	26:mod	-	-	-	-
+kRewra_5(area_2)	26	-	-	28:r6	-	-	-	-
+wApamAna_1(temperature_2)	28	-	-	30:k1	-	-	-	-
+maXyama_6(moderate_8)	29	-	-	30:k1s	-	-	-	-
+raha_1-wA_hE_1	30	-	-	0:main	-	-	-	-
+[nc_1]	35	-	-	-	-	-	-	46:op1
+[nc_2]	38	-	-	-	-	-	-	47:op1
+[conj_3]	43	-	-	24:rdl	-	-	-	-
+[spatial_1]	44	-	-	-	-	-	-	43:op1
+[spatial_2]	45	-	-	-	-	-	-	43:op2
+[conj_1]	46	-	-	-	-	-	-	44:part
+[conj_2]	47	-	-	-	-	-	-	45:part
+[nc_3]	48	-	-	22:mod	-	-	-	-
+[nc_4]	49	-	-	12:mod	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0041>
+#इसलिए इन्हें, शीतोष्ण कटिबंध कहा जाता है।
+#isalie inheM, SIwoRNa katibaMXa kahA jAwA hE.
+#These are, therefore, called Temperate Zones.
+$wyax	1	-	-	5:k2	-	proximal	-	-
+SIwoRNa_1(temperate_3)	3	-	-	4:mod	-	-	-	-
+katibaMXa_3(zone_6)	4	-	-	5:k2s	-	-	-	-
+kaha_1-yA_jA_wA_hE_1	5	-	-	0:main	Geo_ncert_6stnd_2ch_0040.30:pariNAma	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0042>
+#उत्तरी गोलार्ध में उत्तर ध्रुव वृत्त एवं उत्तरी ध्रुव तथा दक्षिणी गोलार्ध में दक्षिण ध्रुव वृत्त एवं दक्षिणी ध्रुव के बीच के क्षेत्र में ठंड बहुत होती है।
+#uwwarI golArXa meM uwwara Xruva vqwwa evaM uwwarI Xruva waWA xakRiNI golArXa meM xakRiNa Xruva vqwwa evaM xakRiNI Xruva ke bIca ke kRewra meM TaMda bahuwa howI hE.
+#Areas lying between the Arctic Circle and the North Pole in the Northern Hemisphere and the Antarctic Circle and the South Pole in the Southern Hemisphere, are very cold.
+uwwarI_1(northern_2)	1	-	-	2:mod	-	-	-	-
+golArXa(hemisphere_1)	2	-	-	-	-	-	-	36:whole
+uwwara_23(northern_1)	4	-	-	6:mod	-	-	-	-
+Xruva_1(pole_2)	5	-	-	6:mod	-	-	-	-
+vqwwa_1(circle_9)	6	-	-	-	-	-	-	35:op1
+uwwarI_1(northern_2)	8	-	-	9:mod	-	-	-	-
+Xruva_1(pole_2)	9	-	-	-	-	-	-	35:op2
+xakRiNI_1(southern_1)	11	-	-	12:mod	-	-	-	-
+golArXa_1(hemisphere_1)	12	-	-	-	-	-	-	38:whole
+xakRiNa_7(southern_5)	14	-	-	16:mod	-	-	-	-
+Xruva_1(pole_2)	15	-	-	16:mod	-	-	-	-
+vqwwa_1(circle_9)	16	-	-	-	-	-	-	37:op1
+xakRiNI_1(southern_1)	18	-	-	19:mod	-	-	-	-
+Xruva_1(pole_2)	19	-	-	-	-	-	-	37:op2
+bIca_2(middle_12)	21	-	-	23:r6	-	-	-	-
+kRewra_5(area_2)	23	-	-	27:k7p	-	-	-	-
+TaMda_1(cold_3)	25	-	-	27:k1	-	-	-	-
+bahuwa_7(very_1)	26	-	-	25:intf	-	-	-	-
+ho_1-wA_hE_1	27	-	-	0:main	-	-	-	-
+[conj_3]	34	-	-	21:r6	-	-	-	-
+[conj_1]	35	-	-	-	-	-	-	36:part
+[spatial_1]	36	-	-	-	-	-	-	34:op1
+[conj_2]	37	-	-	-	-	-	-	38:part
+[spatial_2]	38	-	-	-	-	-	-	34:op2
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0043>
+#क्योंकि, यहाँ सूर्य क्षितिज से ज्यादा ऊपर नहीं आ पाता है।
+#kyoMki, yahAz sUrya kRiwija se jyAxA Upara nahIM A pAwA hE.
+#It is because here the sun does not rise much above the horizon.
+$wyax	1	-	-	8:k7p	Geo_ncert_6stnd_2ch_0042.23:coref	proximal	-	-
+sUrya_1(sun_5)	2	-	-	8:k1	-	-	-	-
+kRiwija_1(horizon_2)	3	-	-	6:rdl	-	-	-	-
+Upara_3(above_2)	6	-	-	8:rd	-	-	-	-
+nahIM_1(not_1)	7	-	-	8:neg	-	-	-	-
+A_1-wA_hE_1	8	-	-	0:main	Geo_ncert_6stnd_2ch_0042.27:kAryakAraNa	[shade:pA_1]	-	-
+jyAxA_3(much_38)	9	-	-	6:intf	-	-	-	-
+%negative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0044>
+#किसी स्थान की स्थिति को बताने के लिए उस स्थान के अक्षांश के अतिरिक्त कुछ और जानकारियों की आवश्यकता भी होती है।
+#kisI sWAna kI sWiwi ko bawAne ke lie usa sWAna ke akRAMSa ke awirikwa kuCa Ora jAnakAriyoM kI AvaSyakawA BI howI hE.
+#To fix the position of a place, it is necessary to know something more than the latitude of that place.
+koI_1	1	-	-	2:mod	-	-	-	-
+sWAna_1(place_14)	2	-	-	4:r6	-	-	-	-
+sWiwi_1(position_3)	4	-	-	6:k2	-	-	-	-
+bawA_1	6	-	-	21:rt	-	-	-	-
+$wyax	9	-	-	10:dem	-	distal	-	-
+sWAna_1(place_14)	10	-	-	12:r6	-	-	-	-
+akRAMSa_1(latitude_4)	12	-	-	17:r6	-	-	-	-
+awirikwa_1(additional_1)	14	-	-	17:mod	-	-	-	-
+kuCa_3(something_1)	15	-	-	17:quant	-	aura_1	-	-
+jAnakArI_4(knowledge_6)	17	-	pl	19:r6	-	BI_1	-	-
+AvaSyakawA_1(necessity_1)	19	-	-	21:k1	-	-	-	-
+ho_1-wA_hE_1	21	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0045a>
+#आप यह देख सकते हैं।
+#Apa yaha xeKa sakawe hEM.
+#You can see, for example, that Tonga Islands (in the Pacific Ocean) and Mauritius Islands (in the Indian Ocean) are situated on the same latitude (i.e., 20° S).
+$addressee	1	anim	-	3:k1	-	respect	-	-
+$wyax	2	-	-	3:k2	Geo_ncert_6stnd_2ch_0045b.23:coref	proximal	-	-
+xeKa_1-0_sakawA_hE_1	3	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0045b>
+#कि प्रशांत महासागर में स्थित टोंगा द्वीप एंव हिंद महासागर में स्थित मॉरीशस द्वीप एक ही अक्षांश ( 20°00'द.) पर स्थित है।
+#ki praSAMwa mahAsAgara meM sWiwa toMgA xvIpa eMva hiMxa mahAsAgara meM sWiwa moYrISasa xvIpa eka hI akRAMSa ( 2000'xa.) para sWiwa hE.
+#You can see, for example, that Tonga Islands (in the Pacific Ocean) and Mauritius Islands (in the Indian Ocean) are situated on the same latitude (i.e., 20° S).
+praSAMwa	1	-	-	-	-	-	-	31:begin
+mahAsAgara	2	-	-	-	-	-	-	31:inside
+sWiwa_1(situated_1)	4	-	kqw	32:mod	-	-	-	-
+toMgA	5	-	-	-	-	-	-	32:begin
+xvIpa	6	-	-	-	-	-	-	32:inside
+hiMxa	8	-	-	-	-	-	-	33:begin
+mahAsAgara	9	-	-	-	-	-	-	33:inside
+sWiwa_1(situated_1)	11	-	kqw	34:mod	-	-	-	-
+mOYrISasa	12	-	-	-	-	-	-	34:begin
+xvIpa	13	-	-	-	-	-	-	34:inside
+eka_7(same_1)	14	-	-	16:mod	-	hI_1	-	-
+akRAMSa_1(latitude_4)	16	-	-	23:k7p	-	-	-	-
+20	18	numex	-	-	-	-	-	35:count
+digrI+xa_1	19	-	-	-	-	-	-	35:unit
+sWiwa_1	22	-	kqw	23:k1s	-	-	-	-
+hE_1-pres	23	-	-	0:main	-	-	-	-
+[ne_1]	31	place	-	4:k7p	-	-	-	-
+[ne_2]	32	place	-	-	-	-	-	36:op1
+[ne_3]	33	place	-	11:k7p	-	-	-	-
+[ne_4]	34	place	-	-	-	-	-	36:op2
+[length_meas_1]	35	-	-	16:re	-	-	-	-
+[conj_1]	36	-	-	23:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0046a>
+#उनकी सही स्थिति जानने के लिए यह पता करना होगा।
+#unakI sahI sWiwi jAnane ke lie yaha pawA karanA hogA.
+#Now, in order to locate them precisely, we must find out how far east or west these places are from a given line of reference running from the North Pole to the South Pole.
+$wyax	1	-	-	3:r6	-	distal	-	-
+sahI_2(accurately_1)	2	-	-	3:mod	-	-	-	-
+sWiwi_1(position_3)	3	-	-	4:k2	-	-	-	-
+jAna_1	4	-	pl	12:rt	-	-	-	-
+$wyax	7	-	-	12:k1	Geo_ncert_6stnd_2ch_0046b.22:coref	proximal	-	-
+pawA_1	8	-	-	-	-	-	-	12:kriyAmUla
+kara_1-nA_hogA_1	9	-	-	-	-	-	-	12:verbalizer
+[cp_1]	12	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0046b>
+#कि उत्तर ध्रुव को दक्षिण ध्रुव से जोडने वाली संदर्भ रेखा से पूर्व या पश्चिम की ओर इन स्थानों की दूरी कितनी है?
+#ki uwwara Xruva ko xakRiNa Xruva se jodane vAlI saMxarBa reKA se pUrva yA paScima kI ora ina sWAnoM kI xUrI kiwanI hE?
+#Now, in order to locate them precisely, we must find out how far east or west these places are from a given line of reference running from the North Pole to the South Pole.
+uwwara_3(north_1)	1	-	-	2:mod	-	-	-	-
+Xruva_1(pole_2)	2	-	-	7:k2	-	-	-	-
+xakRiNa_2(south_2)	4	-	-	5:mod	-	-	-	-
+Xruva_1(pole_2)	5	-	-	7:k2as	-	-	-	-
+joda_1	7	-	-	10:mod	-	-	-	-
+saMxarBa_1(reference_4)	9	-	-	10:mod	-	-	-	-
+reKA_1(line_12)	10	-	-	22:k5	-	-	-	-
+pUrva_1(east_3)	12	-	-	-	-	-	-	26:op1
+paScima_1(west_2)	14	-	-	-	-	-	-	26:op2
+$wyax	17	-	-	18:dem	-	proximal	-	-
+sWAna_1(place_14)	18	-	pl	20:r6	-	-	-	-
+xUrI_1(distance_2)	20	-	-	22:k1	-	-	-	-
+$kim	21	-	-	22:k1s	-	-	-	-
+hE_1-pres	22	-	-	0:main	-	-	-	-
+[disjunct_1]	26	-	-	22:rd	-	-	-	-
+%interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0047a>
+#इन संदर्भ रेखाओं को देशांतरीय याम्योत्तर कहते हैं ।
+#ina saMxarBa reKAoM ko xeSAMwarIya yAmyowwara kahawe hEM .
+#These lines of references are called the meridians of longitude,and the distances between them are measured in ‘degrees of longitude.’
+$wyax	1	-	-	3:dem	-	proximal	-	-
+saMxarBa_1(reference_4)	2	-	-	3:mod	-	-	-	-
+reKA_1(line_12)	3	-	pl	7:k2	-	-	-	-
+xeSAMwarIya(longitudinal_1)	5	-	-	6:mod	-	-	-	-
+yAmyowwara_1(meridians_1)	6	-	-	7:k2s	-	-	-	-
+kaha_1-wA_hE_1	7	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0047b>
+#तथा उनके बीच की दूरी को देशांतर के अंशों में मापा जाता है।
+#waWA unake bIca kI xUrI ko xeSAMwara ke aMSoM meM mApA jAwA hE.
+#These lines of references are called the meridians of longitude,and the distances between them are measured in ‘degrees of longitude.’
+$wyax	1	-	-	2:r6	Geo_ncert_6stnd_2ch_0046b.18:coref	distal	-	-
+bIca_11(between_1)	2	-	-	4:r6	-	-	-	-
+xUrI_1(distance_2)	4	-	-	10:k2	-	-	-	-
+xeSAMwara_1(longitude_1)	6	-	-	8:r6	-	-	-	-
+aMSa_7(degree_1)	8	-	pl	10:k7	-	-	-	-
+mApa_1-yA_jA_wA_hE_1	10	-	-	0:main	Geo_ncert_6stnd_2ch_0047a.7:samuccaya	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0048a>
+#प्रत्येक अंश को मिनट में विभाजित किया जाता है।
+#prawyeka aMSa ko minata meM viBAjiwa kiyA jAwA hE.
+#Each degree is further divided into minutes, and minutes into seconds.
+prawyeka_1(each_1)	1	-	-	2:quant	-	-	-	-
+aMSa_7(degree_1)	2	-	-	16:k2	-	-	-	-
+minata_1(minute_2)	4	-	-	16:k7	-	-	-	-
+viBAjiwa_1(divided_2)	11	-	-	-	-	-	-	16:kriyAmUla
+kara_1-yA_jA_wA_hE_1	12	-	-	-	-	-	-	16:verbalizer
+[cp_1]	16	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0048b>
+#तथा प्रत्येक मिनट को सेकेंड में विभाजित किया जाता है।
+#waWA prawyeka minata ko sekeMda meM viBAjiwa kiyA jAwA hE.
+#Each degree is further divided into minutes, and minutes into seconds.
+kara_1-yA_jA_wA_hE_1	1	-	-	-	-	-	-	6:verbalizer
+viBAjiwa_1(divided_2)	2	-	-	-	-	-	-	6:kriyAmUla
+sekeMda_4(second_17)	3	-	-	6:k7	-	-	-	-
+minata_1(minute_2)	4	-	-	6:k2	-	-	-	-
+prawyeka_1(each_1)	5	-	-	4:quant	-	-	-	-
+[cp_1]	6	-	-	0:main	Geo_ncert_6stnd_2ch_0048a.16:samuccaya	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0049a>
+#ये अर्धवृत्त हैं ।
+#ye arXavqwwa hEM .
+#They are semi circles and the distance between them decrease steadily polewards until it becomes zero at the poles,  where all the meridians meet.
+$wyax	1	-	-	3:k1	Geo_ncert_6stnd_2ch_0047a.6:coref	proximal	-	-
+arXavqwwa_1(semi-circle_1)	2	-	-	3:k1s	-	-	-	-
+hE_1-pres	3	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0049b>
+#तथा उनके बीच की दूरी ध्रुवों की तरफ बढने पर घटती जाती है ।
+#waWA unake bIca kI xUrI XruvoM kI waraPa baDane para GatawI jAwI hE .
+#They are semi circles and the distance between them decrease steadily polewards until it becomes zero at the poles,  where all the meridians meet.
+$wyax	1	-	-	2:r6	Geo_ncert_6stnd_2ch_0047a.6:coref	distal	-	-
+bIca_11(between_1)	2	-	-	4:r6	-	-	-	-
+xUrI_1(distance_2)	4	-	-	10:k1	-	-	-	-
+Xruva_1(pole_2)	5	-	pl	8:rd	-	-	-	-
+baDa_1	8	-	-	10:rblsk	-	-	-	-
+Gata_1-wA_jAwA_hE_1	10	-	-	0:main	Geo_ncert_6stnd_2ch_0049a.3:samuccaya	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0049d>
+#एवं ये ध्रुवों पर शून्य हो जाती है, जहाँ सभी देशांतरीय याम्योत्तर आपस में मिलती हैं।
+#evaM ye XruvoM para SUnya ho jAwI hE, jahAz saBI xeSAMwarIya yAmyowwara Apasa meM milawI hEM.
+#They are semi circles and the distance between them decrease steadily polewards until it becomes zero at the poles,  where all the meridians meet.
+$wyax	1	-	-	5:k1	Geo_ncert_6stnd_2ch_0047a.6:coref	proximal	-	-
+Xruva_1(pole_2)	2	-	pl	5:k7p	-	-	-	-
+0	4	numex	-	5:k1s	-	-	-	18:kriyAmUla
+ho_1-wA_hE_1	5	-	-	0:main	Geo_ncert_6stnd_2ch_0049a.3:samuccaya	[shade:jA_1]	-	18:verbalizer
+$yax	9	-	-	15:k7p	-	-	-	-
+saBI_1(all_1)	10	-	-	12:quant	-	-	-	-
+xeSAMwarIya(longitudinal_1)	11	-	-	12:mod	-	-	-	-
+yAmyowwara_1(meridians_1)	12	-	-	15:k1	-	-	-	-
+Apasa	13	-	-	15:krvn	-	-	-	-
+mila_1-wA_hE_1	15	-	-	2:rcelab	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0050>
+#अक्षांश (समानांतर) रेखाओं से भिन्न सभी देशांतरीय याम्योत्तरों की लंबाई समान होती है।
+#akRAMSa (samAnAMwara) reKAoM se Binna saBI xeSAMwarIya yAmyowwaroM kI laMbAI samAna howI hE.
+#Unlike parallels of latitude, all meridians are of length.
+akRAMSa_1(latitude_4)	1	-	-	5:mod	-	-	-	-
+samAnAMwara_1(parallel_2)	3	-	-	5:mod	-	-	-	-
+reKA_1(line_12)	5	-	pl	14:rviroXIk1	-	-	-	-
+saBI_1(all_1)	8	-	-	10:quant	-	-	-	-
+xeSAMwarIya(longitudinal_1)	9	-	-	10:mod	-	-	-	-
+yAmyowwara_1(meridians_1)	10	-	pl	12:r6	-	-	-	-
+laMbAI_1(length_3)	12	-	-	14:k1	-	-	-	-
+samAna_1(equal_5)	13	-	-	14:k1s	-	-	-	-
+ho_1-wA_hE_1	14	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0051>
+#इसलिए इन्हें सिर्फ मुख्य संख्याओं में व्यक्त करना कठिन था।
+#isalie inheM sirPa muKya saMKyAoM meM vyakwa karanA kaTina WA.
+#Thus, it was difficult to number the meridians.
+$wyax	1	-	-	11:k4a	Geo_ncert_6stnd_2ch_0050.5:coref	proximal	-	-
+muKya_18(main_1)	3	-	-	4:mod	-	sIrPa_1	-	-
+saMKyA_1(number_8)	4	-	pl	11:k7	-	-	-	-
+vyakwa_9(label_4)	6	-	-	-	-	-	-	11:kriyAmUla
+kara_1	7	-	-	-	-	-	-	11:verbalizer
+kaTina_1(difficult_1)	8	-	-	9:k1s	-	-	-	-
+hE_1-past	9	-	-	0:main	Geo_ncert_6stnd_2ch_0050.14:pariNAma	-	-	-
+[cp_1]	11	-	-	9:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0052a>
+#तब सभी देशों ने यह निश्चय किया।
+#waba saBI xeSoM ne yaha niScaya kiyA.
+#Hence, all countries decided that the count should begin from the meridian which passed through  Greenwich, where the British Royal Observatory is  located.
+$wyax	1	-	-	9:k7t	-	distal	-	-
+saBI_1(all_1)	2	-	-	3:quant	-	-	-	-
+xeSa_1(country_1)	3	-	pl	9:k1	-	-	-	-
+niScaya_1	5	-	-	-	-	-	-	9:kriyAmUla
+$wyax	6	-	-	9:k2	Geo_ncert_6stnd_2ch_0052b.27:coref	proximal	-	-
+kara_1-yA_1	7	-	-	-	-	-	-	9:verbalizer
+[cp_1]	9	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0052b>
+#कि ग्रीनिच, जहाँ ब्रिटिश राजकीय वेधशाला स्थित है, से गुजरने वाली याम्योत्तर से पूर्व और पश्चिम की ओर गिनती शुरू की जाए।
+#ki grInica, jahAz britiSa rAjakIya veXaSAlA sWiwa hE, se gujarane vAlI yAmyowwara se pUrva Ora paScima kI ora ginawI SurU kI jAe.
+#Hence, all countries decided that the count should begin from the meridian which passed through  Greenwich, where the British Royal Observatory is  located.
+grInica	1	-	-	-	-	-	-	29:begin
+$yax	3	-	-	8:k7p	-	-	-	-
+britiSa	4	-	-	-	-	-	-	30:begin
+rAjakIya	5	-	-	-	-	-	-	30:inside
+veXaSAlA	6	-	-	-	-	-	-	30:inside
+sWiwa_2(located_2)	7	-	-	8:k1s	-	-	-	-
+hE_1-pres	8	-	-	29:rcelab	-	-	-	-
+gujara_2(pass_13)	11	-	-	13:mod	-	-	-	-
+yAmyowwara_1(meridians_1)	13	-	-	27:k5	-	def	-	-
+pUrva_1(east_3)	15	-	-	-	-	-	-	28:op1
+paScima_1(west_2)	17	-	-	-	-	-	-	28:op2
+ginawI_7(count_4)	20	-	-	27:k1	-	-	-	-
+SurU_1	21	-	-	-	-	-	-	27:kriyAmUla
+kara_1-yA_jAe_1	22	-	-	-	-	-	-	27:verbalizer
+[cp_1]	27	-	-	0:main	-	-	-	-
+[conj_1]	28	-	-	27:rd	-	-	-	-
+[ne_1]	29	place	-	11:rp	-	-	-	-
+[ne_2]	30	org	-	8:k1	-	def	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0053>
+#इस याम्योत्तर को प्रमुख याम्योत्तर कहते है।
+#isa yAmyowwara ko pramuKa yAmyowwara kahawe hE.
+#This meridian is called the Prime Meridian.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+yAmyowwara_1(meridians_1)	2	-	-	6:k2	-	-	-	-
+pramuKa_1	4	-	-	5:mod	-	-	-	-
+yAmyowwara_1(meridians_1)	5	-	-	6:k2s	-	-	-	-
+kaha_1-wA_hE_1	6	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0054a>
+#इसका मान 0° देशांतर है ।
+#isakA mAna 0 xeSAMwara hE .
+#Its value is 0° longitude and from it we count 180° eastward as well as 180° westward.
+$wyax	1	-	-	2:r6	Geo_ncert_6stnd_2ch_0053.5:coref	proximal	-	-
+mAna_5(value_4)	2	-	-	5:k1	-	-	-	-
+0	3	-	-	-	-	-	-	6:count
+digrI+xeSAMwara_1	4	-	-	-	-	-	-	6:unit
+hE_1-pres	5	-	-	0:main	-	-	-	-
+[width_meas_1]	6	-	-	5:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0054b>
+#तथा यहाँ से हम 180° पूर्व या 180° पश्चिम तक गणना करते हैं।
+#waWA yahAz se hama 180 pUrva yA 180 paScima waka gaNanA karawe hEM.
+#Its value is 0° longitude and from it we count 180° eastward as well as 180° westward.
+$wyax	1	-	-	-	Geo_ncert_6stnd_2ch_0053.5:coref	proximal	-	15:start
+$speaker	3	anim	pl	11:k1	-	-	-	-
+180	4	numex	-	-	-	-	-	18:count
+digrI+pUrva_1	5	-	-	-	-	-	-	18:unit
+180	7	numex	-	-	-	-	-	17:count
+digrI+paScima_1	8	-	-	-	-	-	-	17:unit
+gaNanA_1(counting_1)	10	-	-	11:k2	-	-	-	-
+kara_1-wA_hE_1	11	-	-	0:main	Geo_ncert_6stnd_2ch_0054a.5:samuccaya	-	-	-
+[span_1]	15	-	-	11:rmeas	-	-	-	-
+[disjunct_1]	16	-	-	-	-	-	-	15:end
+[length_meas_2]	17	-	-	-	-	-	-	16:op2
+[length_meas_1]	18	-	-	-	-	-	-	16:op1
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0055>
+#प्रमुख याम्योत्तर तथा 180° याम्योत्तर मिलकर पृथ्वी को दो समान भागों, पूर्वी गोलार्ध एवं पश्चिमी गोलार्ध में विभक्त करती है।
+#pramuKa yAmyowwara waWA 180 yAmyowwara milakara pqWvI ko xo samAna BAgoM, pUrvI golArXa evaM paScimI golArXa meM viBakwa karawI hE.
+#The Prime Meridian and 180° meridian divide the earth into two equal halves, the Eastern Hemisphere and the Western Hemisphere.
+pramuKa_1	1	-	-	2:mod	-	-	-	-
+yAmyowwara_1(meridians_1)	2	-	-	-	-	-	-	24:op1
+180	4	numex	-	-	-	-	-	26:count
+digrI+yAmyowwara_1	5	-	-	-	-	-	-	26:unit
+mila_1	6	-	-	23:rpk	-	-	-	-
+pqWvI_1(earth_9)	7	-	-	23:k2	-	-	-	-
+2	9	numex	-	11:card	-	-	-	-
+samAna_1(equal_5)	10	-	-	11:mod	-	-	-	-
+BAga_26	11	-	pl	23:k7	-	-	-	-
+pUrvI_1	13	-	-	14:mod	-	-	-	-
+golArXa_1	14	-	-	-	-	-	-	25:op1
+paScimI_1	16	-	-	17:mod	-	-	-	-
+golArXa_1	17	-	-	-	-	-	-	25:op2
+viBakwa_1	19	-	-	-	-	-	-	23:kriyAmUla
+kara_1-wA_hE_1	20	-	-	-	-	-	-	23:verbalizer
+[cp_1]	23	-	-	0:main	-	-	-	-
+[conj_1]	24	-	-	6:k1	-	-	-	-
+[conj_2]	25	-	-	11:rs	-	-	-	-
+[width_meas_1]	26	-	-	-	-	-	-	24:op2
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0056a>
+#इसलिए किसी स्थान के देशांतर के आगे पूर्व के लिए अक्षर पू. का उपयोग करते हैं।
+#isalie kisI sWAna ke xeSAMwara ke Age pUrva ke lie akRara pU. kA upayoga karawe hEM.
+#Therefore, the longitude of a place is followed by the letter E for the east and W for the west.
+koI_1	1	-	-	2:mod	-	-	-	-
+sWAna_1(place_14)	2	-	-	4:r6	-	-	-	-
+xeSAMwara_1(longitude_1)	4	-	-	6:rdl	-	-	-	-
+AgA_1(front_1)	6	-	-	23:k7p	-	-	-	-
+pUrva_1(east_3)	7	-	-	23:rt	-	-	-	-
+akRara_3(letter_7)	10	-	-	11:rs	-	-	-	-
+@pU	11	-	-	23:k2	-	-	-	-
+upayoga_1(use_2)	19	-	-	-	-	-	-	23:kriyAmUla
+kara_1-wA_hE_1	20	-	-	-	-	-	-	23:verbalizer
+[cp_1]	23	-	-	0:main	Geo_ncert_6stnd_2ch_0055.23:pariNAma	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0056b>
+#तथा पश्चिम के लिए अक्षर प. का उपयोग करते हैं।
+#waWA paScima ke lie akRara pa. kA upayoga karawe hEM.
+#Therefore, the longitude of a place is followed by the letter E for the east and W for the west.
+-	-	-	-	-	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0057a>
+#यह जानना रोचक होगा।
+#yaha jAnanA rocaka hogA.
+#It is, however, interesting to note that 180° East and 180° West meridians are on the same line.
+$wyax	1	-	-	2:k2	Geo_ncert_6stnd_2ch_0057b.12:coref	proximal	-	-
+jAna_1	2	-	-	4:k1	-	-	-	-
+rocaka_1(interesting_3)	3	-	-	4:k1s	-	-	-	-
+ho_1-gA_1	4	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0057b>
+#कि 180° पूर्व और 180° पश्चिम याम्योत्तर एक ही रेखा पर स्थित हैं।
+#ki 180 pUrva Ora 180 paScima yAmyowwara eka hI reKA para sWiwa hEM.
+#It is, however, interesting to note that 180° East and 180° West meridians are on the same line.
+180	1	-	-	-	-	-	-	18:count
+digrI+pUrva_1	2	-	-	-	-	-	-	18:unit
+180	4	-	-	-	-	-	-	17:count
+digrI+paScima_1	5	-	-	-	-	-	-	17:unit
+yAmyowwara_1(meridians_1)	6	-	-	12:k1	-	-	-	-
+eka_7(same_1)	7	-	-	9:mod	-	hI_1	-	-
+reKA_1(line_12)	9	-	-	12:k7	-	-	-	-
+sWiwa_1	11	-	-	12:k1s	-	-	-	-
+hE_1-pres	12	-	-	0:main	-	-	-	-
+[conj_1]	16	-	-	6:mod	-	-	-	-
+[width_meas_2]	17	-	-	-	-	-	-	16:op2
+[width_meas_1]	18	-	-	-	-	-	-	16:op1
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0058>
+#अब आप ग्लोब पर अक्षांश (समानांतर) रेखाओं एवं देशांतरीय याम्योत्तरों के द्वारा बनी ग्रिड को देखो।
+#aba Apa globa para akRAMSa (samAnAMwara) reKAoM evaM xeSAMwarIya yAmyowwaroM ke xvArA banI grida ko xeKo.
+#Now look at the grid of the parallels of latitude and meridians of longitude on the globe (Figure 2.6).
+aba_1	1	-	-	18:k7t	-	-	-	-
+$addressee	2	anim	-	18:k1	-	respect	-	-
+globa_1(globe_3)	3	-	-	18:k7p	-	-	-	-
+akRAMSa_1(latitude_4)	5	-	-	9:mod	-	-	-	-
+samAnAMwara_1(parallel_2)	7	-	-	9:rs	-	-	-	-
+reKA_1(line_12)	9	-	pl	-	-	-	-	20:op1
+xeSAMwarIya_2(longitudinal_1)	11	-	-	12:mod	-	-	-	-
+yAmyowwara_1(meridians_1)	12	-	pl	-	-	-	-	20:op2
+bana_1	15	-	-	16:mod	-	-	-	-
+grida_1(grid_1)	16	-	-	18:k2	-	-	-	-
+xeKa_1-o_1	18	-	-	0:main	-	-	-	-
+[conj_1]	20	-	-	15:k3	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0059a>
+#अगर आपको किसी स्थान के अक्षांश एवं देशांतर की सही जानकारी हो ।
+#agara Apako kisI sWAna ke akRAMSa evaM xeSAMwara kI sahI jAnakArI ho .
+#You can locate any point on the globe very easily if you know its latitude and longitude.
+$addressee	1	anim	-	11:k4a	-	respect	-	-
+koI_1	2	-	-	3:mod	-	-	-	-
+sWAna_20(point_28)	3	-	-	13:r6	-	-	-	-
+akRAMSa_1(latitude_4)	5	-	-	-	-	-	-	13:op1
+xeSAMwara_1(longitude_1)	7	-	-	-	-	-	-	13:op2
+sahI_2(accurately_1)	9	-	-	10:mod	-	-	-	-
+jAnakArI_3(information_14)	10	-	-	11:k1	-	-	-	-
+hE_1-pres	11	-	-	0:main	Geo_ncert_6stnd_2ch_0059b.10:AvaSyakawApariNAma	-	-	-
+[conj_1]	13	-	-	10:r6	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0059b>
+#तो ग्लोब पर आप उस स्थान का पता आसानी से लगा सकते हैं।
+#wo globa para Apa usa sWAna kA pawA AsAnI se lagA sakawe hEM.
+#You can locate any point on the globe very easily if you know its latitude and longitude.
+globa_1	1	-	-	10:k7	-	-	-	-
+$addressee	3	anim	-	10:k1	-	respect	-	-
+$wyax	4	-	-	5:dem	-	distal	-	-
+sWAna_20(point_28)	5	-	-	7:r6	-	-	-	-
+pawA_5(trace_14)	7	-	-	10:k2	-	-	-	-
+AsAnI_1	8	-	-	10:krvn	-	-	-	-
+lagA_1-0_sakawA_hE_1	10	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0060>
+#उदाहरण के लिए, असम में धुबरी 26° उ. अक्षांश एवं 90° पू. देशांतर पर स्थित है।
+#uxAharaNa ke lie, asama meM XubarI 26 u. akRAMSa evaM 90 pU. xeSAMwara para sWiwa hE.
+#For example, Dhubri in Assam is situated at 26° N latitude and 90° E longitude.
+asama	5	-	-	-	-	-	-	20:begin
+XubarI	7	-	-	-	-	-	-	21:begin
+26	8	-	-	-	-	-	-	22:count
+digrI+uwwara_1	9	-	-	-	-	-	-	22:unit
+akRAMSa_1	10	-	-	-	-	-	-	19:op1
+90	12	-	-	-	-	-	-	23:count
+digrI+purba_1	13	-	-	-	-	-	-	23:unit
+xeSAMwara_1	14	-	-	-	-	-	-	19:op2
+sWiwa_1	16	-	-	17:k1s	-	-	-	-
+hE_1-pres	17	-	-	0:main	Geo_ncert_6stnd_2ch_0059b.10:uXAharaNasvarUpa	-	-	-
+[conj_1]	19	-	-	17:k7p	-	-	-	-
+[ne_1]	20	place	-	-	-	-	-	24:whole
+[ne_2]	21	place	-	-	-	-	-	24:part
+[length_meas_1]	22	-	-	10:mod	-	-	-	-
+[length_meas_2]	23	-	-	14:mod	-	-	-	-
+[spatial_1]	24	-	-	17:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0061>
+#अब आप उस बिंदु को देखें जहाँ ये दोनों रेखाएँ एक दूसरे को काटती हैं।
+#aba Apa usa biMxu ko xeKeM jahAz ye xonoM reKAez eka xUsare ko kAtawI hEM.
+#Find out the point where these two lines cut each other.
+aba_1(now_3)	1	-	-	6:k7t	-	-	-	-
+$addressee	2	anim	-	6:k1	-	respect	-	-
+$wyax	3	-	-	4:dem	-	distal	-	-
+biMxu_1(point_7)	4	-	-	6:k2	-	-	-	-
+xeKa_1-o_1	6	-	-	0:main	-	-	-	-
+$yax	7	-	-	14:k7p	Geo_ncert_6stnd_2ch_0061.4:coref	-	-	-
+$wyax	8	-	-	10:dem	-	proximal	-	-
+2	9	numex	-	10:card	-	-	-	-
+reKA_1	10	-	pl	14:k1	-	-	-	-
+eka+xUsarA_1	11	-	-	14:k2	-	-	-	-
+kAta_1-wA_hE_1	14	-	-	4:rcdelim	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0062>
+#यह बिंदु धुबरी की सही स्थिति होगा।
+#yaha biMxu XubarI kI sahI sWiwi hogA.
+#That point will be the location of Dhubri.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+biMxu_1(point_7)	2	-	-	7:k1	-	-	-	-
+XubarI	3	-	-	-	-	-	-	8:begin
+sahI_1(right_20)	5	-	-	6:mod	-	-	-	-
+sWiwi_3(location_3)	6	-	-	7:k1s	-	-	-	-
+ho_1-gA_1	7	-	-	0:main	-	-	-	-
+[ne_1]	8	place	-	6:r6	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0063>
+#आप इसको समझने के लिए कागज पर समान दूरी वाली क्षैतिज तथा ऊर्ध्वाधर रेखाएँ खींचिए।
+#Apa isako samaJane ke lie kAgaja para samAna xUrI vAlI kREwija waWA UrXvAXara reKAez KIMcie.
+#To understand this clearly draw equidistant vertical and horizontal lines on a paper (Figure 2.7).
+$addressee	1	anim	-	15:k1	-	respect	-	-
+$wyax	2	-	-	3:k2	Geo_ncert_6stnd_2ch_0062.7:coref	proximal	-	-
+samaJa(understand_2)	3	-	-	15:rt	-	-	-	-
+kAgaja_1(paper_7)	6	-	-	15:k7p	-	-	-	-
+samAna_1(equal_5)	8	-	-	9:mod	-	-	-	-
+xUrI_1(distance_2)	9	-	mawupa	14:mod	-	-	-	-
+kREwija_1(horizontal_2)	11	-	-	-	-	-	-	17:op1
+UrXvAXara_1(vertical_2)	13	-	-	-	-	-	-	17:op2
+reKA_1(line_12)	14	-	pl	15:k2	-	-	-	-
+KIMca_1-o_1	15	-	-	0:main	-	-	-	-
+[conj_1]	17	-	-	14:mod	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0064a>
+#आप ऊर्ध्वाधर रेखाओं को संख्या 1, 2, 3, 4 से व्यक्त करें।
+#Apa UrXvAXara reKAoM ko saMKyA 1, 2, 3, 4 se vyakwa kareM.
+#You label the vertical rows with numbers.
+$addressee	1	-	-	34:k1	-	respect	-	-
+UrXvAXara_1(vertical_2)	2	-	-	3:mod	-	-	-	-
+reKA_1(line_12)	3	-	pl	34:k2	-	-	-	-
+saMKyA_1(number_8)	5	-	-	33:rs	-	-	-	-
+1	6	numex	-	-	-	-	-	33:op1
+2	8	numex	-	-	-	-	-	33:op2
+3	10	numex	-	-	-	-	-	33:op3
+4	12	numex	-	-	-	-	-	33:op4
+vyakwa_9(label_4)	29	-	-	-	-	-	-	34:kriyAmUla
+kara_1-o_1	30	-	-	-	-	-	-	34:verbalizer
+[conj_1]	33	-	-	34:k3	-	-	-	-
+[cp_1]	34	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0064b>
+#तथा क्षैतिज रेखाओं को क, ख, ग, घ, घ अक्षरों से व्यक्त करें।
+#-
+#-
+$addressee	1	-	-	10:k1	-	-	-	-
+kREwija(horizontal_2)	2	-	-	3:mod	-	-	-	-
+reKa(line_11)	3	-	pl	10:k2	-	-	-	-
+ka	4	symbol	-	-	-	-	-	11:op1
+Ka	5	symbol	-	-	-	-	-	11:op2
+ga	6	symbol	-	-	-	-	-	11:op3
+Ga	7	symbol	-	-	-	-	-	11:op4
+akRara(letter_7)	8	-	-	11:rs	-	-	-	-
+vyakwa(label_4)	9	-	-	-	-	-	-	10:kriyAmUla
+[cp_1]	10	-	-	0:main	Geo_ncert_6stnd_2ch_0064a.34:samuccaya	-	-	-
+[conj_1]	11	-	-	10:k3	-	-	-	-
+kara_1-o_1	12	-	-	-	-	-	-	10:verbalizer
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0065>
+#जिन बिंदुओं पर ये ऊर्ध्वाधर एवं क्षैतिज रेखाएँ एक दूसरे को काटती हैं, आप वहाँ कुछ छोटे वृत्त खींचिए।
+#jina biMxuoM para ye UrXvAXara evaM kREwija reKAez eka xUsare ko kAtawI hEM, Apa vahAz kuCa Cote vqwwa KIMcie.
+#draw some small circles randomly on points where these horizontal and vertical lines intersect each other.
+$yax	1	-	-	2:dem	-	-	-	-
+biMxu_1(point_7)	2	-	pl	12:k7p	-	-	-	-
+$wyax	4	-	-	8:dem	-	proximal	-	-
+UrXvAXara_1(vertical_2)	5	-	-	-	-	-	-	22:op1
+kREwija_1(horizontal_2)	7	-	-	-	-	-	-	22:op2
+reKA_1(line_12)	8	-	pl	12:k1	-	-	-	-
+eka+xUsarE_1	9	-	-	12:k2	-	-	-	-
+kAta_1-wA_hE_1	12	-	-	16:rcloc	-	-	-	-
+$addressee	15	anim	-	20:k1	-	respect	-	-
+$wyax	16	-	-	20:k7p	Geo_ncert_6stnd_2ch_0065.2:coref	distal	-	-
+kuCa_1(some_2)	17	-	-	19:quant	-	-	-	-
+CotA_1(small_6)	18	-	-	19:mod	-	-	-	-
+vqwwa_1(circle_9)	19	-	-	20:k2	-	-	-	-
+KIMca_1-o_1	20	-	-	0:main	-	-	-	-
+[conj_1]	22	-	-	8:mod	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0066>
+#आप इन छोटे वृत्तों को अ, ब, स, द तथा  ध नामों से व्यक्त कीजिए।
+#Apa ina Cote vqwwoM ko a, ba, sa, xa waWA  Xa nAmoM se vyakwa kIjie.
+#Name these small circles as a, b, c, d and e.
+$addressee	1	anim	-	20:k1	-	respect	-	-
+$wyax	2	-	-	4:dem	-	proximal	-	-
+CotA_1(small_6)	3	-	-	4:mod	-	-	-	-
+vqwwa_1(circle_9)	4	-	pl	20:k2	-	-	-	-
+a	6	symbol	-	-	-	-	-	21:op1
+ba	8	symbol	-	-	-	-	-	21:op2
+sa	10	symbol	-	-	-	-	-	21:op3
+xa	12	symbol	-	-	-	-	-	21:op4
+Xa	14	symbol	-	-	-	-	-	21:op5
+nAma_1(name_3)	15	-	pl	21:rs	-	-	-	-
+vyakwa_9(label_4)	17	-	-	-	-	-	-	20:kriyAmUla
+kara_1-o_1	18	-	-	-	-	-	-	20:verbalizer
+[cp_1]	20	-	-	0:main	-	-	-	-
+[conj_1]	21	-	-	20:k3	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0067a>
+#आप यह मान लीजिए।
+#Apa yaha mAna lIjie.
+#Let vertical lines represent East Longitudes and horizontal lines as North Latitudes.
+$addressee	1	anim	-	3:k1	-	respect	-	-
+$wyax	2	-	-	3:k2	Geo_ncert_6stnd_2ch_0067b.15:coref	proximal	-	-
+mAna_1-o_1	3	-	-	0:main	-	[shade:le_1]	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0067b>
+#कि ऊर्ध्वाधर रेखाएँ पूर्व देशांतरों को व्यक्त करती हैं।
+#ki UrXvAXara reKAez pUrva xeSAMwaroM ko vyakwa karawI hEM.
+#Let vertical lines represent East Longitudes.
+UrXvAXara_1(vertical_2)	1	-	-	2:mod	-	-	-	-
+reKA_1(line_12)	2	-	pl	15:k1	-	-	-	-
+pUrva_1(east_3)	3	-	-	4:mod	-	-	-	-
+xeSAMwara_1(longitude_1)	4	-	pl	15:k2	-	-	-	-
+vyakwa_1	11	-	-	-	-	-	-	15:kriyAmUla
+kara_1-wA_hE_1	12	-	-	-	-	-	-	15:verbalizer
+[cp_1]	15	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0067c>
+#एवं क्षैतिज रेखाएँ उत्तरी अक्षांशों को व्यक्त करती हैं।
+#evaM kREwija reKAez uwwarI akRAMSoM ko vyakwa karawI hEM.
+#-
+kREwija_1(horizontal_2)	1	-	-	11:mod	-	-	-	-
+[cp_1]	7	-	-	0:main	Geo_ncert_6stnd_2ch_0067b.15:samuccaya	-	-	-
+vyakwa_9(label_4)	8	-	-	-	-	-	-	7:kriyAmUla
+akRAMSa_1(latitude_4)	9	-	-	7:k2	-	-	-	-
+uwwarI_1(northern_2)	10	-	-	9:mod	-	-	-	-
+reKA_1(line_12)	11	-	-	7:k1	-	-	-	-
+kara_wA_hE_1	12	-	-	-	-	-	-	7:verbalizer
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0068a>
+#अब आप यह देखेंगे।
+#aba Apa yaha xeKeMge.
+#Now you will see that circle ‘a’ is located on B ° N latitude and 1 ° E longitude.
+aba(now_3)	1	-	-	4:k7t	-	-	-	-
+$addressee	2	anim	-	4:k1	-	respect	-	-
+$wyax	3	-	-	4:k2	Geo_ncert_6stnd_2ch_0068b.14:coref	proximal	-	-
+xeKa_1-gA_1	4	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0068b>
+#कि वृत्त अ ख ° उत्तरी अक्षांश तथा 1 ° पूर्वी देशांतर पर स्थित है।
+#ki vqwwa a Ka  uwwarI akRAMSa waWA 1  pUrvI xeSAMwara para sWiwa hE.
+#Now you will see that circle ‘a’ is located on B ° N latitude and 1 ° E longitude.
+vqwwa_1(circle_9)	1	-	-	14:k1	-	-	-	-
+Ka	3	symbol	-	-	-	-	-	18:count
+digrI(degree_4)	4	-	-	-	-	-	-	18:unit
+uwwarI_1(northern_2)	5	-	-	6:mod	-	-	-	-
+akRAMSa_1(latitude_4)	6	-	-	-	-	-	-	17:op1
+1	8	numex	-	-	-	-	-	19:count
+digrI(degree_4)	9	-	-	-	-	-	-	19:unit
+pUrvI_1(eastern_2)	10	-	-	11:mod	-	-	-	-
+xeSAMwara_1(longitude_1)	11	-	-	-	-	-	-	17:op2
+sWiwa_2(located_2)	13	-	-	14:k1s	-	-	-	-
+hE_1-pres	14	-	-	0:main	-	-	-	-
+[conj_1]	17	-	-	14:k7p	-	-	-	-
+[meas_1]	18	-	-	6:rmeas	-	-	-	-
+[meas_2]	19	-	-	11:rmeas	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0069>
+#अन्य वृत्तों की स्थिति ज्ञात करें।
+#anya vqwwoM kI sWiwi jFAwa kareM.
+#Find out the location of other circles.
+anya_1(other_1)	1	-	-	2:mod	-	-	-	-
+vqwwa_1(circle_9)	2	-	pl	4:r6	-	-	-	-
+sWiwi_3(location_3)	4	-	-	8:k2	-	-	-	-
+jFAwa_1(known_1)	5	-	-	-	-	-	-	8:kriyAmUla
+kara_1-o_1	6	-	-	-	-	-	-	8:verbalizer
+[cp_1]	8	-	-	0:main	-	-	-	-
+$addressee	9	anim	-	8:k1	-	respect	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0070>
+#समय को मापने का सबसे अच्छा साधन पृथ्वी, चंद्रमा एवं ग्रहों की गति है।
+#samaya ko mApane kA sabase acCA sAXana pqWvI, caMxramA evaM grahoM kI gawi hE.
+#The best means of measuring time is by the movement of the earth, the moon and the planets.
+samaya_1(time_8)	1	-	-	3:k2	-	-	-	-
+mApa_2(measure_7)	3	-	-	7:r6	-	-	-	-
+acCA_1(good_1)	6	-	superl	7:mod	-	-	-	-
+sAXana_2(means_9)	7	-	-	15:k1	-	-	-	-
+pqWvI_1(earth_9)	8	-	-	-	-	-	-	17:op1
+caMxramA(moon_3)	10	-	-	-	-	-	-	17:op2
+graha_1(planet_2)	12	-	pl	-	-	-	-	17:op3
+gawi_2(movement_3)	14	-	-	15:k1s	-	-	-	-
+hE_1-pres	15	-	-	0:main	-	-	-	-
+[conj_1]	17	-	-	14:r6	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0071>
+#सूर्योदय एवं सूर्यास्त प्रतिदिन होता है।
+#sUryoxaya evaM sUryAswa prawixina howA hE.
+#The sun regularly rises and sets every day.
+sUryoxaya(sunrise_1)	1	-	-	-	-	-	-	8:op1
+sUryAswa_1(sunset_2)	3	-	-	-	-	-	-	8:op2
+prawixina_1(daily_6)	4	-	-	5:krvn	-	-	-	-
+ho_1-wA_hE_1	5	-	-	0:main	-	-	-	-
+[conj_1]	8	-	-	5:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0072a>
+#अतः यह स्वाभाविक  ही है।
+#awaH yaha svABAvika  hI hE.
+#and naturally, it is the best time-keeper throughout the world.
+$wyax	1	-	-	4:k1	Geo_ncert_6stnd_2ch_0072b.11:coref	proximal	-	-
+svABAvika_1(natural_15)	2	-	-	4:k1s	-	hI_1	-	-
+hE_1-pres	4	-	-	0:main	Geo_ncert_6stnd_2ch_0071.5:pariNAma	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0072b>
+#कि यह पूरे विश्व में समय निर्धारण का सबसे अच्छा साधन है।
+#ki yaha pUre viSva meM samaya nirXAraNa kA sabase acCA sAXana hE.
+#and naturally, it is the best time-keeper throughout the world.
+$wyax	1	-	-	11:k1	-	proximal	-	-
+pUrA_1	2	-	pl	3:mod	-	-	-	-
+viSva_6(world_20)	3	-	-	11:k7p	-	-	-	-
+samaya_1(time_8)	5	-	-	-	-	-	-	13:mod
+nirXAraNa_1(fixation_2)	6	-	-	-	-	-	-	13:head
+acCA_1	9	-	superl	10:mod	-	-	-	-
+sAXana_1(medium_6)	10	-	-	11:k1s	-	-	-	-
+hE_1-pres	11	-	-	0:main	-	-	-	-
+[nc_1]	13	-	-	10:r6	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0073a>
+#स्थानीय समय का अनुमान सूर्य के द्वारा बनने वाली परछाईं से लगाया जा सकता है
+#sWAnIya samaya kA anumAna sUrya ke xvArA banane vAlI paraCAIM se lagAyA jA sakawA hE, jo xopahara meM sabase CotI evaM sUryoxaya waWA sUryAswa ke samaya sabase laMbI howI hE.
+#Local time can be reckoned by the shadow cast by the sun, which is the shortest at noon and longest at sunrise and sunset.
+sWAnIya_1(local_6)	1	-	-	2:mod	-	-	-	-
+samaya_1(time_8)	2	-	-	35:k2	-	-	-	-
+anumAna_10	4	-	-	-	-	-	-	35:kriyAmUla
+sUrya_1(sun_5)	5	-	-	8:k3	-	-	-	-
+bana_15(made_12)	8	-	pl	10:mod	-	-	-	-
+paraCAIM_1	10	-	-	35:k3	-	-	-	-
+lagA_1-yA_jA_sakawA_hE_1	12	-	-	-	-	-	-	35:verbalizer
+[cp_1]	35	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0073b>
+#जो दोपहर में सबसे छोटी होती है।
+#-
+#-
+-	-	-	-	-	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0073c>
+#एवं जो सूर्योदय तथा सूर्यास्त के समय सबसे लंबी होती है।
+#-
+#-
+-	-	-	-	-	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0073c>
+#एवं जो सूर्योदय तथा सूर्यास्त के समय सबसे लंबी होती है।
+#-
+#-
+-	-	-	-	-	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0074>
+#ग्रीनिच पर स्थित प्रमुख याम्योत्तर पर सूर्य जिस समय आकाश के सबसे ऊँचे बिंदु पर होगा, उस समय याम्योत्तर पर स्थित सभी स्थानों पर दोपहर होगी।
+#grInica para sWiwa pramuKa yAmyowwara para sUrya jisa samaya AkASa ke sabase Uzce biMxu para hogA, usa samaya yAmyowwara para sWiwa saBI sWAnoM para xopahara hogI.
+#When the Prime Meridian of Greenwich has the sun at the highest point in the sky, all the places along this meridian will have mid-day or noon.
+grInica	1	-	-	-	-	-	-	29:begin
+sWiwa_1	3	-	-	5:mod	-	-	-	-
+pramuKa_1	4	-	-	5:mod	-	-	-	-
+yAmyowwara_1	5	-	-	16:k7p	-	-	-	-
+sUrya_1	7	-	-	16:k1	-	-	-	-
+$yax	8	-	-	9:dem	-	-	-	-
+samaya_1	9	-	-	16:k7t	-	-	-	-
+AkASa_1	10	-	-	14:r6	-	-	-	-
+UzcA_1	13	-	superl	14:mod	-	-	-	-
+biMxu_1	14	-	-	16:k7p	-	-	-	-
+ho_1-gA_1	16	-	-	0:main	-	-	-	-
+$wyax	18	-	-	19:dem	-	distal	-	-
+samaya_1	19	-	-	27:k7t	-	-	-	-
+yAmyowwara_1	20	-	-	22:intf	-	-	-	-
+sWiwa_1	22	-	-	24:mod	-	-	-	-
+saBI_1	23	-	-	24:quant	-	-	-	-
+sWAna_1	24	-	pl	27:k7p	-	-	-	-
+xopahara_1	26	-	-	27:k7t	-	-	-	-
+ho_1-ga_1	27	-	-	16:rc	-	-	-	-
+[ne_1]	29	-	-	3:k7p	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0075a>
+#पृथ्वी पश्चिम से पूर्व की ओर चक्कर लगाती है ।
+#cUzki, pqWvI paScima se pUrva kI ora cakkara lagAwI hE .
+#As the earth rotates from west to east, those places east of Greenwich will be ahead of Greenwich time and those to the west will be behind it (Figure 2.8).
+pqWvI(earth_9)	1	-	-	11:k1	-	-	-	-
+paScima(west_2)	2	-	-	-	-	-	-	12:start
+pUrva_1(east_3)	4	-	-	-	-	-	-	12:end
+cakkara_6(rotation_3)	7	-	-	-	-	-	-	11:kriyAmUla
+lagA_1-wA_hE_1	8	-	-	-	-	-	-	11:verbalizer
+[cp_1]	11	-	-	0:main	-	-	-	-
+[span_1]	12	-	-	11:k7p	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0075b>
+#अतः वे स्थान जो ग्रीनिच के पूर्व में हैं, उनका समय ग्रीनिच समय से आगे होगा ।
+#awaH ve sWAna jo grInica ke pUrva meM hEM, unakA samaya grInica samaya se Age hogA .
+#As the earth rotates from west to east, those places east of Greenwich will be ahead of Greenwich time and those to the west will be behind it (Figure 2.8).
+$wyax	1	-	pl	2:dem	-	distal	-	-
+sWAna_1(place_14)	2	-	-	11:r6	-	-	-	-
+$yax	3	-	-	8:k1	Geo_ncert_6stnd_2ch_0075b.2:coref	-	-	-
+grInica	4	-	-	-	-	-	-	19:begin
+pUrva_1(east_3)	6	-	-	8:k7p	-	-	-	-
+hE_1-pres	8	-	pl	2:rcdelim	-	-	-	-
+samaya_1(time_8)	11	-	-	16:k1	-	-	-	-
+grInica	12	-	-	-	-	-	-	20:begin
+samaya_1(time_8)	13	-	-	-	-	-	-	21:head
+AgA_1	15	-	pl	16:k7t	-	-	-	-
+ho_1-gA_1	16	-	-	0:main	Geo_ncert_6stnd_2ch_0075a.11:pariNAma	-	-	-
+[ne_1]	19	place	-	6:rdl	-	-	-	-
+[ne_2]	20	place	-	-	-	-	-	21:mod
+[nc_1]	21	-	-	15:rkl	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0075c>
+#तथा जो पश्चिम में हैं, उनका समय पीछे होगा।
+#waWA jo paScima meM hEM, unakA samaya pICe hogA.
+#As the earth rotates from west to east, those places east of Greenwich will be ahead of Greenwich time and those to the west will be behind it (Figure 2.8).
+$yax	1	-	-	4:k1	-	-	-	-
+paScima(west_2)	2	-	-	4:k7p	-	-	-	-
+hE_1-pres	4	-	-	6:rcdelim	-	-	-	-
+$wyax	6	-	-	7:r6	Geo_ncert_6stnd_2ch_0075c.1:coref	distal	-	-
+samaya_1(time_8)	7	-	-	9:k1	-	-	-	-
+pICe_1(behind_2)	8	-	-	9:k1s	-	-	-	-
+ho_1-gA_1	9	-	-	0:main	Geo_ncert_6stnd_2ch_0075b.16:samuccaya	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0076>
+#समय के अंतर की दर की गणना निम्नलिखित विधि से की जा सकती है।
+#samaya ke aMwara kI xara kI gaNanA nimnaliKiwa viXi se kI jA sakawI hE.
+#The rate of difference can be calculated as follows.
+samaya_1(time_8)	1	-	-	3:r6	-	-	-	-
+aMwara_1(difference_1)	3	-	-	5:r6	-	-	-	-
+xara_1(rate_1)	5	-	-	7:r6	-	-	-	-
+gaNanA_2(calculation_3)	7	-	-	11:k2	-	-	-	-
+nimnaliKiwa_2(following_8)	8	-	-	9:mod	-	-	-	-
+viXi_2(method_15)	9	-	-	11:k3	-	-	-	-
+kara_1-yA_jA_sakawA_hE_1	11	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0077a>
+#पृथ्वी लगभग 24 घंटे में अपने अक्ष पर 360° घूम जाती है ।
+#arWAw vaha 1 GaMte meM 15 GUmawI hE.
+#Which means it rotates 15° an hour or 1° in four minutes.
+pqWvI_1(earth_9)	1	-	-	10:k1	-	-	-	-
+24	3	numex	-	-	-	lagaBaga_1	-	11:count
+GaMtA_4(hour_1)	4	-	pl	-	-	-	-	11:unit
+apanA	6	-	pl	7:r6	-	-	-	-
+akRa_1(axis_1)	7	-	-	10:k7p	-	-	-	-
+360	9	numex	-	-	-	-	-	13:count
+GUma_1-wA_hE_1	10	-	-	0:main	-	[shade:jA_1]	-	-
+[time_meas_1]	11	-	-	10:dur	-	-	-	-
+digrI(degree_4)	12	-	-	-	-	-	-	13:unit
+[dist_meas_1]	13	-	-	10:k2	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0077b>
+#अर्थात् वह 1 घंटे में 15° घूमती है।
+#arWAw vaha 1 GaMte meM 15 evaM 4 minata meM 1 GUmawI hE.
+#The earth rotates 360° in about 24 hours.
+$wyax	1	-	-	11:k1	Geo_ncert_6stnd_2ch_0077a.1:coref	distal	-	-
+1	2	numex	-	-	-	-	-	18:count
+GaMtA_1	3	-	pl	-	-	-	-	18:unit
+15	5	numex	-	-	-	-	-	17:count
+GUma_1-wA_hE_1	11	-	-	0:main	Geo_ncert_6stnd_2ch_0077a.10:arWAwa	-	-	-
+digrI	16	-	-	-	-	-	-	17:unit
+[meas_1]	17	-	-	11:k2	-	-	-	-
+[time_meas_1]	18	-	-	11:dur	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0077c>
+#एवं वह 4 मिनट में 1° घूमती है।
+#-
+#-
+-	-	-	-	-	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0078a>
+#इस प्रकार जब ग्रीनिच में दोपहर के 12 बजते हैं, तब ग्रीनिच से 15° पूर्व में समय होगा 15 × 4 = 60 मिनट अर्थात्, ग्रीनिच के समय से 1 घंटा आगे।
+#isa prakAra jaba grInica meM xopahara ke 12 bajawe hEM, waba grInica se 15 pUrva meM samaya hogA 15  4 = 60 minata arWAw, grInica ke samaya se 1 GaMtA Age.
+#Thus, when it is 12 noon at Greenwich, the time at 15° east of Greenwich will be 15 × 4 = 60 minutes, i.e.,  1 hour ahead of Greenwich time, which means 1 p.m.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+prakAra_1	2	-	-	9:k1	-	-	-	-
+$yax	3	-	-	9:k7t	-	-	-	-
+grInica	4	-	-	9:k7p	-	-	-	-
+xopahara_1	6	-	-	9:k1	-	-	-	-
+12	8	numex	-	9:k1	-	-	-	-
+baja_1	9	-	pl	12:rc	-	-	-	-
+waba	12	-	-	19:k7t	-	-	-	-
+grInica	13	-	-	19:k5	-	-	-	-
+15°	15	-	-	-	-	-	-	36:begin
+pUrva	16	male	-	-	-	-	-	36:inside
+samaya_1	18	-	-	19:k1	-	-	-	-
+ho_1	19	-	-	-	-	-	-	39:op1
+15	20	numex	-	25:card	-	-	-	-
+4	22	numex	-	24:card	-	-	-	-
+60	24	meas	-	-	-	-	-	37:count
+minata_1	25	-	-	-	-	-	-	37:unit
+grInica	28	-	-	0:rsp	-	-	-	-
+1	32	meas	-	-	-	-	-	38:count
+GaMtA_1	33	-	-	-	-	-	-	38:unit
+AgA_1	34	-	pl	33:k7p	-	-	-	-
+[ne_1]	36	-	-	19:k7p	-	-	-	-
+[meas_1]	37	-	-	-	-	-	-	39:op2
+[meas_2]	38	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0078b>
+#अर्थात् वहाँ दोपहर का 1 बजा होगा।
+#arWAw vahAz xopahara kA 1 bajA hogA.
+#Thus, when it is 12 noon at Greenwich, the time at 15° east of Greenwich will be 15 × 4 = 60 minutes, i.e.,  1 hour ahead of Greenwich time, which means 1 p.m.
+vahAz	1	-	pl	5:k7p	-	-	-	-
+xopahara_1	2	-	-	4:r6	-	-	-	-
+1	4	numex	-	5:k7t	-	-	-	-
+bajA_1-0_ho_1	5	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0079a>
+#लेकिन ग्रीनिच से 15 ° पश्चिम का समय ग्रीनिच समय से 1 घंटा पीछे होगा ।
+#lekina grInica se 15  paScima kA samaya grInica samaya se 1 GaMtA pICe hogA .
+#But at 15° west of Greenwich, the time will be behind Greenwich time by one hour, i.e., it will be 11.00 a.m.
+grInica	1	-	-	-	-	-	-	19:begin
+15	3	numex	-	-	-	-	-	18:count
+digrI_1(degree_4)	4	-	-	-	-	-	-	18:unit
+paScima_1(west_2)	5	-	-	7:r6	-	-	-	-
+samaya_1(time_8)	7	-	-	14:k1	-	-	-	-
+grInica	8	-	-	-	-	-	-	21:begin
+samaya_1(time_8)	9	-	-	-	-	-	-	20:head
+1	11	numex	-	-	-	-	-	16:count
+GaMtA_1	12	-	-	-	-	-	-	16:unit
+pICe_1(behind_2)	13	-	pl	14:k1s	-	-	-	-
+ho_1-gA_1	14	-	-	0:main	Geo_ncert_6stnd_2ch_0078b.14:viroXI	-	-	-
+[time_meas_1]	16	-	-	13:rmeas	-	-	-	-
+[meas_1]	18	-	-	5:rmeas	-	-	-	-
+[ne_1]	19	-	-	5:rkl	-	-	-	-
+[nc_1]	20	-	-	13:rkl	-	-	-	-
+[ne_1]	21	-	-	-	-	-	-	20:mod
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0079b>
+#यानी, वहाँ सुबह के 11 बजे होंगे।
+#yAnI, vahAz subaha ke 11 baje hoMge.
+#But at 15° west of Greenwich, the time will be behind Greenwich time by one hour, i.e., it will be 11.00 a.m.
+$wyax	3	-	-	8:k7p	-	-	-	-
+subaha_1(morning_4)	4	-	-	-	-	-	-	9:whole
+11	6	clocktime	-	-	-	-	-	9:part
+ho_1-gA_1	8	-	-	0:main	Geo_ncert_6stnd_2ch_0079a.14:arWAwa	-	-	-
+[temporal_1]	9	-	-	8:k7t	-	-	-	-
+baja_2(strike_34)	10	-	kqw	8:k1	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0080>
+#इसी प्रकार जब ग्रीनिच पर दोपहर के 12 बजे होंगे उस समय 180° पर मध्य रात्रि होगी।
+#isI prakAra jaba grInica para xopahara ke 12 baje hoMge usa samaya 180 para maXya rAwri hogI.
+#Similarly, at 180°, it will be midnight when it is 12 noon at Greenwich.
+isI	1	-	-	2:dem	-	-	-	-
+prakAra_1	2	-	-	17:sent-adv	-	-	-	-
+$yax	3	-	-	10:k7t	-	-	-	-
+grInica	4	-	-	10:k7p	-	-	-	-
+xopahara_1	6	-	-	9:r6	-	-	-	-
+12	8	clocktime	-	10:k7t	-	-	-	-
+ho_1	10	-	pl	17:vmod	-	-	-	-
+$wyax	11	-	-	12:dem	-	distal	-	-
+samaya_1	12	-	-	17:k7t	-	-	-	-
+180°	13	numex	-	17:k7p	-	-	-	-
+maXya_1	15	-	-	16:mod	-	-	-	-
+rAwri_1	16	-	-	17:k1	-	-	-	-
+ho_1-gA_1	17	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0081>
+#किसी भी स्थान पर जब सूर्य आकाश में अपने उच्चतम बिंदु पर होता है, दोपहर में उस समय घडी में दिन के 12 बजते हैं।
+#kisI BI sWAna para jaba sUrya AkASa meM apane uccawama biMxu para howA hE, xopahara meM usa samaya GadI meM xina ke 12 bajawe hEM.
+#At any place a watch can be adjusted to read 12 o’clock when the sun is at the highest point in the sky, i.e., when it is mid-day.
+koI_1(any_1)	1	-	-	3:mod	-	BI_3	-	-
+sWAna_1(place_14)	3	-	-	13:k7p	-	-	-	28:whole
+$yax	5	-	-	13:k7t	-	-	-	-
+sUrya(sun_5)	6	-	-	13:k1	-	-	-	-
+AkASa_1(sky_3)	7	-	-	-	-	-	-	28:part
+apanA	9	-	pl	11:r6	-	-	-	-
+UzcA_1(high_5)	10	-	superl	11:mod	-	-	-	-
+biMxu_1(point_7)	11	-	-	13:k7p	-	-	-	-
+ho_1-wA_hE_1	13	-	-	19:rcsamAnakAla	-	-	-	-
+xopahara_1(midday_2)	16	-	-	25:k7t	-	-	-	-
+$wyax	18	-	-	19:dem	-	distal	-	-
+samaya_1(time_8)	19	-	-	25:k7t	-	-	-	-
+GadZI_5(clock_3)	20	-	-	-	-	-	-	-
+xina_1(day_6)	22	-	-	25:k7t	-	-	-	28:whole
+12	24	clocktime	-	25:k1	-	-	-	28:part
+baja_wA_hE_1	25	-	pl	0:main	-	-	-	-
+[temporal_1]	28	-	-	25:k1s	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0082>
+#इस प्रकार, घडी के द्वारा दिखाया गया समय उस स्थान का स्थानीय समय होगा।
+#isa prakAra, GadI ke xvArA xiKAyA gayA samaya usa sWAna kA sWAnIya samaya hogA.
+#The time shown by such a watch will give the local time for that place.
+$wyax	1	-	-	2:dem	-	proximal	-	-
+prakAra_1	2	-	-	15:sent-adv	-	-	-	-
+GadA_1	4	-	-	7:k1	-	-	-	-
+xiKA_1	7	-	-	9:rvks	-	-	-	-
+samaya_1	9	-	-	15:k1	-	-	-	-
+$wyax	10	-	-	11:dem	-	distal	-	-
+sWAna_1	11	-	-	14:r6	-	-	-	-
+sWAnIya_1	13	-	-	14:mod	-	-	-	-
+samaya_1	14	-	-	15:k1	-	-	-	-
+ho_1-gA_1	15	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0083a>
+#आप यह देख सकते हैं।
+#Apa yaha xeKa sakawe hEM.
+#You can see that all the places on a given meridian of longitue have the same local time.
+$addressee	1	anim	-	3:k1	-	respect	-	-
+$wyax	2	-	-	3:k2	Geo_ncert_6stnd_2ch_0083b.12:coref	proximal	-	-
+xeKa_1-0_sakawA_hE_1	3	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0083b>
+#कि दिए गए देशांतरीय याम्योत्तर पर सभी स्थानों का स्थानीय समय समान है।
+#ki xie gae xeSAMwarIya yAmyowwara para saBI sWAnoM kA sWAnIya samaya samAna hE.
+#You can see that all the places on a given meridian of longitue have the same local time.
+xe_1(give_1)	1	-	kqw	4:rbks	-	[shade:jA_1]	-	-
+xeSAMwarIya_2(longitudinal_1)	3	-	-	-	-	-	-	14:mod
+yAmyowwara(meridians_1)	4	-	-	-	-	-	-	14:head
+saBI_1	6	-	-	7:quant	-	-	-	-
+sWAna_1(place_14)	7	-	pl	10:r6	-	-	-	-
+sWAnIya_1(local_6)	9	-	-	10:mod	-	-	-	-
+samaya_1(time_8)	10	-	-	12:k1	-	-	-	-
+samAna_1	11	-	-	12:k1s	-	-	-	-
+hE_1-pres	12	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0084>
+#हम मानक समय क्यों मानते हैं?
+#hama mAnaka samaya kyoM mAnawe hEM?
+#WHY DO WE HAVE STANDARD TIME ?
+$speaker	1	anim	pl	5:k1	-	-	-	-
+mAnaka_1(standard_7)	2	-	-	3:mod	-	-	-	-
+samaya_1(time_8)	3	-	-	5:k2	-	-	-	-
+$kim	4	-	-	5:rh	-	-	-	-
+mAna_1-wA_hE_1	5	-	-	0:main	-	-	-	-
+%interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0085>
+#अलग-अलग याम्योत्तर पर स्थित स्थानों के स्थानीय समय में अंतर होता है।
+#alaga-alaga yAmyowwara para sWiwa sWAnoM ke sWAnIya samaya meM aMwara howA hE.
+#The local time of places which are on different meridians are bound to differ.
+alaga_1	1	-	xviwva	2:mod	-	-	-	-
+yAmyowwara_1	2	-	-	4:intf	-	-	-	-
+sWiwa_1	4	-	-	5:mod	-	-	-	-
+sWAna_1	5	-	pl	8:r6	-	-	-	-
+sWAnIya_1	7	-	-	8:mod	-	-	-	-
+samaya_1	8	-	-	11:k7	-	-	-	-
+aMwara_1	10	-	-	-	-	-	-	14:kriyAmUla
+ho_1-wA_hE_1	11	-	-	-	-	-	-	14:verbalizer
+[cp_1]	14	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0086>
+#उदाहरण के लिए, बहुत से देशांतरों से होकर गुजरने वाली रेलगाडियों के लिए समय-सारणी तैयार करना कठिन होगा।
+#uxAharaNa ke lie, bahuwa se xeSAMwaroM se hokara gujarane vAlI relagAdiyoM ke lie samaya-sAraNI wEyAra karanA kaTina hogA.
+#For example, it will be difficult to prepare a time-table for trains which cross several longitudes.
+bahuwa_2(many_5)	1	-	-	2:quant	-	sA_4	-	-
+xeSAMwara_1(longitude_1)	2	-	pl	3:rp	-	-	-	-
+gujara_2(pass_13)	3	-	-	4:mod	-	-	-	-
+relagAdI_1(train_9)	4	-	pl	8:rt	-	-	-	-
+samaya+sAraNI_1(timetable_2)	5	-	-	8:k2	-	-	-	-
+wEyAra_1(ready_4)	6	-	-	-	-	-	-	8:kriyAmUla
+kara_17(do_2)	7	-	-	-	-	-	-	8:verbalizer
+[cp_1]	8	-	-	10:k1	-	-	-	-
+kaTina_1(difficult_1)	9	-	-	10:k1s	-	-	-	-
+ho_1-gA_1	10	-	-	0:main	Geo_ncert_6stnd_2ch_0085.14:uXAharaNasvarUpa	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0087>
+#भारत में गुजरात के द्वारका तथा असम के डिब्रूगढ के स्थानीय समय में लगभग 1 घंटा 45 मिनट का अंतर होगा।
+#BArawa meM gujarAwa ke xvArakA waWA asama ke dibrUgaDa ke sWAnIya samaya meM lagaBaga 1 GaMtA 45 minata kA aMwara hogA.
+#In India, for instance, there will be a difference of about 1 hour and 45 minutes in the local times of Dwarka in Gujarat and Dibrugarh in Assam.
+BArawa	1	-	-	-	-	-	-	2:begin
+[ne_1]	2	place	-	-	-	-	-	14:whole
+gujarAwa	3	-	-	5:r6	-	-	-	4:begin
+[ne_2]	4	place	-	-	-	-	-	7:whole
+xvArakA	5	-	-	-	-	-	-	6:begin
+[ne_3]	6	place	-	-	-	-	-	7:part
+[spatial_1]	7	-	-	-	-	-	-	13:op1
+asama	8	-	-	9:r6	-	-	-	9:begin
+[ne_4]	9	place	-	-	-	-	-	12:whole
+dibrUgaDa	10	-	-	-	-	-	-	11:begin
+[ne_5]	11	place	-	-	-	-	-	12:part
+[spatial_2]	12	-	-	-	-	-	-	13:op2
+[conj_1]	13	-	-	-	-	-	-	14:part
+[spatial_3]	14	-	-	16:r6	-	-	-	-
+sWAnIya_1(local_6)	15	-	-	16:mod	-	-	-	-
+samaya_1(time_8)	16	-	-	25:k7	-	-	-	-
+1	17	numex	-	-	-	-	-	19:count
+GaMtA_4(hour_1)	18	-	-	-	-	-	-	19:unit
+[timew_meas_1]	19	-	-	-	-	-	-	23:op1
+45	20	numex	-	-	-	-	-	22:count
+minata_1(minute_2)	21	-	-	-	-	-	-	22:unit
+[time_meas_2]	22	-	-	-	-	-	-	23:op2
+[conj_2]	23	-	-	24:r6	-	-	-	-
+aMwara_1(difference_1)	24	-	-	25:k1	-	-	-	-
+ho_1-gA_1	25	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0088a>
+#इसलिए यह आवश्यक है।
+#isalie yaha AvaSyaka hE.
+#It is, therefore, necessary to adopt the local time of some central meridian of a country as the standard time for the country.
+$wyax	1	-	-	3:k1	Geo_ncert_6stnd_2ch_0088b.12:coref	proximal	-	-
+AvaSyaka_1(necessary_1)	2	-	-	3:k1s	-	-	-	-
+hE_1-pres	3	-	-	0:main	Geo_ncert_6stnd_2ch_0087.25:pariNAma	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0088b>
+#कि देश के मध्य भाग से होकर गुजरने वाली किसी याम्योत्तर के स्थानीय समय को देश का मानक समय माना जाए।
+#ki xeSa ke maXya BAga se hokara gujarane vAlI kisI yAmyowwara ke sWAnIya samaya ko xeSa kA mAnaka samaya mAnA jAe.
+#It is, therefore, necessary to adopt the local time of some central meridian of a country as the standard time for the country.
+xeSa_1(country_1)	1	-	-	3:r6	-	-	-	-
+maXya(central_1)	2	-	-	3:mod	-	-	-	-
+BAga_2(part_9)	3	-	-	4:rp	-	-	-	-
+gujara_2(pass_13)	4	-	-	6:mod	-	-	-	-
+koI_4(some_1)	5	-	-	6:quant	-	-	-	-
+yAmyowwara_1(meridians_1)	6	-	-	8:r6	-	-	-	-
+sWAnIya_1(local_6)	7	-	-	8:mod	-	-	-	-
+samaya_1(time_8)	8	-	-	12:k2	-	-	-	-
+xeSa_1(country_1)	9	-	-	11:r6	-	-	-	-
+mAnaka_1(standard_7)	10	-	-	11:mod	-	-	-	-
+samaya_1(time_8)	11	-	-	12:k2s	-	-	-	-
+mAna_1-yA_jA-e_2	12	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0089>
+#इस याम्योत्तर रेखा के स्थानीय समय को पूरे देश का मानक समय माना जाता है।
+#isa yAmyowwara reKA ke sWAnIya samaya ko pUre xeSa kA mAnaka samaya mAnA jAwA hE.
+#The local time at this meridian is taken as the standard time for the whole country.
+$wyax	1	-	-	4:dem	-	proximal	-	-
+yAmyowwara_1(meridians_1)	2	-	-	-	-	-	-	4:mod
+reKA_1(line_12)	3	-	-	-	-	-	-	4:head
+[nc_1]	4	-	-	6:r6	-	-	-	-
+sWAnIya_1(local_6)	5	-	-	6:mod	-	-	-	-
+samaya_1(time_8)	6	-	-	11:k2	-	-	-	-
+pUrA_3(whole_4)	7	-	-	8:mod	-	-	-	-
+xeSa_1(country_1)	8	-	-	10:r6	-	-	-	-
+mAnaka_1(standard_7)	9	-	-	10:mod	-	-	-	-
+samaya_1(time_8)	10	-	-	11:k2s	-	-	-	-
+mAna_1-yA_jA_wA_hE_1	11	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0090>
+#इसे भारतीय मानक समय के नाम से जाना जाता है।
+#ise BArawIya mAnaka samaya ke nAma se jAnA jAwA hE.
+#It is known as the Indian Standard Time (IST).
+$wyax	1	-	-	7:k2	Geo_ncert_6stnd_2ch_0089.4:coref	proximal	-	-
+BArawIya_1(indian_1)	2	-	-	-	-	-	-	5:begin
+mAnaka_1(standard_7)	3	-	-	-	-	-	-	5:inside
+samaya_1(time_8)	4	-	-	-	-	-	-	5:inside
+[ne_1]	5	ne	-	7:k2s	-	-	-	-
+nAma_1(name_3)	6	-	-	5:rs	-	-	-	-
+jAna_10(know_1)-yA_jA_wA_hE_1(en_is)	7	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0091>
+#कबीर भोपाल के निकट एक छोटे से नगर में रहता है।
+#kabIra BopAla ke nikata eka Cote se nagara meM rahawA hE.
+#Kabeer lives in a small town near Bhopal.
+kabIra	1	male	-	-	-	-	-	2:begin
+[ne_1]	2	per	-	9:k1	-	-	-	-
+BopAla	3	-	-	-	-	-	-	4:begin
+[ne_2]	4	place	-	5:rdl	-	-	-	-
+nikata_1(near_5)	5	-	-	10:k7p	-	-	-	-
+eka_2(a_1)	6	-	-	8:quant	-	-	-	-
+CotA_1(small_6)	7	-	-	8:mod	-	-	-	-
+nagara_2(town_1)	8	-	-	9:k7p	-	-	-	-
+raha_1(live_3)-wA_hE_1(es_1)	9	-	-	0:main	-	-	-	-
+sWiwa_1(situated_1)	10	-	-	8:mod	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0092a>
+#वह अपने मित्र आलोक से यह कहता है।
+#vaha apane miwra Aloka se yaha kahawA hE.
+#He tells his friend Alok that they will not be able to sleep tonight.
+$wyax	1	-	-	7:k1	Geo_ncert_6stnd_2ch_0091.2:coref	distal	-	-
+apanA	2	-	pl	3:r6	1:coref	-	-	-
+miwra_1(friend_2)	3	-	-	7:k2g	-	-	-	-
+Aloka	4	male	-	-	-	-	-	5:begin
+[ne_1]	5	per	-	3:rs	-	-	-	-
+$wyax	6	-	-	7:k2	Geo_ncert_6stnd_2ch_0092b.7:coref	proximal	-	-
+kaha_3(tell_1)-wA_hE_1(es_1)	7	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0092b>
+#कि वे लोग आज रात्रि में नहीं सो पाएँगे।
+#ki ve loga Aja rAwri meM nahIM so pAezge.
+#He tells his friend Alok that they will not be able to sleep tonight.
+$wyax	1	-	-	2:dem	-	distal	-	-
+loga_2(people_5)	2	-	-	7:k1	-	-	-	-
+Aja_1(today_2)	3	-	-	-	-	-	-	5:whole
+rAwri_1(night_8)	4	-	-	-	-	-	-	5:part
+[temporal_1]	5	-	-	7:k7t	-	-	-	-
+nahIM_1(not_1)	6	-	-	7:neg	-	-	-	-
+so_9(sleep_5)-0_pAegA_1	7	-	-	0:main	-	-	-	-
+%negative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0093>
+#भारत एवं इंग्लैंड के बीच एक क्रिकेट मैच लंदन में 2 बजे अपराह्न में शुरू होगा।
+#BArawa evaM iMglEMda ke bIca eka kriketa mEca laMxana meM 2 baje aparAhna meM SurU hogA.
+#A day and night cricket match between India and England had started at 2 p.m.  in London.
+BArawa	1	-	-	-	-	-	-	2:begin
+[ne_1]	2	place	-	-	-	-	-	5:op1
+iMglEMda	3	-	-	-	-	-	-	4:begin
+[ne_2]	4	place	-	-	-	-	-	5:op2
+[conj_1]	5	-	-	9:r6	-	-	-	-
+eka_2(a_1)	6	-	-	9:quant	-	-	-	-
+^kriketa_1(cricket_1)	7	-	-	-	-	-	-	9:mod
+^mEca_1(match_5)	8	-	-	-	-	-	-	9:head
+[nc_1]	9	-	-	17:k1	-	-	-	-
+laMxana	10	-	-	-	-	-	-	11:begin
+[ne_3]	11	place	-	17:k7p	-	-	-	-
+aparAhna_1	12	-	-	-	-	-	-	14:whole
+2	13	clocktime	-	-	-	-	-	14:part
+[temporal_1]	14	-	-	17:k7t	-	-	-	-
+SurU_3(start_15)	15	-	-	-	-	-	-	17:kriyAmUla
+ho_8(be_2)-gA_1(0_will_1)	16	-	-	-	-	-	-	17:verbalizer
+[cp_1]	17	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0094a>
+#अर्थात् भारत के समयानुसार मैच शाम के 7:30 बजे शुरू होगा ।
+#arWAw BArawa ke samayAnusAra mEca SAma ke 7:30 baje SurU hogA .
+#This means that the match would begin at 7.30 p.m.  in India and finish well into the night.
+BArawa	1	-	-	-	-	-	-	2:begin
+[ne_1]	2	-	-	3:r6	-	-	-	-
+samaya_1(time_8)	3	-	-	12:k7a	-	-	-	-
+mEca_1(match_5)	4	-	-	12:k1	-	-	-	-
+SAma_1(evening_3)	5	-	-	-	-	-	-	9:whole
+7	6	clocktime	-	-	-	-	-	8:component1
+30	7	clocktime	-	-	-	-	-	8:component2
+[calendar_1]	8	-	-	-	-	-	-	9:part
+[temporal_1]	9	-	-	12:k7t	-	-	-	-
+SurU_3(start_15)	10	-	-	-	-	-	-	12:kriyAmUla
+ho_8(be_2)-gA_1(0_will_1)	11	-	-	-	-	-	-	12:verbalizer
+[cp_1]	12	-	-	0:main	Geo_ncert_6stnd_2ch_0093.17:arWAwa	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0094b>
+#तथा यह देर रात्रि में समाप्त होगा।
+#waWA yaha xera rAwri meM samApwa hogA.
+#This means that the match would begin at 7.30 p.m.  in India and finish well into the night.
+$wyax	1	-	-	6:k1	Geo_ncert_6stnd_2ch_0094a.4:coref	proximal	-	-
+xera_3(late_1)	2	-	-	3:mod	-	-	-	-
+rAwri_1(night_8)	3	-	-	6:k7t	-	-	-	-
+samApwa_1(finished_6)	4	-	-	-	-	-	-	6:kriyAmUla
+ho_1-gA_1	5	-	-	-	-	-	-	6:verbalizer
+[cp_1]	6	-	-	0:main	Geo_ncert_6stnd_2ch_0094a.12:samuccaya	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0095a>
+#क्या आप यह जानते हैं?
+#kyA Apa yaha jAnawe hEM?
+#Do you know what is the time difference between India and England?
+$addressee	1	anim	-	3:k1	-	respect	-	-
+$wyax	2	-	-	3:k2	Geo_ncert_6stnd_2ch_0095b.9:coref	proximal	-	-
+jAna_10(know_1)-wA_hE_1(es_1)	3	-	-	0:main	-	-	-	-
+%yn_interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0095b>
+#कि भारत एवं इंग्लैंड के बीच समय में क्या अंतर है?
+#ki BArawa evaM iMglEMda ke bIca samaya meM kyA aMwara hE?
+#Do you know what is the time difference between India and England?
+BArawa	1	-	-	-	-	-	-	2:begin
+[ne_1]	2	place	-	-	-	-	-	5:op1
+iMglEMda	3	-	-	-	-	-	-	4:begin
+[ne_1]	4	place	-	-	-	-	-	5:op2
+[conj_1]	5	-	-	6:r6	-	-	-	-
+samaya_1(time_8)	6	-	-	9:k7	-	-	-	-
+$kim	7	-	-	8:r6	-	-	-	-
+aMwara_1(difference_1)	8	-	-	9:k1	-	-	-	-
+hE_1(state_copula_1)	9	-	-	0:main	-	-	-	-
+%interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0096a>
+#भारत ग्रीनिच के पूर्व 82° 30' पू. में स्थित है ।
+#BArawa grInica ke pUrva 82 30' pU. meM sWiwa hE .
+#India located east of Greenwich at 82 ° 30 ' E is 5 hours and 30 minutes ahead of GMT.
+BArawa	1	-	-	-	-	-	-	-
+grInica	2	-	-	-	-	-	-	-
+pUrva_1(east_3)	4	-	-	-	-	-	-	-
+82	5	numex	-	-	-	-	-	-
+30	6	numex	-	-	-	-	-	-
+digrI+pUrva_1	7	-	-	-	-	-	-	-
+sWiwa_2(located_2)	9	-	-	-	-	-	-	-
+hE_1(state_copula_1)	10	-	-	0:main	-	-	-	-
+[ne_1]	13	place	-	-	-	-	-	-
+[ne_2]	14	place	-	-	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0096b>
+#तथा यहाँ का समय ग्रीनिच समय से 5 घंटा 30 मिनट आगे है।
+#waWA yahAz kA samaya grInica samaya se 5 GaMtA 30 minata Age hE.
+#India located east of Greenwich at 82 ° 30 ' E is 5 hours and 30 minutes ahead of GMT.
+$wyax	1	-	-	2:r6	-	proximal	-	-
+samaya_1(time_8)	2	-	-	14:k1	-	-	-	-
+grInica	3	-	-	-	-	-	-	5:begin
+samaya	4	-	-	-	-	-	-	5:inside
+[ne_1]	5	ne	-	13:rkl	-	-	-	-
+5	6	numex	-	-	-	-	-	8:count
+GaMtA_4(hour_1)	7	-	-	-	-	-	-	8:unit
+[time_meas_1]	8	-	-	-	-	-	-	12:op1
+30	9	numex	-	-	-	-	-	11:count
+minata_1(minute_2)	10	-	-	-	-	-	-	11:unit
+[time_meas_2]	11	-	-	-	-	-	-	12:op2
+[conj_1]	12	-	-	13:rmeas	-	-	-	-
+Age_1(ahead_1)	13	-	-	14:k1s	-	-	-	-
+hE_1-pres	14	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0097>
+#इसलिए जब लंदन में दोपहर के 2 बजे होंगे, तब भारत में शाम के 7:30 बजे होंगे।
+#isalie jaba laMxana meM xopahara ke 2 baje hoMge, waba BArawa meM SAma ke 7:30 baje hoMge.
+#So it will be 7:30 p.m. in India when it is 2:00 p.m. noon in London.
+$yax	1	-	-	8:k7t	-	-	-	-
+laMxana	2	-	-	8:k7p	-	-	-	-
+xopahara_1	3	-	-	7:r6	-	-	-	-
+xopahara_1	4	-	-	8:k7t	-	-	-	-
+ho_1-gA_1	5	-	-	10:rc	-	-	-	-
+2	6	clocktime	-	19:k7t	-	-	-	-
+BArawa	7	male	-	19:k7p	-	-	-	-
+hoge_1	8	-	-	18:r6	-	-	-	-
+7	9	numex	-	17:card	-	-	-	-
+waba	10	-	-	19:k7t	-	-	-	-
+BArawa	11	male	-	0:main	Geo_ncert_6stnd_2ch_0096b.19:pariNAma	-	-	-
+SAma_1	13	-	-	-	-	-	-	-
+7	15	numex	-	-	-	-	-	-
+30	17	clocktime	-	-	-	-	-	-
+ho_1-gA_1	19	-	-	-	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0098a>
+#कुछ देशों का देशांतरीय विस्तार अधिक होता है।
+#kuCa xeSoM kA xeSAMwarIya viswAra aXika howA hE.
+#Some countries have a great longitudinal extent and so they have adopted more than one standard time.
+kuCa_1(some_2)	1	-	-	2:quant	-	-	-	-
+xeSa_1(country_1)	2	-	pl	4:r6	-	-	-	-
+xeSAMwarIya_2(longitudinal_1)	3	-	-	4:mod	-	-	-	-
+viswAra_4(extent_3)	4	-	-	6:k1	-	-	-	-
+aXika_1(more_1)	5	-	-	6:k1s	-	-	-	-
+ho_6(be_4)-wA_hE_1(es_1)	6	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0098b>
+#इसका कारण वहाँ एक से अधिक मानक समय अपनाए गए हैं।
+#isakA kAraNa vahAz eka se aXika mAnaka samaya apanAe gae hEM.
+#Some countries have a great longitudinal extent and so they have adopted more than one standard time.
+$wyax	1	-	-	5:k7p	Geo_ncert_6stnd_2ch_0098a.2:coref	proximal	-	-
+1	2	numex	-	4:quantmore	-	-	-	-
+mAnaka_1(standard_7)	3	-	-	4:mod	-	-	-	-
+samaya_1(time_8)	4	-	-	5:k2	-	-	-	-
+apanA_2(adopt_2)-yA_jA_yA_hE_1	5	-	-	0:main	Geo_ncert_6stnd_2ch_0098a.6:pariNAma	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0099>
+#उदाहरण के लिए, रूस में 11 मानक समयों को अपनाया गया है।
+#uxAharaNa ke lie, rUsa meM 11 mAnaka samayoM ko apanAyA gayA hE.
+#For example, in Russia, there are as many as eleven standard times.
+rUsa	1	-	-	-	-	-	-	2:begin
+[ne_1]	2	place	-	6:k7p	-	-	-	-
+11	3	numex	-	5:card	-	-	-	-
+mAnaka_1(standard_7)	4	-	-	5:mod	-	-	-	-
+samaya_1(time_8)	5	-	pl	6:k2	-	-	-	-
+apanA_2(adopt_2)-yA_jA_yA_hE_1	6	-	-	0:main	Geo_ncert_6stnd_2ch_0098b.5:uXAharaNasvarUpa	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0100>
+#पृथ्वी को एक-एक घंटे वाले 24 समय क्षेत्रों में बाँटा गया है।
+#pqWvI ko eka-eka GaMte vAle 24 samaya kRewroM meM bAztA gayA hE.
+#The earth has been divided into twenty-four time zones of one hour each.
+pqWvI_1(earth_9)	1	-	-	8:k2	-	-	-	-
+1	2	numex	xviwva	3:card	-	-	-	-
+GaMtA_4(hour_1)	3	-	mawup	7:mod	-	-	-	-
+24	4	numex	-	7:card	-	-	-	-
+samaya_1(time_8)	5	-	-	-	-	-	-	7:mod
+kRewra_15(zone_1)	6	-	pl	-	-	-	-	7:head
+[nc_1]	7	-	-	8:k7	-	-	-	-
+bAzta_8(divide_1)-yA_jA_yA_hE_1	8	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0101>
+#इस प्रकार प्रत्येक समय-क्षेत्र 15° देशांतर तक के क्षेत्र को घेरता है।
+#isa prakAra prawyeka samaya-kRewra 15 xeSAMwara waka ke kRewra ko GerawA hE.
+#Each zone thus covers 15° of longitude.
+prawyeka_1(each_1)	1	-	-	2:quant	-	-	-	-
+samaya+kRewra_1	2	-	-	8:k1	-	-	-	-
+15	3	numex	-	-	-	-	-	5:count
+digrI+xeSAMwara_1	4	-	-	-	-	-	-	5:unit
+[length_meas_1]	5	-	-	-	-	-	-	6:end
+[span_1]	6	-	-	7:r6	-	-	-	-
+kRewra_5(area_2)	7	-	-	8:k2	-	-	-	-
+Gera_1-wA_hE_1	8	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0102>
+#आप निम्नलिखित प्रश्नों के उत्तर संक्षेप में दीजिए।
+#Apa nimnaliKiwa praSnoM ke uwwara saMkRepa meM xIjie.
+#Answer the following questions briefly.
+$addressee	1	anim	-	6:k1	-	respect	-	-
+nimnaliKiwa_2(following_8)	2	-	-	3:mod	-	-	-	-
+praSna_1(question_3)	3	-	pl	4:r6	-	-	-	-
+uwwara_1(answer_1)	4	-	-	6:k2	-	-	-	-
+saMkRepa_3(brief_4)	5	-	-	6:krvn	-	-	-	-
+xe_1(give_1)-o_1(o_1)	6	-	-	0:main	-	-	-	-
+%affirmative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0103>
+#पृथ्वी का सही आकार क्या है?
+#pqWvI kA sahI AkAra kyA hE?
+#What is the true shape of the earth?
+pqWvI_1(earth_9)	1	-	-	3:r6	-	-	-	-
+sahI_10(true_13)	2	-	-	3:mod	-	-	-	-
+AkAra_2(shape_1)	3	-	-	5:k1	-	-	-	-
+$kim	4	-	-	5:k1s	-	-	-	-
+hE_1(state_copula_1)	5	-	-	0:main	-	-	-	-
+%interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0104>
+#कर्क रेखा का अक्षांशीय मान क्या है?
+#karka reKA kA akRAMSIya mAna kyA hE?
+#What is the latitudinal value of the Tropic of Cancer?
+karka	1	-	-	-	-	-	-	3:begin
+reKA	2	-	-	-	-	-	-	3:inside
+[ne_1]	3	ne	-	5:r6	-	-	-	-
+akRAMSIya_1(latitudinal_1)	4	-	-	5:mod	-	-	-	-
+mAna_5(value_4)	5	-	-	7:k1	-	-	-	-
+$kim	6	-	-	7:k1s	-	-	-	-
+hE_1(state_copula_1)	7	-	-	0:main	-	-	-	-
+%interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0105>
+#पृथ्वी के तीन ताप कटिबंध कौन-से हैं?
+#pqWvI ke wIna wApa katibaMXa kOna-se hEM?
+#What are the three heat zones of the Earth?
+pqWvI_1(earth_9)	1	-	-	5:r6	-	-	-	-
+3	2	numex	-	5:card	-	-	-	-
+wApa_1(heat_6)	3	-	-	-	-	-	-	5:mod
+katibaMXa_3(zone_6)	4	-	-	-	-	-	-	5:head
+[nc_1]	5	-	-	7:k1	-	-	-	-
+$kim	6	-	-	7:k1s	-	sA_1	-	-
+hE_1(state_copula_1)	7	-	-	0:main	-	-	-	-
+%interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0106>
+#अक्षांश एवं देशांतर रेखाएँ क्या हैं?
+#akRAMSa evaM xeSAMwara reKAez kyA hEM?
+#What are parallels of latitude and meridians of longitude?
+akRAMSa_1(latitude_4)	1	-	-	-	-	-	-	3:op1
+xeSAMwara_1(longitude_1)	2	-	-	-	-	-	-	3:op2
+[conj_1]	3	-	-	-	-	-	-	5:mod
+reKA_1(line_12)	4	-	pl	-	-	-	-	5:head
+[nc_1]	5	-	-	7:k1	-	-	-	-
+$kim	6	-	-	7:k1s	-	-	-	-
+hE_1(state_copula_1)	7	-	-	0:main	-	-	-	-
+%interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0107>
+#ऊष्मा की सबसे अधिक मात्रा उष्ण कटिबंध क्यों प्राप्त करते हैं?
+#URmA kI sabase aXika mAwrA uRNa katibaMXa kyoM prApwa karawe hEM?
+#Why does the torrid zone receive maximum amount of heat?
+URmA_1(heat_1)	1	-	-	3:r6	-	-	-	-
+aXika_1(more_1)	2	-	superl	3:quant	-	-	-	-
+mAwrA_9(amount_10)	3	-	-	9:k2	-	-	-	-
+uRNa_9	4	-	-	5:mod	-	-	-	-
+katibaMXa_3(zone_6)	5	-	-	9:k4	-	-	-	-
+$kim	6	-	-	9:rh	-	-	-	-
+prApwa_5(received_1)	7	-	-	-	-	-	-	9:kriyAmUla
+kara_17(do_2)-wA_hE_1(es_1)	8	-	-	-	-	-	-	9:verbalizer
+[cp_1]	9	-	-	0:main	-	-	-	-
+%interrogative
+</segment_id>
+
+<segment_id=Geo_ncert_6stnd_2ch_0108>
+#जब भारत में शाम के 5:30 बजते हैं, तब लंदन में दोपहर के 12 क्यों बजते हैं?
+#jaba BArawa meM SAma ke 5:30 bajawe hEM, waba laMxana meM xopahara ke 12 kyoM bajawe hEM?
+#Why is it 5.30 p.m. in India and 12.00 noon in London?
+$yax	1	-	-	9:k7t	-	-	-	-
+BArawa	2	-	-	-	-	-	-	3:begin
+[ne_1]	3	place	-	9:k7p	-	-	-	-
+SAma_1(evening_3)	4	-	-	-	-	-	-	8:whole
+5	5	clocktime	-	-	-	-	-	7:component1
+30	6	clocktime	-	-	-	-	-	7:component2
+[calendar_1]	7	-	-	-	-	-	-	8:part
+[temporal_1]	8	-	-	9:k1	-	-	-	-
+baja_1-wA_hE_1	9	-	-	10:rcsamAnakAla	-	-	-	-
+$wyax	10	-	-	17:k7t	9:coref	-	-	-
+laMxana	11	-	-	-	-	-	-	12:begin
+[ne_2]	12	place	-	17:k7p	-	-	-	-
+xopahara_3(mid-day_2)	13	-	-	-	-	-	-	15:whole
+12	14	clocktime	-	-	-	-	-	15:part
+[temporal_2]	15	-	-	17:k1	-	-	-	-
+$kim	16	-	-	17:rh	-	-	-	-
+baja_1-wA_hE_1	17	-	-	0:main	-	-	-	-
+%interrogative
+</segment_id>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AppNavbar from "../components/AppNavbar";
 import "../styles/SubjectSelectionPage.css";
 
-const BASE_URL = "https://canvas.iiit.ac.in/bioereaderbe";
+const BASE_URL = "http://10.2.8.12:8500";
 
 // Subject icons mapping (you can customize these)
 const getSubjectIcon = (subject) => {

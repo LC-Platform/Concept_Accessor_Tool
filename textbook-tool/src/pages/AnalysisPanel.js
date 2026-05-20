@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import USRGraphVisualizer from '../components/USRGraphVisualizer';
 import { fetchAndParseUSR } from '../utils/usrParser';
 
-const BASE_URL = "https://canvas.iiit.ac.in/bioereaderbe";
+const BASE_URL = "http://10.2.8.12:8500";
 
 function OccurrencePages({ selectedTerm, termOccurrences, displayToFileMap = {} }) {
   const [expandedPage, setExpandedPage] = useState(null);
