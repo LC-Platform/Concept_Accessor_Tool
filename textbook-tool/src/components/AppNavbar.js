@@ -3,7 +3,10 @@ import iiithLogo from "../assets/iiith_logo.png";
 
 export default function AppNavbar() {
   const navigate = useNavigate();
-  const username = localStorage.getItem("username");
+
+  // Read from the user object stored at login
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const username = user.username || "User";
 
   const logout = () => {
     localStorage.clear();
@@ -24,7 +27,7 @@ export default function AppNavbar() {
     >
       <div
         style={{ cursor: "pointer" }}
-        onClick={() => navigate("/chapters", { replace: true })}
+        onClick={() => navigate("/subjects", { replace: true })}
       >
         <img src={iiithLogo} alt="Logo" style={{ height: "36px" }} />
       </div>
