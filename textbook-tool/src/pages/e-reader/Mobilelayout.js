@@ -5,7 +5,7 @@ import PdfViewer from "./PdfViewer";
 import ReadingPanel from "./ReadingPanel";
 import AnalysisPanel from "./AnalysisPanel";
 import BottomSheet from "./Bottomsheet";
-import "../styles/Mobilelayout.css";
+import "../../styles/Mobilelayout.css";
 
 const BASE_URL = "http://10.2.8.12:8500";
 

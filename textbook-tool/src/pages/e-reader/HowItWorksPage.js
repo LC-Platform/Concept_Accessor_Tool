@@ -1,8 +1,8 @@
 // HowItWorksPage.js
 
-import "../styles/HowItWorksPage.css";
+import "../../styles/HowItWorksPage.css";
 import { useNavigate } from "react-router-dom";
-import iiithLogo from "../assets/iiith_logo.png";
+import iiithLogo from "../../assets/iiith_logo.png";
 
 export default function HowItWorksPage() {
   const navigate = useNavigate();

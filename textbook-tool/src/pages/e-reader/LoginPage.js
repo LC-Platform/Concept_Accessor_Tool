@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/Auth.css";
+import "../../styles/Auth.css";
 
 const BASE_URL = "http://10.2.8.12:8500";
 
@@ -37,14 +37,21 @@ export default function LoginPage() {
         return;
       }
 
-      // Store full user object
       localStorage.setItem("user", JSON.stringify({
         user_id: data.user_id,
         username: data.username,
         email: data.email
       }));
 
-      navigate("/subjects", { replace: true });
+      // Check if this user has already completed the assessment
+      const reportsRes = await fetch(`${BASE_URL}/api/reports?user_id=${data.user_id}`);
+      const reports = await reportsRes.json();
+
+      if (Array.isArray(reports) && reports.length > 0) {
+        navigate("/subjects", { replace: true });
+      } else {
+        navigate("/assessment", { replace: true });
+      }
 
     } catch (err) {
       setError("Server error");

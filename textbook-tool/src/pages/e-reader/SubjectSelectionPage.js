@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AppNavbar from "../components/AppNavbar";
-import "../styles/SubjectSelectionPage.css";
+import AppNavbar from "../../components/AppNavbar";
+import "../../styles/SubjectSelectionPage.css";
 
 const BASE_URL = "http://10.2.8.12:8500";
 

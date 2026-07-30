@@ -320,6 +320,36 @@
   border-radius: 5px;
 }
 
+.resume-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #16a34a;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.resume-info {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.resume-reading {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.resume-reading .footer-arrow {
+  color: #16a34a;
+}
+
 /* Chapter Content */
 .chapter-content { margin-bottom: 14px; }
 

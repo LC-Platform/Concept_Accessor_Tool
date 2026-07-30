@@ -1,27 +1,28 @@
 // App.js (with enhanced 404 page)
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import ConceptLayout from "./pages/ConceptLayout";
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
-import HowItWorksPage from "./pages/HowItWorksPage";
-import LegalPage from "./pages/LegalPage";
+import HomePage from "./pages/e-reader/HomePage";
+import ConceptLayout from "./pages/e-reader/ConceptLayout";
+import AboutPage from "./pages/e-reader/AboutPage";
+import ContactPage from "./pages/e-reader/ContactPage";
+import HowItWorksPage from "./pages/e-reader/HowItWorksPage";
+import LegalPage from "./pages/e-reader/LegalPage";
 import "./styles/ModernLayout.css";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
-import ForgotPassword from "./pages/ForgotPassword";
-import VerifyResetCode from "./pages/VerifyResetCode";
-import ResetPassword from "./pages/ResetPassword";
-import ChapterListPage from "./pages/ChapterList";
+import LoginPage from "./pages/e-reader/LoginPage";
+import SignupPage from "./pages/e-reader/SignupPage";
+import ForgotPassword from "./pages/e-reader/ForgotPassword";
+import VerifyResetCode from "./pages/e-reader/VerifyResetCode";
+import ResetPassword from "./pages/e-reader/ResetPassword";
+import ProfilePage from "./pages/e-reader/ProfilePage";
+import ChapterListPage from "./pages/e-reader/ChapterList";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import SubjectSelectionPage from "./pages/SubjectSelectionPage";
-
+import SubjectSelectionPage from "./pages/e-reader/SubjectSelectionPage";
+import GamesAssessment from "./pages/games/GamesAssessment";
 
 
 function App() {
  
-
+  
   return (
     <Router basename="/bioereaderfe/">
       <Routes>
@@ -51,13 +52,28 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/assessment"
+          element={
+            <ProtectedRoute>
+              <GamesAssessment onComplete={() => window.location.replace("/bioereaderfe/subjects")} />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify-reset-code" element={<VerifyResetCode />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
      
         
         {/* Informational Pages */}

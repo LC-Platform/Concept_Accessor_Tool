@@ -17,11 +17,12 @@ import io
 import motor.motor_asyncio
 import os
 from pydantic import BaseModel, EmailStr, validator
+from scoring import GAMES, CATEGORIES, WEIGHTS_A, WEIGHTS_B, calculate_analysis
 import bcrypt
 import random
 import string
 import smtplib
-
+from bson import ObjectId
 from email.mime.text import MIMEText
 from minio import Minio
 from xml_to_image import xml_to_image
@@ -30,6 +31,8 @@ import pdfplumber
 import re
 import nltk
 from nltk.tokenize import sent_tokenize
+from typing import List, Dict
+
 
 from typing import Optional
 
@@ -88,6 +91,8 @@ reset_codes_col = db_mongo["reset_codes"]
 qa_col = db_mongo["qa"]  
 reading_progress_col = db_mongo["reading_progress"]
 sentences_col = db_mongo["sentences"]
+questions_col = db_mongo["questions"]
+reports_col = db_mongo["reports"]
 
 
 def compute_pdf_hash(pdf_bytes: bytes) -> str:
@@ -282,7 +287,63 @@ class ReadingProgressResponse(BaseModel):
     user_id: str
     pin_position: Optional[PinPosition] = None
     last_updated: Optional[str] = None
+    
+class ReportSubmitRequest(BaseModel):
+    user_id: str
+    played_games: Dict[str, Any]
 
+class UserProfileResponse(BaseModel):
+    user_id: str
+    username: str
+    name: str
+    email: EmailStr
+    standard: str
+
+class UpdateProfileRequest(BaseModel):
+    name: Optional[str] = None
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
+    standard: Optional[str] = None
+
+    @validator("standard")
+    def validate_standard(cls, v):
+        if v is not None and v not in ["11", "12"]:
+            raise ValueError("Standard must be 11 or 12")
+        return v
+    
+
+class QAPairModel(BaseModel):
+    question: str
+    answer: str
+
+class SaveQARequest(BaseModel):
+    chapter_id: str
+    qa_pairs: List[QAPairModel]
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+    confirm_password: str
+
+    @validator("new_password")
+    def password_strength(cls, v):
+        import re
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters long")
+        if not re.search(r"[A-Z]", v):
+            raise ValueError("Password must contain at least one uppercase letter")
+        if not re.search(r"[0-9]", v):
+            raise ValueError("Password must contain at least one number")
+        if not re.search(r"[^A-Za-z0-9]", v):
+            raise ValueError("Password must contain at least one special character")
+        return v
+
+    @validator("confirm_password")
+    def passwords_match(cls, v, values):
+        if "new_password" in values and v != values["new_password"]:
+            raise ValueError("Passwords do not match")
+        return v
+    
 def send_email(to_email, subject, body):
     SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
     SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
@@ -365,15 +426,7 @@ async def login(credentials: LoginModel):
     "email": user_doc["email"]
     }
 
-from typing import List, Dict
 
-class QAPairModel(BaseModel):
-    question: str
-    answer: str
-
-class SaveQARequest(BaseModel):
-    chapter_id: str
-    qa_pairs: List[QAPairModel]
 @app.post("/forgot-password/")
 async def forgot_password(req: ForgotPasswordRequest):
     user_doc = await users_col.find_one({"email": req.email})
@@ -392,7 +445,8 @@ async def forgot_password(req: ForgotPasswordRequest):
     )
     print(f"Reset code for {req.email}: {code}")  # For debugging; remove in production
     return {"message": "Password reset code sent to your email"}
-     # For debugging; remove in production
+  
+     
 @app.post("/verify-reset-code/")
 async def verify_reset_code(req: VerifyCodeRequest):
     doc = await reset_codes_col.find_one({"email": req.email, "code": req.code})
@@ -418,7 +472,274 @@ async def reset_password(req: ResetPasswordRequest):
     return {"message": "Password reset successful"}
 
 
+# -----------------------------------
+# Profile Routes
+# -----------------------------------
 
+@app.get("/profile/{user_id}", response_model=UserProfileResponse)
+async def get_profile(user_id: str):
+    """
+    Retrieve a user's profile details.
+    """
+    try:
+        user_obj_id = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+
+    user_doc = await users_col.find_one({"_id": user_obj_id})
+    if not user_doc:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return UserProfileResponse(
+        user_id=str(user_doc["_id"]),
+        username=user_doc.get("username"),
+        name=user_doc.get("name"),
+        email=user_doc.get("email"),
+        standard=user_doc.get("standard"),
+    )
+
+
+@app.put("/profile/{user_id}")
+async def update_profile(user_id: str, update: UpdateProfileRequest):
+    """
+    Update a user's profile details (name, username, email, standard).
+    Only fields provided in the request body are updated.
+    """
+    try:
+        user_obj_id = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+
+    user_doc = await users_col.find_one({"_id": user_obj_id})
+    if not user_doc:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    update_fields = {k: v for k, v in update.dict(exclude_unset=True).items() if v is not None}
+
+    if not update_fields:
+        raise HTTPException(status_code=400, detail="No fields provided to update")
+
+    # Check username/email uniqueness against other users
+    if "username" in update_fields or "email" in update_fields:
+        conflict_query = {"$or": [], "_id": {"$ne": user_obj_id}}
+        if "username" in update_fields:
+            conflict_query["$or"].append({"username": update_fields["username"]})
+        if "email" in update_fields:
+            conflict_query["$or"].append({"email": update_fields["email"]})
+
+        existing = await users_col.find_one(conflict_query)
+        if existing:
+            raise HTTPException(status_code=400, detail="Username or email already in use")
+
+    await users_col.update_one(
+        {"_id": user_obj_id},
+        {"$set": update_fields}
+    )
+
+    updated_doc = await users_col.find_one({"_id": user_obj_id})
+
+    return {
+        "message": "Profile updated successfully",
+        "profile": UserProfileResponse(
+            user_id=str(updated_doc["_id"]),
+            username=updated_doc.get("username"),
+            name=updated_doc.get("name"),
+            email=updated_doc.get("email"),
+            standard=updated_doc.get("standard"),
+        )
+    }
+
+
+@app.patch("/profile/{user_id}/password")
+async def change_password(user_id: str, req: ChangePasswordRequest):
+    """
+    Change a user's password. Requires the current password for verification.
+    """
+    try:
+        user_obj_id = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+
+    user_doc = await users_col.find_one({"_id": user_obj_id})
+    if not user_doc:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    pw_hash = user_doc.get("password_hash", "").encode("utf-8")
+    if not bcrypt.checkpw(req.current_password.encode("utf-8"), pw_hash):
+        raise HTTPException(status_code=401, detail="Current password is incorrect")
+
+    new_hash = bcrypt.hashpw(req.new_password.encode("utf-8"), bcrypt.gensalt())
+    await users_col.update_one(
+        {"_id": user_obj_id},
+        {"$set": {"password_hash": new_hash.decode("utf-8")}}
+    )
+
+    return {"message": "Password updated successfully"}
+
+
+@app.delete("/profile/{user_id}")
+async def delete_profile(user_id: str, req: LoginModel):
+    """
+    Delete a user's account. Requires re-entering email + password for confirmation.
+    """
+    try:
+        user_obj_id = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+
+    user_doc = await users_col.find_one({"_id": user_obj_id})
+    if not user_doc:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if user_doc.get("email") != req.email:
+        raise HTTPException(status_code=400, detail="Email does not match this account")
+
+    pw_hash = user_doc.get("password_hash", "").encode("utf-8")
+    if not bcrypt.checkpw(req.password.encode("utf-8"), pw_hash):
+        raise HTTPException(status_code=401, detail="Incorrect password")
+
+    await users_col.delete_one({"_id": user_obj_id})
+    return {"message": "Account deleted successfully"}
+
+
+# -----------------------------------
+# Profile Stats / Progress & Gamification
+# -----------------------------------
+
+LEVELS = [
+    {"name": "Beginner",  "min_xp": 0},
+    {"name": "Explorer",  "min_xp": 150},
+    {"name": "Scholar",   "min_xp": 400},
+    {"name": "Achiever",  "min_xp": 800},
+    {"name": "Master",    "min_xp": 1500},
+]
+
+def compute_level(xp: int) -> Dict[str, Any]:
+    """
+    Given total XP, return current level info and progress toward next level.
+    """
+    current = LEVELS[0]
+    next_level = None
+
+    for i, lvl in enumerate(LEVELS):
+        if xp >= lvl["min_xp"]:
+            current = lvl
+            next_level = LEVELS[i + 1] if i + 1 < len(LEVELS) else None
+        else:
+            break
+
+    if next_level:
+        span = next_level["min_xp"] - current["min_xp"]
+        progress = xp - current["min_xp"]
+        percent_to_next = round((progress / span) * 100, 1) if span > 0 else 100
+    else:
+        percent_to_next = 100  # maxed out
+
+    return {
+        "level_name": current["name"],
+        "xp": xp,
+        "current_level_min_xp": current["min_xp"],
+        "next_level_name": next_level["name"] if next_level else None,
+        "next_level_min_xp": next_level["min_xp"] if next_level else None,
+        "percent_to_next_level": percent_to_next,
+    }
+
+
+@app.get("/profile/{user_id}/stats")
+async def get_profile_stats(user_id: str):
+    """
+    Aggregate reading progress and game performance into a profile stats summary,
+    including a derived level/XP for gamification.
+    """
+    try:
+        user_obj_id = ObjectId(user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+
+    user_doc = await users_col.find_one({"_id": user_obj_id})
+    if not user_doc:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # ---- Chapters progress ----
+    total_chapters = await chapters_col.count_documents({})
+
+    started_chapter_ids = await reading_progress_col.distinct(
+        "chapter_id", {"user_id": user_id}
+    )
+    chapters_started = len(started_chapter_ids)
+
+    # Most recently touched chapter (for "continue reading")
+    last_progress = await reading_progress_col.find_one(
+        {"user_id": user_id},
+        sort=[("last_updated", -1)]
+    )
+    continue_reading = None
+    if last_progress:
+        chapter_doc = await chapters_col.find_one({"chapter_id": last_progress["chapter_id"]})
+        continue_reading = {
+            "chapter_id": last_progress["chapter_id"],
+            "chapter_name": chapter_doc.get("chapter_name") if chapter_doc else "Unknown",
+            "pin_position": last_progress.get("pin_position"),
+            "last_updated": last_progress.get("last_updated"),
+        }
+
+    # ---- Games / reports progress ----
+    cursor = reports_col.find({"user_id": user_id}).sort("created_at", -1)
+    reports = await cursor.to_list(length=1000)
+
+    games_played_count = len(reports)
+
+    total_score_pct = 0
+    scored_reports = 0
+    best_report = None
+    best_pct = -1
+
+    for report in reports:
+        played_games = report.get("played_games", {})
+        for game_id, game_data in played_games.items():
+            score = game_data.get("score")
+            max_score = game_data.get("maxScore")
+            if score is not None and max_score:
+                pct = (score / max_score) * 100
+                total_score_pct += pct
+                scored_reports += 1
+                if pct > best_pct:
+                    best_pct = pct
+                    best_report = {"game_id": game_id, "score": score, "maxScore": max_score, "percent": round(pct, 1)}
+
+    average_score_pct = round(total_score_pct / scored_reports, 1) if scored_reports > 0 else 0
+
+    total_games_available = len(GAMES) if isinstance(GAMES, (list, dict)) else 0
+
+    # Latest analysis (from most recent report, if calculate_analysis stored one)
+    latest_analysis = reports[0].get("analysis") if reports else None
+
+    # ---- XP & Level ----
+    # Transparent formula: reward starting chapters, playing games, and doing well.
+    xp = (
+        chapters_started * 50
+        + games_played_count * 20
+        + round(total_score_pct / 10)  # sums percentage contributions across all scored games
+    )
+    level_info = compute_level(xp)
+
+    return {
+        "user_id": user_id,
+        "chapters": {
+            "total": total_chapters,
+            "started": chapters_started,
+            "continue_reading": continue_reading,
+        },
+        "games": {
+            "total_available": total_games_available,
+            "played": games_played_count,
+            "average_score_percent": average_score_pct,
+            "best_game": best_report,
+            "latest_analysis": latest_analysis,
+        },
+        "level": level_info,
+    }
+    
 @app.get("/section-summary/")
 async def get_section_summary(chapter_id: str, section_id: str):
     """
@@ -1448,118 +1769,6 @@ async def get_definition_audio_translation(
         media_type="audio/mpeg"
     )
     
-# @app.post("/process-pdf-sentences/")
-# async def process_pdf_sentences(chapter_id: str):
-#     # Get PDF path from DB
-#     chapter = await chapters_col.find_one({"chapter_id": chapter_id})
-
-#     if not chapter or not chapter.get("pdf_path"):
-#         raise HTTPException(status_code=404, detail="PDF not found")
-
-#     pdf_path = chapter["pdf_path"]   # local path OR downloaded path
-
-#     # 🔥 Extract sentences
-#     sentences = extract_sentences_from_pdf(pdf_path)
-
-#     # 🔥 Store in DB
-#     count = await store_sentences_in_db(chapter_id, sentences)
-
-#     return {
-#         "chapter_id": chapter_id,
-#         "total_sentences": count,
-#         "message": "Sentences extracted and stored successfully"
-#     }
-    
-# import tempfile
-
-# async def download_pdf_from_minio(pdf_path):
-#     object_name = pdf_path.split("/")[-1]
-
-#     response = minio_client.get_object(MINIO_BUCKET, object_name)
-
-#     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
-
-#     with open(temp_file.name, "wb") as f:
-#         for chunk in response.stream(32 * 1024):
-#             f.write(chunk)
-
-#     return temp_file.name
-
-# @app.post("/process-existing-pdfs/")
-# async def process_existing_pdfs():
-#     processed = 0
-
-#     async for chapter in chapters_col.find():
-#         chapter_id = chapter.get("chapter_id")
-#         pdf_path = chapter.get("pdf_path")
-
-#         if not pdf_path:
-#             continue
-
-#         # 🚨 Skip if already processed
-#         existing = await sentences_col.find_one({"chapter_id": chapter_id})
-#         if existing:
-#             continue
-
-#         try:
-#             # 1️⃣ Download PDF
-#             local_pdf = await download_pdf_from_minio(pdf_path)
-
-#             # 2️⃣ Extract sentences
-#             sentences = extract_sentences_from_pdf(local_pdf)
-
-#             # 3️⃣ Store in DB
-#             await store_sentences_in_db(chapter_id, sentences)
-
-#             # 4️⃣ Cleanup
-#             os.remove(local_pdf)
-
-#             processed += 1
-
-#         except Exception as e:
-#             print(f"Error processing {chapter_id}: {e}")
-
-#     return {
-#         "message": "Processing complete",
-#         "chapters_processed": processed
-#     }
-    
-
-# @app.post("/process-single-chapter/")
-# async def process_single_chapter(req: ChapterRequest):
-#     chapter_id = req.chapter_id
-
-#     # 🔥 FIX: fetch chapter first
-#     chapter = await chapters_col.find_one({"chapter_id": chapter_id})
-
-#     if not chapter:
-#         raise HTTPException(status_code=404, detail="Chapter not found")
-
-#     if not chapter.get("pdf_path"):
-#         raise HTTPException(status_code=404, detail="PDF not found")
-
-#     try:
-#         # 1️⃣ Download PDF from MinIO
-#         local_pdf = await download_pdf_from_minio(chapter["pdf_path"])
-
-#         # 2️⃣ Extract sentences
-#         sentences = extract_sentences_from_pdf(local_pdf)
-
-#         # 3️⃣ Store in DB
-#         count = await store_sentences_in_db(chapter_id, sentences)
-
-#         # 4️⃣ Cleanup
-#         os.remove(local_pdf)
-
-#         return {
-#             "chapter_id": chapter_id,
-#             "sentences_stored": count,
-#             "message": "Processed successfully"
-#         }
-
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-    
 @app.get("/check-sentences/")
 async def check_sentences(chapter_id: str):
     existing = await sentences_col.find_one({"chapter_id": chapter_id})
@@ -2155,10 +2364,10 @@ async def get_sentence_usrs_batch(request: Request):
                     
                     # Wrap in proper XML format
                     formatted_usr = f"""<segment_id={segment_id}>
-# {english_sentence}
+                    # {english_sentence}
 
-{usr_text}
-</segment_id>"""
+                    {usr_text}
+                    </segment_id>"""
                     
                     formatted_segments.append({
                         "segId": segment_id,
@@ -2238,10 +2447,10 @@ async def get_sentence_usrs_batch(request: Request):
                 
                 # Wrap in proper XML format
                 formatted_usr = f"""<segment_id={segment_id}>
-# {english_sentence}
+                # {english_sentence}
 
-{usr_text}
-</segment_id>"""
+                {usr_text}
+                </segment_id>"""
                 
                 formatted_segments.append({
                     "segId": segment_id,
@@ -2436,4 +2645,90 @@ def parse_usr_segment(usr_text: str, seg_id: str) -> Dict[str, Any]:
         "rootId": root_id,
         "englishSentence": english_sentence,
         "fullText": full_text  # Return the EXACT original text
+    }
+    
+# -----------------------------------
+# Questions Routes
+# -----------------------------------
+@app.get("/api/questions")
+async def get_all_games():
+    cursor = questions_col.find({}, {"game_id": 1, "_id": 0})
+    games = await cursor.to_list(length=100)
+    return [g["game_id"] for g in games]
+
+@app.get("/api/questions/metadata")
+async def get_game_metadata():
+    return {
+        "games": GAMES,
+        "categories": CATEGORIES,
+        "weights_a": WEIGHTS_A,
+        "weights_b": WEIGHTS_B
+    }
+
+@app.get("/api/questions/{game_id}")
+async def get_game_questions(game_id: str):
+    game_doc = await questions_col.find_one({"game_id": game_id}, {"_id": 0})
+    if not game_doc:
+        raise HTTPException(status_code=404, detail=f"No questions found for game: {game_id}")
+    if "questions" in game_doc:
+        return game_doc["questions"]
+    elif "data" in game_doc:
+        return game_doc["data"]
+    return game_doc
+
+
+# -----------------------------------
+# Reports Routes
+# -----------------------------------
+def serialize_report(doc: Dict[str, Any]) -> Dict[str, Any]:
+    if not doc:
+        return doc
+    serialized = {**doc}
+    if "_id" in serialized:
+        serialized["id"] = str(serialized["_id"])
+        del serialized["_id"]
+    return serialized
+
+@app.post("/api/reports")
+async def create_report(request: ReportSubmitRequest):
+    try:
+        user_obj_id = ObjectId(request.user_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid user_id")
+
+    user_doc = await users_col.find_one({"_id": user_obj_id})
+    if not user_doc:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    analysis = calculate_analysis(request.played_games)
+
+    full_report = {
+        "user_id": request.user_id,
+        "played_games": request.played_games,
+        "created_at": datetime.datetime.utcnow().isoformat(),
+        "analysis": analysis
+    }
+    result = await reports_col.insert_one(full_report)
+
+    return {
+        "success": True,
+        "message": "Report saved successfully",
+        "report_id": str(result.inserted_id),
+        "analysis": analysis
+    }
+
+@app.get("/api/reports")
+async def get_reports(user_id: Optional[str] = None):
+    query = {"user_id": user_id} if user_id else {}
+    cursor = reports_col.find(query).sort("created_at", -1)
+    reports = await cursor.to_list(length=100)
+    return [serialize_report(r) for r in reports]
+
+@app.delete("/api/reports")
+async def clear_reports(user_id: Optional[str] = None):
+    query = {"user_id": user_id} if user_id else {}
+    result = await reports_col.delete_many(query)
+    return {
+        "success": True,
+        "message": f"Successfully cleared {result.deleted_count} progress report(s)"
     }

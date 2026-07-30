@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import AppNavbar from "../components/AppNavbar";
-import "../styles/ChapterList.css";
+import AppNavbar from "../../components/AppNavbar";
+import "../../styles/ChapterList.css";
 
 const BASE_URL = "http://10.2.8.12:8500";
 
@@ -15,6 +15,7 @@ export default function ChapterListPage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState("grid");
+  const [readingProgress, setReadingProgress] = useState({});
 
   useEffect(() => {
     fetch(`${BASE_URL}/chapters/`)
@@ -40,6 +41,25 @@ export default function ChapterListPage() {
     }
     setFiltered(result);
   }, [subject, chapters, searchQuery]);
+
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user) return;
+
+    fetch(`${BASE_URL}/reading-progress/user/${user.user_id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const map = {};
+
+        data.progress.forEach((p) => {
+          map[p.chapter_id] = p;
+        });
+
+        setReadingProgress(map);
+      });
+  }, []);
 
   const getChapterIcon = (chapterNo) => {
     const icons = ["📘", "📗", "📙", "📕", "📔", "📓", "📒", "📖"];
@@ -177,7 +197,11 @@ export default function ChapterListPage() {
           </div>
         ) : (
           <div className={`chapter-grid ${viewMode}`}>
-            {filtered.map((ch, index) => (
+          {filtered.map((ch, index) => {
+            const progress = readingProgress[ch.chapter_id];
+            const hasProgress = !!progress?.pin_position;
+
+            return (
               <div
                 key={ch.chapter_id}
                 className="chapter-card"
@@ -186,28 +210,82 @@ export default function ChapterListPage() {
               >
                 <div className="card-decoration"></div>
 
+                {hasProgress && (
+                  <div className="resume-badge">
+                    Resume
+                  </div>
+                )}
+
                 <div className="chapter-icon-wrapper">
-                  <div className="chapter-icon">{getChapterIcon(ch.chapter_no)}</div>
-                  <span className="chapter-number">Ch. {ch.chapter_no}</span>
+                  <div className="chapter-icon">
+                    {getChapterIcon(ch.chapter_no)}
+                  </div>
+                  <span className="chapter-number">
+                    Ch. {ch.chapter_no}
+                  </span>
                 </div>
 
                 <div className="chapter-content">
-                  <h3 className="chapter-title">{normalizeChapterName(ch.chapter_name)}</h3>
+                  <h3 className="chapter-title">
+                    {normalizeChapterName(ch.chapter_name)}
+                  </h3>
+
+                  {hasProgress && (
+                    <div className="resume-info">
+                      <small>
+                        Last Page: <strong>{progress.pin_position.page}</strong>
+                      </small>
+                    </div>
+                  )}
                 </div>
 
                 <div className="chapter-footer">
-                  <span className="start-learning">
-                    Start Learning
-                    <svg className="footer-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none">
-                      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
+                  {hasProgress ? (
+                    <span className="resume-reading">
+                      Resume Reading
+                      <svg
+                        className="footer-arrow"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M3 8h10M9 4l4 4-4 4"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  ) : (
+                    <span className="start-learning">
+                      Start Learning
+                      <svg
+                        className="footer-arrow"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M3 8h10M9 4l4 4-4 4"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  )}
                 </div>
 
                 <div className="card-glow"></div>
               </div>
-            ))}
-          </div>
+            );
+          })}
+        </div>
         )}
       </main>
     </>

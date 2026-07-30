@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/HomePage.css";
-import heroImage from "../assets/study_image.png";
-import iiithLogo from "../assets/iiith_logo.png";
+import "../../styles/HomePage.css";
+import heroImage from "../../assets/study_image.png";
+import iiithLogo from "../../assets/iiith_logo.png";
 
 // ── Generate particles once, outside the component, so they never change ──
 const PARTICLES = Array.from({ length: 12 }, (_, i) => ({

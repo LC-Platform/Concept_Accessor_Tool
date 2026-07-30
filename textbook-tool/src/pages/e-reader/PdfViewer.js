@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, memo, useCallback } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import "../styles/ModernLayout.css";
+import "../../styles/ModernLayout.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
@@ -128,20 +128,63 @@ export default function PdfViewer({
   /* ── SENTENCE CURSOR ── */
   useEffect(() => {
     if (selectedView !== "Sentence") {
-      document.querySelectorAll(".react-pdf__Page__textContent span").forEach((span) => { span.style.cursor = ""; });
+      document.querySelectorAll(".react-pdf__Page__textContent span").forEach((span) => {
+        span.style.cursor = "";
+      });
+      // Also restore overlay containers
+      document.querySelectorAll(".overlay-container").forEach((c) => {
+        c.style.pointerEvents = "none";
+      });
       return;
     }
-    const applyIBeamCursor = () => {
-      document.querySelectorAll(".react-pdf__Page__textContent span").forEach((span) => { span.style.cursor = "text"; });
-    };
-    applyIBeamCursor();
-    const observer = new MutationObserver(() => applyIBeamCursor());
-    document.querySelectorAll(".react-pdf__Page__textContent").forEach((layer) => {
-      observer.observe(layer, { childList: true, subtree: true });
+
+    // In Sentence mode: disable overlay containers so text layer is reachable
+    document.querySelectorAll(".overlay-container").forEach((c) => {
+      c.style.pointerEvents = "none";
     });
+
+    const applyIBeamCursor = () => {
+      document.querySelectorAll(".react-pdf__Page__textContent span").forEach((span) => {
+        span.style.cursor = "text";
+      });
+    };
+
+    // Try immediately, then retry with increasing delays to catch late renders
+    applyIBeamCursor();
+    const t1 = setTimeout(applyIBeamCursor, 100);
+    const t2 = setTimeout(applyIBeamCursor, 400);
+
+    const observers = [];
+    document.querySelectorAll(".react-pdf__Page__textContent").forEach((layer) => {
+      const obs = new MutationObserver(applyIBeamCursor);
+      obs.observe(layer, { childList: true, subtree: true });
+      observers.push(obs);
+    });
+
+    // Also watch for new pages being added to the DOM
+    const pageObs = new MutationObserver(() => {
+      applyIBeamCursor();
+      document.querySelectorAll(".overlay-container").forEach((c) => {
+        c.style.pointerEvents = "none";
+      });
+    });
+    pageObs.observe(document.querySelector(".pdf-viewer-scroll") || document.body, {
+      childList: true,
+      subtree: true,
+    });
+    observers.push(pageObs);
+
     return () => {
-      observer.disconnect();
-      document.querySelectorAll(".react-pdf__Page__textContent span").forEach((span) => { span.style.cursor = ""; });
+      clearTimeout(t1);
+      clearTimeout(t2);
+      observers.forEach((o) => o.disconnect());
+      document.querySelectorAll(".react-pdf__Page__textContent span").forEach((span) => {
+        span.style.cursor = "";
+      });
+      // Restore pointer events when leaving Sentence mode
+      document.querySelectorAll(".overlay-container").forEach((c) => {
+        c.style.pointerEvents = "auto";
+      });
     };
   }, [selectedView, file, numPages]);
 

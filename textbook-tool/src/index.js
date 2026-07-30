@@ -4,6 +4,24 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Temporarily remove the NODE_ENV check to debug production
+(function() {
+  const originalFetch = window.fetch;
+  window.fetch = async (...args) => {
+    const [url, options] = args;
+    const id = Math.random().toString(36).slice(2, 7);
+    console.log(`→ [${id}] FETCH`, options?.method || "GET", url);
+    try {
+      const res = await originalFetch(...args);
+      console.log(`← [${id}] ${res.status}`, url);
+      return res;
+    } catch (err) {
+      console.error(`✗ [${id}] FAILED`, url, err.message);
+      throw err;
+    }
+  };
+})();
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -11,7 +29,4 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
