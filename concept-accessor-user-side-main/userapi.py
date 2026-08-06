@@ -27,6 +27,7 @@ from email.mime.text import MIMEText
 from minio import Minio
 from xml_to_image import xml_to_image
 import datetime
+from anuvaad_gondi import translate_to_gondi
 import pdfplumber
 import re
 import nltk
@@ -1206,19 +1207,24 @@ async def translate_sentence(
         if not chunk:
             continue
 
-        try:
-            result = translate_text(chunk, "eng", target_language)
+    try:
+            if target_language.lower() in ["gon", "gondi"]:
+                result = await translate_to_gondi(chunk)
+                translated_parts.append(result["gondi_text"])
 
-            # ✅ translate_text returns {"data": "...", ...} or {"error": "..."}
-            if "error" in result:
-                print(f"⚠️  Translation error for chunk: {result['error']}")
-                translated_parts.append(chunk)          # fallback: original text
             else:
-                translated_parts.append(result["data"]) # ✅ extract the string
+                result = translate_text(chunk, "eng", target_language)
 
-        except Exception as e:
+                # Existing translator response
+                if "error" in result:
+                    print(f"⚠️ Translation error for chunk: {result['error']}")
+                    translated_parts.append(chunk)  # fallback
+                else:
+                    translated_parts.append(result["data"])
+
+    except Exception as e:
             print(f"❌ Chunk failed: {e}")
-            translated_parts.append(chunk)              # fallback: original text
+            translated_parts.append(chunk)           # fallback: original text
 
     translated = " ".join(translated_parts)
 

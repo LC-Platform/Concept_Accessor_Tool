@@ -127,9 +127,7 @@ function LangSelect({ onChange, placeholder = "Translate…" }) {
       <option value="hin">हिन्दी (Hindi)</option>
       <option value="tel">తెలుగు (Telugu)</option>
       <option value="ben">বাংলা (Bengali)</option>
-      <option value="mar">मराठी (Marathi)</option>
-      <option value="tam">தமிழ் (Tamil)</option>
-      <option value="guj">ગુજરાતી (Gujarati)</option>
+      <option value="gon">𑴎𑴱𑴝𑴲 / Gondi</option>
     </select>
   );
 }
