@@ -1,4 +1,4 @@
-const BASE_URL = "http://10.2.8.12:8500";
+const BASE_URL = "http://10.1.88.14:8500";
 
 function getUserId() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");

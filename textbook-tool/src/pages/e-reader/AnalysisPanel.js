@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import USRGraphVisualizer from '../../components/USRGraphVisualizer';
 import { fetchAndParseUSR } from '../../utils/usrParser';
 
-const BASE_URL = "http://10.2.8.12:8500";
+const BASE_URL = "http://10.1.88.14:8500";
 
 /* ─────────────────────────────────────────
    Mobile detection
@@ -13,7 +13,6 @@ const isMobileDevice = () => window.innerWidth < 768;
    Shared mobile style tokens
 ───────────────────────────────────────── */
 const M = {
-  // colours
   primary:   "#4a90e2",
   green:     "#4caf50",
   purple:    "#764ba2",
@@ -24,11 +23,10 @@ const M = {
   bgGreen:   "#f1f8e9",
   border:    "#e8eaed",
 
-  // spacing
+
   pad:  "14px 16px",
   padS: "10px 14px",
 
-  // radius
   r:  "12px",
   rS: "8px",
 
@@ -227,7 +225,7 @@ function OccurrencePages({ selectedTerm, termOccurrences, displayToFileMap = {} 
 }
 
 /* ─────────────────────────────────────────
-   COREF helpers (unchanged)
+   COREF helpers 
 ───────────────────────────────────────── */
 function wrapSegment(segmentId, rawText) {
   if (rawText.includes(`<segment_id=${segmentId}>`)) return rawText.trim();
@@ -256,6 +254,142 @@ function buildSegmentMap(cachedParagraph) {
     }
   }
   return map;
+}
+
+
+/* ─────────────────────────────────────────
+   Feature usage tracking + feedback
+───────────────────────────────────────── */
+function useFeatureTracking(feature, chapterId, domainId, active) {
+  const startRef = useRef(null);
+
+  useEffect(() => {
+    if (!active || !chapterId) return;
+    startRef.current = Date.now();
+
+    return () => {
+      const elapsed = startRef.current ? (Date.now() - startRef.current) / 1000 : 0;
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userId = user?.user_id;
+      if (!userId || elapsed < 0.5) return; // ignore accidental flicker views
+      fetch(`${BASE_URL}/api/feature-usage/track`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: userId,
+          chapter_id: chapterId,
+          feature,
+          domain_id: domainId || null,
+          time_spent_seconds: elapsed,
+        }),
+        keepalive: true, // survives tab switch/unmount
+      }).catch(() => {});
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feature, chapterId, domainId, active]);
+}
+
+function FeedbackIcons({ feature }) {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.user_id;
+  const [status, setStatus] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+  const [showThanks, setShowThanks] = useState(false);
+
+  useEffect(() => {
+    if (!userId) { setLoaded(true); return; }
+    fetch(`${BASE_URL}/api/feature-feedback/${userId}`)
+      .then(r => r.json())
+      .then(data => setStatus(data.feedback?.[feature]?.status || null))
+      .catch(() => {})
+      .finally(() => setLoaded(true));
+  }, [userId, feature]);
+
+  const send = async (fb) => {
+    if (!userId) {
+      console.warn("FeedbackIcons: no user_id found in localStorage — feedback not sent");
+      return;
+    }
+    setStatus(fb);
+    setShowThanks(true);
+    setTimeout(() => setShowThanks(false), 2600);
+    try {
+      const res = await fetch(`${BASE_URL}/api/feature-feedback`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId, feature, feedback: fb }),
+      });
+      const data = await res.json();
+      setStatus(data.status);
+    } catch {}
+  };
+
+  if (!loaded) return null;
+  if (status === "up" && !showThanks) return null;
+
+  return (
+    <div style={{ marginTop: 8, position: "relative" }}>
+      <style>{`
+        @keyframes feedbackPop {
+          0%   { opacity: 0; transform: translateY(6px) scale(0.9); }
+          60%  { opacity: 1; transform: translateY(-2px) scale(1.03); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes feedbackFade {
+          0%   { opacity: 1; }
+          80%  { opacity: 1; }
+          100% { opacity: 0; }
+        }
+        @keyframes feedbackCheckPop {
+          0%   { transform: scale(0); }
+          50%  { transform: scale(1.3); }
+          100% { transform: scale(1); }
+        }
+      `}</style>
+
+      {status !== "up" && (
+        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+          <span style={{ fontSize: 11, color: "#999" }}>Useful?</span>
+          <button onClick={() => send("up")} title="Useful"
+            style={{ border: `1px solid ${M.border}`, background: "#fff", borderRadius: M.rS, padding: "4px 10px", cursor: "pointer", fontSize: 13 }}>
+            👍
+          </button>
+          <button onClick={() => send("down")} title="Not useful"
+            style={{ border: `1px solid ${M.border}`, background: "#fff", borderRadius: M.rS, padding: "4px 10px", cursor: "pointer", fontSize: 13 }}>
+            👎
+          </button>
+        </div>
+      )}
+
+      {showThanks && (
+        <div
+          style={{
+            display: "flex", alignItems: "center", gap: 8,
+            marginTop: status !== "up" ? 8 : 0,
+            padding: "8px 14px",
+            borderRadius: 999,
+            background: M.greenGrad,
+            color: "#fff",
+            fontSize: 13, fontWeight: 700,
+            width: "fit-content",
+            boxShadow: "0 4px 14px rgba(76,175,80,0.35)",
+            animation: "feedbackPop 0.35s ease-out, feedbackFade 2.6s ease-out forwards",
+          }}
+        >
+          <span style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            width: 18, height: 18, borderRadius: "50%",
+            background: "rgba(255,255,255,0.25)",
+            fontSize: 11,
+            animation: "feedbackCheckPop 0.4s ease-out 0.15s both",
+          }}>
+            ✓
+          </span>
+          <span>Thanks! Your feedback helps improve this 🎉</span>
+        </div>
+      )}
+    </div>
+  );
 }
 
 /* ═══════════════════════════════════════════
@@ -292,7 +426,7 @@ export default function AnalysisPanel({
   const [showSummaryHint, setShowSummaryHint] = useState(true);
   const [hasImage, setHasImage] = useState(false);
   const [hasVideo, setHasVideo] = useState(false);
-  const [activeSentenceSubTab, setActiveSentenceSubTab] = useState("sentenceAnalysis");
+  const [activeSentenceSubTab, setActiveSentenceSubTab] = useState("sentenceTranslation");
   const [showGraphFullscreen, setShowGraphFullscreen] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
   const [paragraphData, setParagraphData] = useState(null);
@@ -351,6 +485,10 @@ export default function AnalysisPanel({
     if (len < 1000) return "15px";
     return mobile ? "14px" : "13px";
   };
+
+  useFeatureTracking("definition", chapterId, selectedTerm?.domain_id, activeTab === "Define" && !!selectedTerm);
+  useFeatureTracking("labelled_image", chapterId, selectedTerm?.domain_id, activeTab === "Media" && !!labelledImg);
+  useFeatureTracking("taxonomy", chapterId, selectedTerm?.domain_id, activeTab === "ConceptMap" && !!conceptMapUrl);
 
   /* ── Audio helpers ── */
   const clearAudio = () => {
@@ -607,12 +745,12 @@ export default function AnalysisPanel({
   };
 
   const translateSentence = async (lang) => {
-    if (!selectedParagraphSentence) return;
+    if (!selectedSentence) return;
     try {
       setIsLoading(true); setTranslatedSentence("");
       const res = await fetch(`${BASE_URL}/translate/sentence/`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chapter_id: chapterId, sentence: selectedParagraphSentence, target_language: lang }),
+        body: JSON.stringify({ chapter_id: chapterId, sentence: selectedSentence, target_language: lang }),
       });
       const data = await res.json();
       setTranslatedSentence(typeof data.translated_sentence === "string" ? data.translated_sentence : data.translated_sentence?.data || "Translation unavailable.");
@@ -771,150 +909,139 @@ export default function AnalysisPanel({
 
       <PillTabs
         tabs={[
-          { key: "sentenceAnalysis", label: "🔬 Analysis" },
           { key: "sentenceTranslation", label: "🌐 Translate" },
+          { key: "sentenceAnalysis", label: "🔬 Analysis" },
         ]}
         active={activeSentenceSubTab}
         onChange={setActiveSentenceSubTab}
       />
 
-      {/* Simplified Paragraph card */}
-      <div style={{ marginBottom: 14 }}>
-        <div style={{
-          display: "flex", alignItems: "center", gap: 8,
-          padding: "8px 12px",
-          background: M.greenGrad,
-          borderRadius: `${M.r} ${M.r} 0 0`,
-          color: "#fff",
-        }}>
-          <span style={{ fontSize: 13 }}>📖</span>
-          <span style={{ fontWeight: 700, fontSize: 13 }}>Simplified Paragraph</span>
-          {paragraphData?.from_cache && (
-            <span style={{ marginLeft: "auto", fontSize: 10, background: "rgba(255,255,255,0.2)", padding: "2px 7px", borderRadius: 10 }}>Cached</span>
-          )}
-        </div>
-
-        <div style={{ background: M.bgGreen, borderRadius: `0 0 ${M.r} ${M.r}`, padding: "12px 14px", border: `1px solid #c8e6c9`, borderTop: "none" }}>
-          {paragraphLoading ? (
-            <div style={{ textAlign: "center", color: "#888", padding: "20px 0" }}>
-              <div className="spinner" style={{ margin: "0 auto 8px" }} />
-              <div style={{ fontSize: 13 }}>Loading paragraph…</div>
-            </div>
-          ) : paragraphData?.sentences?.length > 0 ? (
-            <div style={{ lineHeight: 1.85, fontSize: 14 }}>
-              {paragraphData.sentences.map((sentence, idx) => {
-                const isCurrent = sentence.text === selectedParagraphSentence;
-                const hasUSR = sentence.hasUSR;
-                return (
-                  <span
-                    key={idx}
-                    onClick={() => {
-                      if (hasUSR) setSelectedParagraphSentence(sentence.text);
-                      else alert("No semantic analysis available for this sentence yet.");
-                    }}
-                    style={{
-                      cursor: hasUSR ? "pointer" : "not-allowed",
-                      backgroundColor: isCurrent ? "#fff3e0" : "transparent",
-                      borderBottom: hasUSR ? "2px solid #4caf50" : "1px solid #ccc",
-                      borderRadius: 3, padding: "1px 3px", margin: "0 1px",
-                      display: "inline",
-                      fontWeight: isCurrent ? 600 : 400,
-                      opacity: hasUSR ? 1 : 0.55,
-                    }}
-                    title={hasUSR ? "Tap to view analysis" : "No analysis available"}
-                  >
-                    {sentence.text}{idx < paragraphData.sentences.length - 1 ? " " : ""}
-                  </span>
-                );
-              })}
-            </div>
-          ) : (
-            <div style={{ textAlign: "center", color: "#888", fontSize: 13, padding: "12px 0" }}>
-              {paragraphData?.error || "No paragraph available"}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Analysis sub-tab */}
+      {/* Simplified Paragraph — only for Analysis */}
       {activeSentenceSubTab === "sentenceAnalysis" && (
-        selectedParagraphSentence ? (
-          <div>
-            <div style={{ background: M.bgBlue, borderRadius: M.rS, padding: "10px 12px", marginBottom: 12, border: `1px solid #c5d9f7` }}>
-              <div style={{ ...M.label, marginBottom: 4 }}>🧠 Analysing sentence</div>
-              <div style={{ fontSize: 13, color: "#444", lineHeight: 1.5 }}>
-                "{selectedParagraphSentence.length > 90 ? selectedParagraphSentence.slice(0, 90) + "…" : selectedParagraphSentence}"
-              </div>
-            </div>
-
-            {usrLoading ? (
-              <div style={{ textAlign: "center", padding: "30px 0", color: "#888" }}>
+        <div style={{ marginBottom: 14 }}>
+          <div style={{
+            display: "flex", alignItems: "center", gap: 8,
+            padding: "8px 12px",
+            background: M.greenGrad,
+            borderRadius: `${M.r} ${M.r} 0 0`,
+            color: "#fff",
+          }}>
+            <span style={{ fontSize: 13 }}>📖</span>
+            <span style={{ fontWeight: 700, fontSize: 13 }}>Simplified Paragraph</span>
+            {paragraphData?.from_cache && (
+              <span style={{ marginLeft: "auto", fontSize: 10, background: "rgba(255,255,255,0.2)", padding: "2px 7px", borderRadius: 10 }}>Cached</span>
+            )}
+          </div>
+          <div style={{ background: M.bgGreen, borderRadius: `0 0 ${M.r} ${M.r}`, padding: "12px 14px", border: `1px solid #c8e6c9`, borderTop: "none" }}>
+            {paragraphLoading ? (
+              <div style={{ textAlign: "center", color: "#888", padding: "20px 0" }}>
                 <div className="spinner" style={{ margin: "0 auto 8px" }} />
-                <div style={{ fontSize: 13 }}>Loading USR analysis…</div>
+                <div style={{ fontSize: 13 }}>Loading paragraph…</div>
               </div>
-            ) : usrText ? (
-              <div>
-                <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-                  <button
-                    onClick={() => setShowGraph(!showGraph)}
-                    style={{ flex: 1, padding: "10px", borderRadius: M.rS, border: "none", background: M.primary, color: "#fff", fontWeight: 700, fontSize: 14, cursor: "pointer" }}
-                  >
-                    {showGraph ? "Hide Graph" : "View Graph"}
-                  </button>
-                  {showGraph && (
-                    <button
-                      onClick={() => setShowGraphFullscreen(true)}
-                      style={{ padding: "10px 14px", borderRadius: M.rS, border: `1.5px solid ${M.primary}`, background: "#fff", color: M.primary, fontWeight: 600, fontSize: 13, cursor: "pointer" }}
+            ) : paragraphData?.sentences?.length > 0 ? (
+              <div style={{ lineHeight: 1.85, fontSize: 14 }}>
+                {paragraphData.sentences.map((sentence, idx) => {
+                  const isCurrent = sentence.text === selectedParagraphSentence;
+                  const hasUSR = sentence.hasUSR;
+                  return (
+                    <span
+                      key={idx}
+                      onClick={() => {
+                        if (hasUSR) setSelectedParagraphSentence(sentence.text);
+                        else alert("No semantic analysis available for this sentence yet.");
+                      }}
+                      style={{
+                        cursor: hasUSR ? "pointer" : "not-allowed",
+                        backgroundColor: isCurrent ? "#fff3e0" : "transparent",
+                        borderBottom: hasUSR ? "2px solid #4caf50" : "1px solid #ccc",
+                        borderRadius: 3, padding: "1px 3px", margin: "0 1px",
+                        display: "inline",
+                        fontWeight: isCurrent ? 600 : 400,
+                        opacity: hasUSR ? 1 : 0.55,
+                      }}
+                      title={hasUSR ? "Tap to view analysis" : "No analysis available"}
                     >
-                      ⛶
-                    </button>
-                  )}
-                </div>
-                {showGraph && (
-                  <div style={{ width: "100%", overflowX: "auto", overflowY: "auto", border: `1px solid ${M.border}`, borderRadius: M.rS, background: "#fff", minHeight: 300, maxHeight: 400 }}>
-                    <div style={{ minWidth: "max-content", padding: 10 }}>
-                      <USRGraphVisualizer initialText={usrText} />
-                    </div>
-                  </div>
-                )}
+                      {sentence.text}{idx < paragraphData.sentences.length - 1 ? " " : ""}
+                    </span>
+                  );
+                })}
               </div>
             ) : (
-              <div style={{ textAlign: "center", padding: "30px 0", color: "#aaa", background: M.bgGray, borderRadius: M.r }}>
-                <div style={{ fontSize: 28, marginBottom: 8 }}>📊</div>
-                <div style={{ fontSize: 13 }}>No USR data for this sentence</div>
+              <div style={{ textAlign: "center", color: "#888", fontSize: 13, padding: "12px 0" }}>
+                {paragraphData?.error || "No paragraph available"}
               </div>
             )}
           </div>
-        ) : (
-          <div style={{ textAlign: "center", padding: "30px 0", color: "#aaa", background: M.bgGray, borderRadius: M.r }}>
-            <div style={{ fontSize: 28, marginBottom: 8 }}>☝️</div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: "#666" }}>Tap a green-underlined sentence</div>
-            <div style={{ fontSize: 12, marginTop: 4 }}>to view its semantic analysis</div>
-          </div>
-        )
+        </div>
       )}
 
+      
       {/* Translation sub-tab */}
       {activeSentenceSubTab === "sentenceTranslation" && (
-        selectedParagraphSentence ? (
+        selectedSentence ? (
           <div>
-            <div style={{ background: M.bgBlue, borderRadius: M.rS, padding: "10px 12px", marginBottom: 14, border: `1px solid #c5d9f7` }}>
-              <div style={{ ...M.label, marginBottom: 4 }}>🌐 Translating</div>
-              <div style={{ fontSize: 13, color: "#444" }}>
-                "{selectedParagraphSentence.length > 80 ? selectedParagraphSentence.slice(0, 80) + "…" : selectedParagraphSentence}"
+            <div style={{
+              background: M.bgBlue,
+              borderRadius: M.rS,
+              padding: "10px 12px",
+              marginBottom: 14,
+              border: "1px solid #c5d9f7"
+            }}>
+              <div style={{ ...M.label, marginBottom: 4 }}>
+                🌐 Translating
+              </div>
+
+              <div style={{
+                fontSize: 13,
+                color: "#444"
+              }}>
+                "{selectedSentence.length > 80
+                  ? selectedSentence.slice(0, 80) + "…"
+                  : selectedSentence}"
               </div>
             </div>
-            <LangSelect onChange={translateSentence} placeholder="Select language…" />
-            {isLoading && <div style={{ marginTop: 12, textAlign: "center", fontSize: 13, color: "#888" }}>Translating…</div>}
+
+            <LangSelect
+              onChange={translateSentence}
+              placeholder="Select language…"
+            />
+
+            {isLoading && (
+              <div style={{
+                marginTop: 12,
+                textAlign: "center",
+                fontSize: 13,
+                color: "#888"
+              }}>
+                Translating…
+              </div>
+            )}
+
             {translatedSentence && !isLoading && (
-              <div style={{ marginTop: 12, background: "#eef9f5", border: "1px solid #b2dfdb", borderRadius: M.rS, padding: "12px 14px", fontSize: 15, lineHeight: 1.7 }}>
+              <div style={{
+                marginTop: 12,
+                background: "#eef9f5",
+                border: "1px solid #b2dfdb",
+                borderRadius: M.rS,
+                padding: "12px 14px",
+                fontSize: 15,
+                lineHeight: 1.7
+              }}>
                 {translatedSentence}
               </div>
             )}
           </div>
         ) : (
-          <div style={{ textAlign: "center", padding: "30px 0", color: "#aaa", background: M.bgGray, borderRadius: M.r }}>
-            <div style={{ fontSize: 13 }}>Select a sentence above first</div>
+          <div style={{
+            textAlign: "center",
+            padding: "30px 0",
+            color: "#aaa",
+            background: M.bgGray,
+            borderRadius: M.r
+          }}>
+            <div style={{ fontSize: 13 }}>
+              Select a sentence in the PDF first
+            </div>
           </div>
         )
       )}
@@ -1010,7 +1137,7 @@ export default function AnalysisPanel({
      WORD VIEW
   ══════════════════════════════════════════ */
   return (
-    <div style={{ padding: panelPad, overflowY: "auto", height: "100%" }}>
+  <div style={{ padding: panelPad, height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
 
       {/* Word header chip */}
       {selectedWordText && (
@@ -1078,6 +1205,7 @@ export default function AnalysisPanel({
               </div>
             </div>
           )}
+          <FeedbackIcons feature="definition" />
 
           <OccurrencePages selectedTerm={selectedTerm} termOccurrences={termOccurrences} displayToFileMap={displayToFileMap} />
         </div>
@@ -1121,8 +1249,9 @@ export default function AnalysisPanel({
             <div>
               <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
                 <button onClick={() => setZoom(z => Math.min(3, z + 0.2))} style={{ padding: "6px 12px", borderRadius: M.rS, border: `1px solid ${M.border}`, background: "#fff", cursor: "pointer" }}>＋</button>
-                <button onClick={() => setZoom(z => Math.max(1, z - 0.2))} style={{ padding: "6px 12px", borderRadius: M.rS, border: `1px solid ${M.border}`, background: "#fff", cursor: "pointer" }}>－</button>
+                <button onClick={() => setZoom(z => Math.max(0.3, z - 0.2))} style={{ padding: "6px 12px", borderRadius: M.rS, border: `1px solid ${M.border}`, background: "#fff", cursor: "pointer" }}>－</button>
                 <button onClick={() => openImagePopup(labelledImg)} style={{ padding: "6px 14px", borderRadius: M.rS, border: `1px solid ${M.border}`, background: "#fff", cursor: "pointer", fontSize: 13 }}>⛶ Full</button>
+                <FeedbackIcons feature="labelled_image" />
               </div>
               <img src={labelledImg} alt="Labelled" style={{ transform: `scale(${zoom})`, maxWidth: "100%", borderRadius: M.rS, transformOrigin: "top left" }} />
             </div>
@@ -1134,7 +1263,7 @@ export default function AnalysisPanel({
 
       {/* ── CONCEPT MAP ── */}
       {activeTab === "ConceptMap" && (
-        <div>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
           {!selectedTerm ? (
             <div style={{ textAlign: "center", padding: "30px 0", color: "#aaa", background: M.bgGray, borderRadius: M.r }}>
               <div style={{ fontSize: 28, marginBottom: 8 }}>🗺️</div>
@@ -1157,18 +1286,19 @@ export default function AnalysisPanel({
               </button>
             </div>
           ) : conceptMapUrl ? (
-            <div>
-              <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
+              <div style={{ display: "flex", gap: 8, marginBottom: 10, flexShrink: 0 }}>
                 <button onClick={() => setConceptMapZoom(z => Math.min(3, z + 0.2))} style={{ padding: "6px 12px", borderRadius: M.rS, border: `1px solid ${M.border}`, background: "#fff", cursor: "pointer" }}>＋</button>
                 <button onClick={() => setConceptMapZoom(z => Math.max(1, z - 0.2))} style={{ padding: "6px 12px", borderRadius: M.rS, border: `1px solid ${M.border}`, background: "#fff", cursor: "pointer" }}>－</button>
                 <button onClick={() => openImagePopup(conceptMapUrl)} style={{ padding: "6px 14px", borderRadius: M.rS, border: `1px solid ${M.border}`, background: "#fff", cursor: "pointer", fontSize: 13 }}>⛶ Full</button>
               </div>
-              <div style={{ width: "100%", overflow: "auto", border: `1px solid ${M.border}`, borderRadius: M.rS, background: "#fff", maxHeight: 420 }}>
+              <div style={{ flex: 1, width: "100%", overflow: "auto", border: `1px solid ${M.border}`, borderRadius: M.rS, background: "#fff", minHeight: 0 }}>
                 <img
                   src={conceptMapUrl}
                   alt={`Concept map for ${selectedWordText || selectedTerm.name || ""}`}
                   style={{ transform: `scale(${conceptMapZoom})`, transformOrigin: "top left", maxWidth: "100%", display: "block" }}
                 />
+                <FeedbackIcons feature="taxonomy" />
               </div>
             </div>
           ) : (

@@ -7,7 +7,7 @@ import AnalysisPanel from "./AnalysisPanel";
 import BottomSheet from "./Bottomsheet";
 import "../../styles/Mobilelayout.css";
 
-const BASE_URL = "http://10.2.8.12:8500";
+const BASE_URL = "http://10.1.88.14:8500";
 
 export default function MobileLayout() {
   const [terms, setTerms] = useState([]);

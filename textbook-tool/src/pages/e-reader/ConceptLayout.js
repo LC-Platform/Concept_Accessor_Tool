@@ -8,7 +8,7 @@ import MobileLayout from "./Mobilelayout";
 import { useParams } from "react-router-dom";
 import "../../styles/ModernLayout.css";
 
-const BASE_URL = "http://10.2.8.12:8500";
+const BASE_URL = "http://10.1.88.14:8500";
 
 /* ── Mobile detection hook ── */
 function useIsMobile(breakpoint = 768) {

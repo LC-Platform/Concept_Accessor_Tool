@@ -1,0 +1,1155 @@
+[{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49c1"
+  },
+  "model_id": "67100d22a0397bc812dacb27",
+  "model_name": "ASR_IITM_Hindi",
+  "model_type": "asr",
+  "source_language": "Hindi",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2NzEwMGQyMmEwMzk3YmM4MTJkYWNiMjciLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.gkNcn6w6d6OJw-xA7SXTXbfBdnMFG0G90ZcydjpYwsA",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/67100d22a0397bc812dacb27"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49c2"
+  },
+  "model_id": "67127dcbb1a6984f0c5e7d35",
+  "model_name": "ASR_IITM_English",
+  "model_type": "asr",
+  "source_language": "English",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2NzEyN2RjYmIxYTY5ODRmMGM1ZTdkMzUiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.FLjSgJBNxSp-7pVu1HKm07O7J_oheH6Txp6TPQAQRA8",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/67127dcbb1a6984f0c5e7d35"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49c3"
+  },
+  "model_id": "67b840e29c21bec07537674b",
+  "model_name": "ASR_IITM_Telugu",
+  "model_type": "asr",
+  "source_language": "Telugu",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2N2I4NDBlMjljMjFiZWMwNzUzNzY3NGIiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.4DKX57s8i0MLgxpsbtPonFA3cIgMGCXGsBNRcisaDj4",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/67b840e29c21bec07537674b"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49c4"
+  },
+  "model_id": "67b8413f9c21bec07537674c",
+  "model_name": "ASR_IITM_Urdu",
+  "model_type": "asr",
+  "source_language": "Urdu",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2N2I4NDEzZjljMjFiZWMwNzUzNzY3NGMiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.AC0QJUvquh26SSpm_JuHnC8e_5HDJE1vNDE_ONqKTqo",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/67b8413f9c21bec07537674c"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49c5"
+  },
+  "model_id": "6807e9185343f3e4aea3b32e",
+  "model_name": "Swecha_ASR_Telugu",
+  "model_type": "asr",
+  "source_language": "Telugu",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODA3ZTkxODUzNDNmM2U0YWVhM2IzMmUiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.Juzz6srSk1wNwt_lLhPH2V98hwb60jvNl7kAok9sRKE",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6807e9185343f3e4aea3b32e"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49c6"
+  },
+  "model_id": "6834159c620e7a7dd24ec497",
+  "model_name": "ASR_IITM_Marathi",
+  "model_type": "asr",
+  "source_language": "Marathi",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODM0MTU5YzYyMGU3YTdkZDI0ZWM0OTciLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.Gu70xZOBuE9A4dlJUf6-niPuEEP_AisRnb3Z5d6VQz8",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6834159c620e7a7dd24ec497"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49c7"
+  },
+  "model_id": "68341884620e7a7dd24ec498",
+  "model_name": "ASR_IITM_Bengali",
+  "model_type": "asr",
+  "source_language": "Bengali",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODM0MTg4NDYyMGU3YTdkZDI0ZWM0OTgiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.TGpC5ZUajGmRULmTxG_Jwy2YpvRAJJoyZps4gNYb7Xk",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/68341884620e7a7dd24ec498"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49c8"
+  },
+  "model_id": "6834189e620e7a7dd24ec499",
+  "model_name": "ASR_IITM_Kannada",
+  "model_type": "asr",
+  "source_language": "Kannada",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODM0MTg5ZTYyMGU3YTdkZDI0ZWM0OTkiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.iIsHxHZmlR3jeq033TwYnIiLW6HAl0E1NUYt49eLWKE",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6834189e620e7a7dd24ec499"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49c9"
+  },
+  "model_id": "683418b8620e7a7dd24ec49a",
+  "model_name": "ASR_IITM_Malayalam",
+  "model_type": "asr",
+  "source_language": "Malayalam",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODM0MThiODYyMGU3YTdkZDI0ZWM0OWEiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.mmo-EX_lO1XPaj32WzAqYsvdb3gFmznk52868sr5SsA",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/683418b8620e7a7dd24ec49a"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49ca"
+  },
+  "model_id": "683418df620e7a7dd24ec49b",
+  "model_name": "ASR_IITM_Bhojpuri",
+  "model_type": "asr",
+  "source_language": "Bhojpuri",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODM0MThkZjYyMGU3YTdkZDI0ZWM0OWIiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.En7vf4Syo48wwRZUBDtXDFVKnxPzYrA8IAYmdqqYu4U",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/683418df620e7a7dd24ec49b"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49cb"
+  },
+  "model_id": "683418f5620e7a7dd24ec49c",
+  "model_name": "ASR_IITM_Gujarati",
+  "model_type": "asr",
+  "source_language": "Gujarati",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODM0MThmNTYyMGU3YTdkZDI0ZWM0OWMiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.cdoJLVIU7hwEzygerdGtu4Q6HO8-SCEEHW2U1-Tc_9A",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/683418f5620e7a7dd24ec49c"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49cc"
+  },
+  "model_id": "68341929620e7a7dd24ec49d",
+  "model_name": "ASR_IITM_Odia",
+  "model_type": "asr",
+  "source_language": "Odia",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODM0MTkyOTYyMGU3YTdkZDI0ZWM0OWQiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.ZETcGdxfZWkJPCYeKIoZfH6KrTZJHpEyIB5Ko5Ux-gk",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/68341929620e7a7dd24ec49d"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49cd"
+  },
+  "model_id": "68341945620e7a7dd24ec49e",
+  "model_name": "ASR_IITM_Punjabi",
+  "model_type": "asr",
+  "source_language": "Punjabi",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODM0MTk0NTYyMGU3YTdkZDI0ZWM0OWUiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.cMy7Wz8w9dyP93Guo96w9d99yH93M1HyGTLpoRyN9C0",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/68341945620e7a7dd24ec49e"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49ce"
+  },
+  "model_id": "6834195d620e7a7dd24ec49f",
+  "model_name": "ASR_IITM_Tamil",
+  "model_type": "asr",
+  "source_language": "Tamil",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODM0MTk1ZDYyMGU3YTdkZDI0ZWM0OWYiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.w-8pTyCXmpxlJ1n5mOFCdM-N3DuBDmJP4Wm0_nJbmSw",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6834195d620e7a7dd24ec49f"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49cf"
+  },
+  "model_id": "68341979620e7a7dd24ec4a0",
+  "model_name": "ASR_IITM_Sanskrit",
+  "model_type": "asr",
+  "source_language": "Sanskrit",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODM0MTk3OTYyMGU3YTdkZDI0ZWM0YTAiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.ZZB3zpRbRxvfHcZomtZfIr7X7awNecZFnPhSvLuIvKA",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/68341979620e7a7dd24ec4a0"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49d0"
+  },
+  "model_id": "6979e11150f13fc15e603530",
+  "model_name": "AI4Bharat-ASR-Bengali",
+  "model_type": "asr",
+  "source_language": "Bengali",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1MzAiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.zIWTrhLEQ_jgonYjjUkuej_td4e-xNjdhKS3JUQj_q0",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e603530"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49d1"
+  },
+  "model_id": "6979e11150f13fc15e603531",
+  "model_name": "AI4Bharat-ASR-English",
+  "model_type": "asr",
+  "source_language": "English",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1MzEiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.ICdMweBAqaDCeaJEs8A3NrpczLj-py3X7Oy05Nzds54",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e603531"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49d2"
+  },
+  "model_id": "6979e11150f13fc15e603532",
+  "model_name": "AI4Bharat-ASR-Gujarati",
+  "model_type": "asr",
+  "source_language": "Gujarati",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1MzIiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.3S8PtXrOtw_HDZUZzLAPfOdEc6iE-40lCxpJXOZnO-0",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e603532"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49d3"
+  },
+  "model_id": "6979e11150f13fc15e603533",
+  "model_name": "AI4Bharat-ASR-Hindi",
+  "model_type": "asr",
+  "source_language": "Hindi",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1MzMiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.sKatKAuxlK_SV05kD-P41UQb3sJRt4jfpBhrtsgTzJo",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e603533"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49d4"
+  },
+  "model_id": "6979e11150f13fc15e603534",
+  "model_name": "AI4Bharat-ASR-Kannada",
+  "model_type": "asr",
+  "source_language": "Kannada",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1MzQiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.PffkgkngcIqqSKlgUKRmdxmh5LvVEpbVDwJ7pPzyH44",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e603534"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49d5"
+  },
+  "model_id": "6979e11150f13fc15e603535",
+  "model_name": "AI4Bharat-ASR-Malayalam",
+  "model_type": "asr",
+  "source_language": "Malayalam",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1MzUiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.IGeiSJsAgXMoTY_9YKVQYfW1jN4uJ2HqGYa-MnfuIJ4",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e603535"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49d6"
+  },
+  "model_id": "6979e11150f13fc15e603536",
+  "model_name": "AI4Bharat-ASR-Marathi",
+  "model_type": "asr",
+  "source_language": "Marathi",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1MzYiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.l4ve52R2NnnlX2dJU-hMMvGJJ7GnVd4Lq5u30sqIPCc",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e603536"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49d7"
+  },
+  "model_id": "6979e11150f13fc15e603537",
+  "model_name": "AI4Bharat-ASR-Odia",
+  "model_type": "asr",
+  "source_language": "Odia",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1MzciLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.F522QDzobhm42KklrQBWtkuiv3BfhZh8Uei_tTlmG6U",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e603537"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49d8"
+  },
+  "model_id": "6979e11150f13fc15e603538",
+  "model_name": "AI4Bharat-ASR-Punjabi",
+  "model_type": "asr",
+  "source_language": "Punjabi",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1MzgiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.LWtYBrkr4Wgg_sWmDoTHKC0xR1Px64w3Ni0egwqUy2E",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e603538"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49d9"
+  },
+  "model_id": "6979e11150f13fc15e603539",
+  "model_name": "AI4Bharat-ASR-Sanskrit",
+  "model_type": "asr",
+  "source_language": "Sanskrit",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1MzkiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.CHyfYSfTVofcL3082mbUX9wheqzJGzqiH4xmIzK9F9c",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e603539"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49da"
+  },
+  "model_id": "6979e11150f13fc15e60353a",
+  "model_name": "AI4Bharat-ASR-Tamil",
+  "model_type": "asr",
+  "source_language": "Tamil",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1M2EiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.3yei0wEun7k0MUBZru3KXJoHkncAr7-6PD6ZKip7lLQ",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e60353a"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49db"
+  },
+  "model_id": "6979e11150f13fc15e60353b",
+  "model_name": "AI4Bharat-ASR-Telugu",
+  "model_type": "asr",
+  "source_language": "Telugu",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1M2IiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.Hl6hyVZjaLLUpuEUabJqVTrz8O47aYu8xGJT8qFDlXw",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e60353b"
+},
+{
+  "_id": {
+    "$oid": "698b0160b3277d8024ed49dc"
+  },
+  "model_id": "6979e11150f13fc15e60353c",
+  "model_name": "AI4Bharat-ASR-Urdu",
+  "model_type": "asr",
+  "source_language": "Urdu",
+  "target_language": null,
+  "institution_name": "DIBD",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 7,
+  "access_start_date": {
+    "$date": "2026-02-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTc5ZTExMTUwZjEzZmMxNWU2MDM1M2MiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDItMDlUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.5gkVHhlK_UBNEXYvTN7_RxpQKhn3J_qeQSSmDOo9SX8",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/infer_asr/6979e11150f13fc15e60353c"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958b1"
+  },
+  "model_id": "68b038e5747a9002950e94f5",
+  "model_name": "Printed BhaashaOCR Page Level - Assamese",
+  "model_type": "ocr",
+  "source_language": "Assamese",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OGIwMzhlNTc0N2E5MDAyOTUwZTk0ZjUiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.vhqHZb8q_dqtls2b9wxvOpVr3lSIBcnh0uF-XBv_Aps",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/68b038e5747a9002950e94f5"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958b2"
+  },
+  "model_id": "6937c9eb73b6e4905f68296b",
+  "model_name": "Printed BhaashaOCR Page Level - Bengali",
+  "model_type": "ocr",
+  "source_language": "Bengali",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3YzllYjczYjZlNDkwNWY2ODI5NmIiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.vKnzSRWKLRsuNe4UwkqEyg1X1W0-oQNAU_0r9UsRSIY",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937c9eb73b6e4905f68296b"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958b3"
+  },
+  "model_id": "6937cb9973b6e4905f68296c",
+  "model_name": "Printed BhaashaOCR Page Level - Bodo",
+  "model_type": "ocr",
+  "source_language": "Bodo",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2I5OTczYjZlNDkwNWY2ODI5NmMiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.9jyFxymRE2WWZl0xIgv543XbjniWD4XmK4BvGfDJ-Nw",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cb9973b6e4905f68296c"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958b4"
+  },
+  "model_id": "6937cbd373b6e4905f68296e",
+  "model_name": "Printed BhaashaOCR Page Level - Dogri",
+  "model_type": "ocr",
+  "source_language": "Dogri",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2JkMzczYjZlNDkwNWY2ODI5NmUiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.b2K2SsjnQnP7pBz6l2AdlNa39nR65XoYbVrC_Vcg1Uw",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cbd373b6e4905f68296e"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958b5"
+  },
+  "model_id": "6937cbf473b6e4905f682970",
+  "model_name": "Printed BhaashaOCR Page Level - English",
+  "model_type": "ocr",
+  "source_language": "English",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2JmNDczYjZlNDkwNWY2ODI5NzAiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.VhB7VHlF5bJaojD9qJYgPNL2SgY8hB_Z5BLaZGjx8qQ",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cbf473b6e4905f682970"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958b6"
+  },
+  "model_id": "6937cc1873b6e4905f682972",
+  "model_name": "Printed BhaashaOCR Page Level - Gujarati",
+  "model_type": "ocr",
+  "source_language": "Gujarati",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2MxODczYjZlNDkwNWY2ODI5NzIiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.qU8q8zpYdSaqr16Og8tM66ldH1jFhvnW4vVoTkPbkOE",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cc1873b6e4905f682972"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958b7"
+  },
+  "model_id": "6937cc3573b6e4905f682974",
+  "model_name": "Printed BhaashaOCR Page Level - Hindi",
+  "model_type": "ocr",
+  "source_language": "Hindi",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2MzNTczYjZlNDkwNWY2ODI5NzQiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.uZzztyhyf-vEpW9VVpnups6CypvqQ0FinVWdm4llaY4",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cc3573b6e4905f682974"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958b8"
+  },
+  "model_id": "6937cc6573b6e4905f682976",
+  "model_name": "Printed BhaashaOCR Page Level - Kannada",
+  "model_type": "ocr",
+  "source_language": "Kannada",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2M2NTczYjZlNDkwNWY2ODI5NzYiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.NYf8dV6fOrRfIaftMMih4eoQ8qzfBTF8zp8dkRLeoPY",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cc6573b6e4905f682976"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958b9"
+  },
+  "model_id": "6937cc7e73b6e4905f682978",
+  "model_name": "Printed BhaashaOCR Page Level - Kashmiri",
+  "model_type": "ocr",
+  "source_language": "Kashmiri",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2M3ZTczYjZlNDkwNWY2ODI5NzgiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.9IW-r8olGDXzEOL5foA63xqpdEcBZf2XmUn78HJx8aw",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cc7e73b6e4905f682978"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958ba"
+  },
+  "model_id": "6937cca973b6e4905f68297a",
+  "model_name": "Printed BhaashaOCR Page Level - Konkani",
+  "model_type": "ocr",
+  "source_language": "Konkani",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2NhOTczYjZlNDkwNWY2ODI5N2EiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.r7vsJu9wAJNa-Prc5DGrbkjRIcB6z5S63hA1rpLcPos",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cca973b6e4905f68297a"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958bb"
+  },
+  "model_id": "6937ccbd73b6e4905f68297c",
+  "model_name": "Printed BhaashaOCR Page Level - Maithili",
+  "model_type": "ocr",
+  "source_language": "Maithili",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2NiZDczYjZlNDkwNWY2ODI5N2MiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.hQanNUiGCNZ4b1V913eblxJrrSuOa_aVBZ7MBh7dQx8",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937ccbd73b6e4905f68297c"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958bc"
+  },
+  "model_id": "6937ccdc73b6e4905f68297e",
+  "model_name": "Printed BhaashaOCR Page Level - Malayalam",
+  "model_type": "ocr",
+  "source_language": "Malayalam",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2NkYzczYjZlNDkwNWY2ODI5N2UiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.FNHKT9yr_-ioOVh1wgnobNn31nDv19W6J90z1DMD9yw",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937ccdc73b6e4905f68297e"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958bd"
+  },
+  "model_id": "6937cd0373b6e4905f68297f",
+  "model_name": "Printed BhaashaOCR Page Level - Manipuri",
+  "model_type": "ocr",
+  "source_language": "Manipuri",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2QwMzczYjZlNDkwNWY2ODI5N2YiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.8iw9k30e5WbojNToQZ7VAm71akDYZMt7bMq091i5Ygg",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cd0373b6e4905f68297f"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958be"
+  },
+  "model_id": "6937cd2473b6e4905f682981",
+  "model_name": "Printed BhaashaOCR Page Level - Marathi",
+  "model_type": "ocr",
+  "source_language": "Marathi",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2QyNDczYjZlNDkwNWY2ODI5ODEiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.VeqVu5_meHccNriPER6AQbcNmjKgimhfUYq1iGiHTzg",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cd2473b6e4905f682981"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958bf"
+  },
+  "model_id": "6937cd3d73b6e4905f682983",
+  "model_name": "Printed BhaashaOCR Page Level - Nepali",
+  "model_type": "ocr",
+  "source_language": "Nepali",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2QzZDczYjZlNDkwNWY2ODI5ODMiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.gz4Yn1FY4DnO3HPbo0KZT9rDrAhkpRy8A3JhQ3Jlcpg",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cd3d73b6e4905f682983"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958c0"
+  },
+  "model_id": "6937cd5c73b6e4905f682985",
+  "model_name": "Printed BhaashaOCR Page Level - Odia",
+  "model_type": "ocr",
+  "source_language": "Oriya",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2Q1YzczYjZlNDkwNWY2ODI5ODUiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.8jS6NSRGHqXn2OAsi1poeckt97_Zg0bywwH9lxgW1Sk",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cd5c73b6e4905f682985"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958c1"
+  },
+  "model_id": "6937cd8873b6e4905f682987",
+  "model_name": "Printed BhaashaOCR Page Level - Punjabi",
+  "model_type": "ocr",
+  "source_language": "Punjabi",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2Q4ODczYjZlNDkwNWY2ODI5ODciLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.vY3PWAy2BgbtLfUEkhzQtpOuxSQuE7CN1WakgJ7jkDE",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cd8873b6e4905f682987"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958c2"
+  },
+  "model_id": "6937cdb073b6e4905f682989",
+  "model_name": "Printed BhaashaOCR Page Level - Sanskrit",
+  "model_type": "ocr",
+  "source_language": "Sanskrit",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2RiMDczYjZlNDkwNWY2ODI5ODkiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.A1w3_SWr47R8W7D8i-p49Nqj0La1oDqoiRTvnzbymW4",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cdb073b6e4905f682989"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958c3"
+  },
+  "model_id": "6937cdc873b6e4905f68298b",
+  "model_name": "Printed BhaashaOCR Page Level - Santali",
+  "model_type": "ocr",
+  "source_language": "Santali",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2RjODczYjZlNDkwNWY2ODI5OGIiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.kEtZhc0BStgBnPNBC1_fRZrodMv9EsBY14J3wTeP6gk",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cdc873b6e4905f68298b"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958c4"
+  },
+  "model_id": "6937cde373b6e4905f68298d",
+  "model_name": "Printed BhaashaOCR Page Level - Sindhi",
+  "model_type": "ocr",
+  "source_language": "Sindhi",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2RlMzczYjZlNDkwNWY2ODI5OGQiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.vJpZVaS1RHdl4Kzp_AiQOnUcdC6Z8S-EhtBOcgEuHKM",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937cde373b6e4905f68298d"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958c5"
+  },
+  "model_id": "6937ce0773b6e4905f68298f",
+  "model_name": "Printed BhaashaOCR Page Level - Tamil",
+  "model_type": "ocr",
+  "source_language": "Tamil",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2UwNzczYjZlNDkwNWY2ODI5OGYiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0.tCjrrKfEGFt1CKRw2bHbBNQwSBT9tJ6h4uzkLkOX1Oc",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937ce0773b6e4905f68298f"
+},
+{
+  "_id": {
+    "$oid": "69afb0ef02f169738e3958c6"
+  },
+  "model_id": "6937ce2573b6e4905f682991",
+  "model_name": "Printed BhaashaOCR Page Level - Telugu",
+  "model_type": "ocr",
+  "source_language": "Telugu",
+  "target_language": null,
+  "institution_name": "IIIT-Hyderabad",
+  "user_id": "698aff157d8f512494ce59b3",
+  "requests_per_minute": 10,
+  "access_start_date": {
+    "$date": "2026-03-09T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OTM3Y2UyNTczYjZlNDkwNWY2ODI5OTEiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoxMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTAzLTA5VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTkyNDk5MTk5OX0._qVLF6a2NoGIpVU4Ud-7dNxGEiHUPXk1vIiuEOYLUSE",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_ocr_status_and_infer/6937ce2573b6e4905f682991"
+},
+{
+  "_id": {
+    "$oid": "69c3bd6effeb9740a3cdbd6c"
+  },
+  "model_id": "6872172f4f34535ffa89b90f",
+  "access_start_date": {
+    "$date": "2026-03-25T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "requests_per_minute": 7,
+  "user_id": "698aff157d8f512494ce59b3",
+  "model_name": "IIITH-Bhashaverse-English-Telugu",
+  "model_type": "mt",
+  "source_language": "English",
+  "target_language": "Telugu",
+  "institution_name": "IIIT-Hyderabad",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODcyMTcyZjRmMzQ1MzVmZmE4OWI5MGYiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDMtMjVUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.XMXKBPVVqy2qRDa5r9KI8juyVJ_LzLT76kcCyUaNshs",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_model_status_and_infer/6872172f4f34535ffa89b90f"
+},
+{
+  "_id": {
+    "$oid": "69c3be0fffeb9740a3cdbd70"
+  },
+  "model_id": "6872172f4f34535ffa89b8f8",
+  "access_start_date": {
+    "$date": "2026-03-25T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "requests_per_minute": 7,
+  "user_id": "698aff157d8f512494ce59b3",
+  "model_name": "IIITH-Bhashaverse-English-Bengali",
+  "model_type": "mt",
+  "source_language": "English",
+  "target_language": "Bengali",
+  "institution_name": "IIIT-Hyderabad",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODcyMTcyZjRmMzQ1MzVmZmE4OWI4ZjgiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDMtMjVUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.E6Vz5dRkDJ_PDi9i45Sj9smS68ORAzX8rqdLe0TmwB0",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_model_status_and_infer/6872172f4f34535ffa89b8f8"
+},
+{
+  "_id": {
+    "$oid": "69c3be49ffeb9740a3cdbd72"
+  },
+  "model_id": "6872172f4f34535ffa89b8fd",
+  "access_start_date": {
+    "$date": "2026-03-25T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-12-31T23:59:59.000Z"
+  },
+  "requests_per_minute": 7,
+  "user_id": "698aff157d8f512494ce59b3",
+  "model_name": "IIITH-Bhashaverse-English-Hindi",
+  "model_type": "mt",
+  "source_language": "English",
+  "target_language": "Hindi",
+  "institution_name": "IIIT-Hyderabad",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2ODcyMTcyZjRmMzQ1MzVmZmE4OWI4ZmQiLCJyZXF1ZXN0c19wZXJfbWludXRlIjo3LCJhY2Nlc3Nfc3RhcnRfZGF0ZSI6IjIwMjYtMDMtMjVUMDA6MDA6MDAiLCJhY2Nlc3NfZW5kX2RhdGUiOiIyMDMwLTEyLTMxVDIzOjU5OjU5IiwiaGFzaGVkX3Bhc3N3b3JkIjoiJDJiJDEyJHl1VThMNFcvTktRWXFiZGk4OXNQUGV4RDZHWmg5bEZRWHZ5aTZtMVF2d3ZpcC5RaG9iQUMyIiwiZXhwIjoxOTI0OTkxOTk5fQ.Iv2-ruq4Tfw1u7AD44XU96ghrffs9IhT1Pf_D_-P7Ac",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_model_status_and_infer/6872172f4f34535ffa89b8fd"
+},
+{
+  "_id": {
+    "$oid": "6a72d3ac7c1d218dd46afd16"
+  },
+  "model_id": "6a2f1410e54df16d89e50cf6",
+  "access_start_date": {
+    "$date": "2026-08-05T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2029-12-31T23:59:59.000Z"
+  },
+  "requests_per_minute": 20,
+  "user_id": "698aff157d8f512494ce59b3",
+  "model_name": "IIITH_Telugu_Gondi",
+  "model_type": "mt",
+  "source_language": "Telugu",
+  "target_language": "Gondi",
+  "institution_name": "IIIT-Hyderabad",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2YTJmMTQxMGU1NGRmMTZkODllNTBjZjYiLCJyZXF1ZXN0c19wZXJfbWludXRlIjoyMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTA4LTA1VDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAyOS0xMi0zMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTg5MzQ1NTk5OX0._7gEeoUDOvoXSAsY9CdJQz-obnLysiqJMAZ-6ww2cXA",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/check_model_status_and_infer/6a2f1410e54df16d89e50cf6"
+},
+{
+  "_id": {
+    "$oid": "6a7eb45fb9b57dbd82caa84a"
+  },
+  "model_id": "68d2468f08531bc3c5ccf47b",
+  "access_start_date": {
+    "$date": "2026-08-10T00:00:00.000Z"
+  },
+  "access_end_date": {
+    "$date": "2030-01-01T23:59:59.000Z"
+  },
+  "requests_per_minute": 30,
+  "user_id": "698aff157d8f512494ce59b3",
+  "model_name": "FastSpeech2_HS_48kHz_Sanskrit",
+  "model_type": "tts",
+  "source_language": "Sanskrit",
+  "target_language": null,
+  "institution_name": "IIT Madras",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjk4YWZmMTU3ZDhmNTEyNDk0Y2U1OWIzIiwibW9kZWxfaWQiOiI2OGQyNDY4ZjA4NTMxYmMzYzVjY2Y0N2IiLCJyZXF1ZXN0c19wZXJfbWludXRlIjozMCwiYWNjZXNzX3N0YXJ0X2RhdGUiOiIyMDI2LTA4LTEwVDAwOjAwOjAwIiwiYWNjZXNzX2VuZF9kYXRlIjoiMjAzMC0wMS0wMVQyMzo1OTo1OSIsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiR5dVU4TDRXL05LUVlxYmRpODlzUFBleEQ2R1poOWxGUVh2eWk2bTFRdnd2aXAuUWhvYkFDMiIsImV4cCI6MTg5MzU0MjM5OX0.tWGsln5RC2MYe3olicypP9Wqk-7IrqeEtpeC5WbQvKc",
+  "api_url": "https://canvas.iiit.ac.in/sandboxbeprod/generate_tts/68d2468f08531bc3c5ccf47b"
+}]

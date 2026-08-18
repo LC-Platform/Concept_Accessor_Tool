@@ -1,60 +1,6 @@
-# # translator.py
-# import requests
-# import json
-
-# MT_URL = "https://ssmt.iiit.ac.in/onemt"
-# HEADERS = {
-#     "Content-Type": "application/json",
-#     "Accept": "application/json"
-# }
-
-# SUPPORTED_LANGS = {"hin", "tel", "ben"}  # add more if needed
-
-# def translate_text(text: str, source_language="eng", target_language="hin") -> dict:
-#     """
-#     Translate given text using IIIT-H MT API.
-#     Returns dict with translated text and metadata.
-#     """
-
-#     if target_language not in SUPPORTED_LANGS:
-#         return {
-#             "error": f"Target language '{target_language}' not supported. Use one of {list(SUPPORTED_LANGS)}."
-#         }
-
-#     payload = {
-#         "text": text,
-#         "source_language": source_language,
-#         "target_language": target_language,
-#         "mode": "versionvMD"
-#     }
-
-#     try:
-#         # Increase read timeout (e.g., 120 seconds)
-#         response = requests.post(
-#             MT_URL,
-#             json=payload,
-#             headers=HEADERS,
-#             timeout=(10, 120)  # connect timeout, read timeout
-#         )
-
-#         if response.status_code != 200:
-#             return {"error": f"Translation API error {response.status_code}"}
-
-#         result = response.json()
-
-#         return {
-#             "data": result.get("data"),
-#             "languages": result.get("languages"),
-#             "version": result.get("version")
-#         }
-
-#     except Exception as e:
-#         return {"error": f"Translation failed: {str(e)}"}
-
-
-
 # translator.py
 import requests
+from deep_translator import GoogleTranslator
 
 CANVAS_BASE = "https://canvas.iiit.ac.in/sandboxbeprod/check_model_status_and_infer"
 
@@ -101,23 +47,63 @@ LANG_CONFIGS = {
     },
 }
 
+# Google Translate language codes for our supported targets.
+# "gon" (Gondi) has no Google Translate equivalent, so it's intentionally omitted —
+# fallback will report itself unavailable for that language rather than mistranslate.
+GOOGLE_LANG_CODES = {
+    "hin": "hi",
+    "ben": "bn",
+    "tel": "te",
+}
+
+
+def _translate_with_google(text: str, target_language: str) -> dict:
+    """
+    Fallback translator using Google Translate (via deep-translator), used when
+    the primary Canvas/Bhashaverse model is unreachable or errors out.
+    """
+    google_code = GOOGLE_LANG_CODES.get(target_language)
+    if not google_code:
+        return {
+            "error": (
+                f"No Google Translate fallback available for target language "
+                f"'{target_language}'."
+            )
+        }
+
+    try:
+        output_text = GoogleTranslator(source="en", target=google_code).translate(text)
+        if not output_text:
+            return {"error": "Google Translate returned an empty result."}
+
+        return {
+            "data": output_text,
+            "model": "Google Translate (fallback)",
+            "target_language": target_language,
+        }
+    except Exception as e:
+        return {"error": f"Google Translate fallback failed: {str(e)}"}
+
 
 def translate_text(text: str, source_language: str = "eng", target_language: str = "hin") -> dict:
     """
-    Translate text using IIIT Canvas Bhashaverse API.
+    Translate text using IIIT Canvas Bhashaverse API, falling back to
+    Google Translate if the primary model is unreachable or errors out.
 
     Args:
         text:            The English text to translate.
         source_language: Currently always "eng" (ignored by the model endpoint).
-        target_language: One of "hin", "tel", "ben".
+        target_language: One of "hin", "tel", "ben" (fallback also needs "gon" excluded).
 
     Returns:
         dict with key "data" (translated string) on success,
-        or "error" (string) on failure.
+        or "error" (string) on failure of BOTH primary and fallback.
     """
     config = LANG_CONFIGS.get(target_language)
     if not config:
-        return {
+        # Unsupported by primary model — still worth trying the fallback if it
+        # knows the language (keeps behavior consistent for e.g. "gon" later).
+        return _translate_with_google(text, target_language) if target_language in GOOGLE_LANG_CODES else {
             "error": (
                 f"Target language '{target_language}' is not supported. "
                 f"Choose from: {list(LANG_CONFIGS.keys())}"
@@ -134,6 +120,7 @@ def translate_text(text: str, source_language: str = "eng", target_language: str
     }
 
     payload = {"input_text": text}
+    primary_error = None
 
     try:
         response = requests.post(
@@ -144,31 +131,40 @@ def translate_text(text: str, source_language: str = "eng", target_language: str
         )
 
         if response.status_code != 200:
-            return {
-                "error": f"Canvas API returned HTTP {response.status_code}: {response.text[:200]}"
-            }
+            primary_error = f"Canvas API returned HTTP {response.status_code}: {response.text[:200]}"
+        else:
+            result = response.json()
 
-        result = response.json()
-
-        # Expected shape: {"status": "success", "data": {"output_text": "..."}, ...}
-        if result.get("status") != "success":
-            return {
-                "error": result.get("error") or f"Unexpected response status: {result.get('status')}"
-            }
-
-        output_text = result.get("data", {}).get("output_text")
-        if not output_text:
-            return {"error": "No output_text in API response."}
-
-        return {
-            "data": output_text,
-            "model": config["model_name"],
-            "target_language": target_language,
-        }
+            # Expected shape: {"status": "success", "data": {"output_text": "..."}, ...}
+            if result.get("status") != "success":
+                primary_error = result.get("error") or f"Unexpected response status: {result.get('status')}"
+            else:
+                output_text = result.get("data", {}).get("output_text")
+                if not output_text:
+                    primary_error = "No output_text in API response."
+                else:
+                    return {
+                        "data": output_text,
+                        "model": config["model_name"],
+                        "target_language": target_language,
+                    }
 
     except requests.exceptions.Timeout:
-        return {"error": "Translation request timed out (120 s read timeout)."}
+        primary_error = "Translation request timed out (120 s read timeout)."
     except requests.exceptions.ConnectionError as e:
-        return {"error": f"Connection error: {str(e)}"}
+        primary_error = f"Connection error: {str(e)}"
     except Exception as e:
-        return {"error": f"Translation failed: {str(e)}"}
+        primary_error = f"Translation failed: {str(e)}"
+
+    # Primary failed — try Google Translate as fallback.
+    fallback_result = _translate_with_google(text, target_language)
+    if "data" in fallback_result:
+        return fallback_result
+
+    # Both failed — surface both errors so it's clear what happened.
+    return {
+        "error": (
+            f"Primary translation failed: {primary_error}. "
+            f"Fallback also failed: {fallback_result.get('error')}"
+        )
+    }

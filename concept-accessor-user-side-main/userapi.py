@@ -28,10 +28,7 @@ from minio import Minio
 from xml_to_image import xml_to_image
 import datetime
 from anuvaad_gondi import translate_to_gondi
-import pdfplumber
 import re
-import nltk
-from nltk.tokenize import sent_tokenize
 from typing import List, Dict
 
 
@@ -45,7 +42,7 @@ app = FastAPI(title="Concept Accessor User API")
 # -----------------------------------
 load_dotenv()
 MONGODB_URI = os.getenv("MONGODB_URI")
-MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT", "10.2.8.12:9001")
+MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT", "10.1.88.14:9001")
 MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY")
 MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY")
 MINIO_BUCKET = os.getenv("MINIO_BUCKET", "concept-accessor")
@@ -54,7 +51,7 @@ MINIO_SECURE = os.getenv("MINIO_SECURE", "False").lower() == "true"
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://10.2.8.12:3003","http://localhost:3000", "http://localhost:3003"
+        "http://10.1.88.14:3003","http://localhost:3000", "http://localhost:3003"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -68,8 +65,6 @@ minio_client = Minio(
     secret_key=MINIO_SECRET_KEY,
     secure=MINIO_SECURE
 )
-
-nltk.download('punkt')
 
 # MongoDB setup
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGODB_URI)
@@ -96,6 +91,28 @@ questions_col = db_mongo["questions"]
 reports_col = db_mongo["reports"]
 
 
+# -----------------------------------
+# Feature Usage & Feedback Tracking
+# -----------------------------------
+feature_usage_col = db_mongo["feature_usage"]
+feature_feedback_col = db_mongo["feature_feedback"]
+
+VALID_FEATURES = {"definition", "labelled_image", "taxonomy"}
+
+class FeatureUsageEvent(BaseModel):
+    user_id: str
+    chapter_id: str
+    feature: str                      
+    domain_id: Optional[str] = None
+    time_spent_seconds: float = 0.0
+
+class FeatureFeedbackRequest(BaseModel):
+    user_id: str
+    feature: str
+    feedback: str                   
+
+
+
 def compute_pdf_hash(pdf_bytes: bytes) -> str:
     return hashlib.sha256(pdf_bytes).hexdigest()
 
@@ -120,78 +137,8 @@ def normalize(s):
     return "".join(e.lower() for e in s if e.isalnum())
 
 
-# -----------------------------
-# CLEAN PDF TEXT
-# -----------------------------
-def clean_pdf_text(text):
-    # Remove line breaks
-    text = re.sub(r'\n+', ' ', text)
-
-    # Remove multiple spaces
-    text = re.sub(r'\s+', ' ', text)
-
-    # Remove section headings like 3.1 Algae
-    text = re.sub(r'\b\d+(\.\d+)+\s+[A-Z][a-zA-Z]+\b', '', text)
-
-    # Remove standalone numbers
-    text = re.sub(r'\b\d+\b', '', text)
-
-    return text.strip()
 
 
-# -----------------------------
-# FILTER VALID SENTENCES
-# -----------------------------
-def is_valid_sentence(s):
-    s = s.strip()
-
-    if len(s) < 15:
-        return False
-
-    # Must contain verb (basic heuristic)
-    if not re.search(r'\b(is|are|was|were|has|have|had|do|does|did)\b', s):
-        return False
-
-    # Must end properly
-    if not re.search(r'[.!?]$', s):
-        return False
-
-    return True
-
-
-# -----------------------------
-# EXTRACT TEXT FROM PDF
-# -----------------------------
-def extract_text_from_pdf(pdf_path):
-    full_text = ""
-
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            text = page.extract_text()
-            if text:
-                full_text += text + "\n"
-
-    return full_text
-
-
-# -----------------------------
-# MAIN SENTENCE EXTRACTION
-# -----------------------------
-def extract_sentences_from_pdf(pdf_path):
-    raw_text = extract_text_from_pdf(pdf_path)
-
-    cleaned_text = clean_pdf_text(raw_text)
-
-    raw_sentences = sent_tokenize(cleaned_text)
-
-    sentences = []
-    for s in raw_sentences:
-        s = s.strip()
-
-        if is_valid_sentence(s):
-            sentences.append(s)
-
-    return sentences
 
 class ChapterRequest(BaseModel):
     chapter_id: str
@@ -1176,7 +1123,6 @@ def split_text(text: str, max_len: int = 200) -> list[str]:
         chunks.append(current.strip())
     return chunks
 
-
 @app.post("/translate/sentence/")
 async def translate_sentence(
     chapter_id: str = Body(..., embed=True),
@@ -1207,24 +1153,22 @@ async def translate_sentence(
         if not chunk:
             continue
 
-    try:
+        try:
             if target_language.lower() in ["gon", "gondi"]:
                 result = await translate_to_gondi(chunk)
                 translated_parts.append(result["gondi_text"])
-
             else:
                 result = translate_text(chunk, "eng", target_language)
 
-                # Existing translator response
                 if "error" in result:
                     print(f"⚠️ Translation error for chunk: {result['error']}")
-                    translated_parts.append(chunk)  # fallback
+                    translated_parts.append(chunk)  # fallback to original text
                 else:
                     translated_parts.append(result["data"])
 
-    except Exception as e:
+        except Exception as e:
             print(f"❌ Chunk failed: {e}")
-            translated_parts.append(chunk)           # fallback: original text
+            translated_parts.append(chunk)  # fallback: original text
 
     translated = " ".join(translated_parts)
 
@@ -1253,7 +1197,7 @@ async def translate_sentence(
         "translated_sentence": translated,
         "message": "Translated & stored",
     }
-    
+        
 @app.get("/chapters/")
 async def get_all_chapters():
     """
@@ -2738,3 +2682,99 @@ async def clear_reports(user_id: Optional[str] = None):
         "success": True,
         "message": f"Successfully cleared {result.deleted_count} progress report(s)"
     }
+    
+    
+
+@app.post("/api/feature-usage/track")
+async def track_feature_usage(event: FeatureUsageEvent):
+    if event.feature not in VALID_FEATURES:
+        raise HTTPException(status_code=400, detail=f"Invalid feature: {event.feature}")
+
+    query = {
+        "user_id": event.user_id,
+        "chapter_id": event.chapter_id,
+        "feature": event.feature,
+        "domain_id": event.domain_id,
+    }
+    await feature_usage_col.update_one(
+        query,
+        {
+            "$inc": {
+                "view_count": 1,
+                "total_time_seconds": max(event.time_spent_seconds, 0.0),
+            },
+            "$set": {"last_accessed": datetime.datetime.utcnow()},
+            "$setOnInsert": {"first_accessed": datetime.datetime.utcnow()},
+        },
+        upsert=True,
+    )
+    return {"success": True}
+
+
+@app.get("/api/feature-usage/{user_id}")
+async def get_feature_usage(
+    user_id: str,
+    chapter_id: Optional[str] = None,
+    feature: Optional[str] = None,
+    domain_id: Optional[str] = None,
+):
+    query = {"user_id": user_id}
+    if chapter_id: query["chapter_id"] = chapter_id
+    if feature: query["feature"] = feature
+    if domain_id: query["domain_id"] = domain_id
+
+    results = []
+    async for doc in feature_usage_col.find(query):
+        results.append({
+            "chapter_id": doc.get("chapter_id"),
+            "feature": doc.get("feature"),
+            "domain_id": doc.get("domain_id"),
+            "view_count": doc.get("view_count", 0),
+            "total_time_seconds": round(doc.get("total_time_seconds", 0.0), 1),
+            "last_accessed": doc.get("last_accessed"),
+        })
+    return {"user_id": user_id, "usage": results}
+
+
+@app.post("/api/feature-feedback")
+async def submit_feature_feedback(req: FeatureFeedbackRequest):
+    if req.feature not in VALID_FEATURES:
+        raise HTTPException(status_code=400, detail=f"Invalid feature: {req.feature}")
+    if req.feedback not in {"up", "down"}:
+        raise HTTPException(status_code=400, detail="feedback must be 'up' or 'down'")
+
+    existing = await feature_feedback_col.find_one({"user_id": req.user_id, "feature": req.feature})
+
+    # Once thumbs-up, lock it — don't let a later call flip it back
+    if existing and existing.get("status") == "up":
+        return {"success": True, "status": "up", "locked": True}
+
+    if req.feedback == "up":
+        await feature_feedback_col.update_one(
+            {"user_id": req.user_id, "feature": req.feature},
+            {"$set": {"status": "up", "updated_at": datetime.datetime.utcnow()}},
+            upsert=True,
+        )
+        return {"success": True, "status": "up", "locked": True}
+
+    await feature_feedback_col.update_one(
+        {"user_id": req.user_id, "feature": req.feature},
+        {
+            "$set": {"status": "down", "updated_at": datetime.datetime.utcnow()},
+            "$inc": {"down_click_count": 1},
+        },
+        upsert=True,
+    )
+    updated = await feature_feedback_col.find_one({"user_id": req.user_id, "feature": req.feature})
+    return {"success": True, "status": "down", "locked": False, "down_click_count": updated.get("down_click_count", 1)}
+
+
+@app.get("/api/feature-feedback/{user_id}")
+async def get_feature_feedback(user_id: str):
+    result = {}
+    async for doc in feature_feedback_col.find({"user_id": user_id}):
+        result[doc["feature"]] = {
+            "status": doc.get("status"),
+            "down_click_count": doc.get("down_click_count", 0),
+        }
+    return {"user_id": user_id, "feedback": result}

@@ -100,6 +100,12 @@ const FourPicsOneWord = ({ onBack, onRestart }) => {
     setTimeout(goToNext, 2000);
   };
 
+  const handleEndGame = () => {
+    if (isLocked) return; 
+    setGameOver(true);
+    setGameEndTime(Date.now());
+  };
+
   const formatTime = (timeInMs) => {
     if (!timeInMs) return '0s';
     const totalSeconds = Math.floor(timeInMs / 1000);
@@ -188,6 +194,11 @@ const FourPicsOneWord = ({ onBack, onRestart }) => {
                 {message}
               </div>
             )}
+          </div>
+          <div className="controls" style={{ marginTop: '20px' }}>
+            <button onClick={handleEndGame} className="btn danger-btn" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
+              End Game / Give Up
+            </button>
           </div>
         </div>
       )}

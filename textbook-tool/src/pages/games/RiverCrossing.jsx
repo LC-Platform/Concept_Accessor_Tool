@@ -179,16 +179,27 @@ export default function RiverCrossing({ onBack, onRestart }) {
       </header>
 
       {gameOver && gameWon ? (
-        <div className="game-over-screen slide-in">
-          <h2>🏆 Puzzle Solved!</h2>
-          <div className="stats-container">
-            <p>Total Trips: <span>{trips}</span></p>
-            <p>Final Score: <span className="text-success">{getScore()}</span></p>
+          <div className="game-over-screen slide-in">
+            <h2>🏆 Puzzle Solved!</h2>
+            <div className="stats-container">
+              <p>Total Trips: <span>{trips}</span></p>
+              <p>Final Score: <span className="text-success">{getScore()}</span></p>
+            </div>
+            <button onClick={onRestart} className="btn primary-btn" style={{marginTop: '20px'}}>Play Again</button>
+            <button onClick={onBack} className="btn secondary-btn" style={{marginTop: '10px'}}>Main Menu</button>
           </div>
-          <button onClick={onRestart} className="btn primary-btn" style={{marginTop: '20px'}}>Play Again</button>
-          <button onClick={onBack} className="btn secondary-btn" style={{marginTop: '10px'}}>Main Menu</button>
-        </div>
-      ) : (
+        ) : gameOver && !gameWon ? (
+          <div className="game-over-screen slide-in">
+            <h2>💧 Game Over</h2>
+            <p>{message || "You gave up on the puzzle."}</p>
+            <div className="stats-container">
+              <p>Total Trips: <span>{trips}</span></p>
+              <p>Final Score: <span className="text-success">0</span></p>
+            </div>
+            <button onClick={onRestart} className="btn primary-btn" style={{marginTop: '20px'}}>Try Again</button>
+            <button onClick={onBack} className="btn secondary-btn" style={{marginTop: '10px'}}>Main Menu</button>
+          </div>
+        ) : (
         <div className="river-content">
           <div className="river-instructions">
             <p><strong>Rules:</strong></p>
@@ -239,12 +250,6 @@ export default function RiverCrossing({ onBack, onRestart }) {
             <div className="controls" style={{marginTop: '20px'}}>
               <button onClick={handleEndGame} className="btn danger-btn" style={{ padding: '8px 16px', fontSize: '0.9rem' }}>End Game / Give Up</button>
             </div>
-          )}
-
-          {gameOver && !gameWon && (
-             <div className="controls" style={{marginTop: '20px'}}>
-               <button onClick={onRestart} className="btn primary-btn" style={{ margin: 0 }}>Try Again</button>
-             </div>
           )}
         </div>
       )}

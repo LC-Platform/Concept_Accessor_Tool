@@ -1,25 +1,28 @@
-docker build -t concept_accessor_frontend:Aug5 .
+docker build -t concept_accessor_frontend:Aug17 .
 
-docker tag concept_accessor_frontend:Aug5 sashank662/concept_accessor_frontend:Aug5
-
-
-docker push sashank662/concept_accessor_frontend:Aug5
+docker tag concept_accessor_frontend:Aug17 sashank662/concept_accessor_frontend:Aug17
 
 
-sudo docker pull sashank662/concept_accessor_frontend:Aug5
+docker push sashank662/concept_accessor_frontend:Aug17
 
 
-
-sudo docker run -d -p 3003:80 sashank662/concept_accessor_frontend:Aug5
+sudo docker pull sashank662/concept_accessor_frontend:Aug17
 
 
 
-docker build -t concept_accessor_backend:Aug6 .
+sudo docker run -d -p 3003:80 sashank662/concept_accessor_frontend:Aug17
 
-docker tag concept_accessor_backend:Aug6 sashank662/concept_accessor_backend:Aug6
-docker push sashank662/concept_accessor_backend:Aug6
 
-sudo docker run -d -p 8500:3000 sashank662/concept_accessor_backend:Aug6
+
+docker build -t concept_accessor_backend:Aug17 .
+
+docker tag concept_accessor_backend:Aug17 sashank662/concept_accessor_backend:Aug17
+docker push sashank662/concept_accessor_backend:Aug17
+
+
+docker pull sashank662/concept_accessor_backend:Aug17
+
+sudo docker run -d -p 8500:3000 sashank662/concept_accessor_backend:Aug17
 
   
 uvicorn userapi:app --host 0.0.0.0 --port 8000 --reload

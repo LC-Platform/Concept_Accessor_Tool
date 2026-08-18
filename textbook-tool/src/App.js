@@ -24,7 +24,7 @@ function App() {
  
   
   return (
-    <Router basename="/bioereaderfe/">
+    <Router basename="/">
       <Routes>
         {/* Main Pages */}
         <Route path="/" element={<HomePage />} />

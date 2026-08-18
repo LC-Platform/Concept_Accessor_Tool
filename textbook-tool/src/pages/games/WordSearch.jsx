@@ -194,6 +194,32 @@ export default function WordSearch({ onBack, onRestart }) {
     }
   };
 
+  const handleTouchStart = (e, r, c) => {
+    if (activeQuestion || gameOver) return;
+    e.preventDefault(); // stop scroll/text-select from hijacking the drag
+    setIsDragging(true);
+    setSelectedCells([{ r, c }]);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging || activeQuestion || gameOver) return;
+    e.preventDefault();
+
+    const touch = e.touches[0];
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (!el || !el.dataset || el.dataset.r === undefined) return;
+
+    const r = parseInt(el.dataset.r, 10);
+    const c = parseInt(el.dataset.c, 10);
+    handleMouseEnter(r, c); // reuse existing line-selection logic
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!isDragging || activeQuestion || gameOver) return;
+    e.preventDefault();
+    handleMouseUp(); // reuse existing match-checking logic
+  };
+
   const handleAnswerSubmit = (option) => {
     if (option === activeQuestion.correctAnswer) {
       setScore(prev => prev + 100);
@@ -241,7 +267,7 @@ export default function WordSearch({ onBack, onRestart }) {
   };
 
   return (
-    <div className="game-area fade-in" onMouseUp={handleMouseUp} onMouseLeave={() => setIsDragging(false)}>
+    <div className="game-area fade-in" onMouseUp={handleMouseUp} onMouseLeave={() => setIsDragging(false)}  onTouchEnd={handleTouchEnd}>
       <header className="game-header">
         <button onClick={onBack} className="back-btn">← Back</button>
         <h1>🔍 Word Search Challenge</h1>
@@ -305,9 +331,15 @@ export default function WordSearch({ onBack, onRestart }) {
                     return (
                       <div 
                         key={`${r}-${c}`} 
+                        data-r={r}
+                        data-c={c}
                         className={`grid-cell ${colorClass}`}
                         onMouseDown={() => handleMouseDown(r, c)}
                         onMouseEnter={() => handleMouseEnter(r, c)}
+                        onTouchStart={(e) => handleTouchStart(e, r, c)}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                        style={{ touchAction: 'none' }}
                       >
                         {letter}
                       </div>

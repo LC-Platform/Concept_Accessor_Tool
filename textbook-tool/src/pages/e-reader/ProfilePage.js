@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE = process.env.REACT_APP_API_BASE || 'http://10.2.8.12:8500';
+const API_BASE = process.env.REACT_APP_API_BASE || 'http://10.1.88.14:8500';
 
 /* ────────────────────────────────────────────────────────────────────────
    Design tokens
